@@ -50,7 +50,7 @@
         <div class="w-full max-w-md space-y-4 interactive" id="menu-container">
             <!-- Dersler Butonu -->
             <button onclick="toggleSection('dersler-listesi')" class="w-full py-4 px-6 bg-zinc-950/80 backdrop-blur-md border border-zinc-800 hover:border-indigo-500 rounded-2xl text-lg font-semibold text-white tracking-wide transition-all duration-300 transform hover:-translate-y-1 shadow-lg flex justify-between items-center group cursor-pointer">
-                <span>📚 Dersler</span>
+                <span>Dersler</span>
                 <span class="text-indigo-400 group-hover:translate-x-1 transition-transform duration-300">▼</span>
             </button>
 
@@ -74,18 +74,11 @@
                 </button>
             </div>
 
-            <!-- Sınav Takvimi Butonu -->
-            <button onclick="toggleSection('takvim-alani')" class="w-full py-4 px-6 bg-zinc-950/80 backdrop-blur-md border border-zinc-800 hover:border-indigo-500 rounded-2xl text-lg font-semibold text-white tracking-wide transition-all duration-300 transform hover:-translate-y-1 shadow-lg flex justify-between items-center group cursor-pointer">
-                <span>📅 Sınav Takvimi</span>
-                <span class="text-indigo-400 group-hover:translate-x-1 transition-transform duration-300">▼</span>
-            </button>
-
-            <!-- Sınav Takvimi Alt Alanı (Başlangıçta Gizli) -->
-            <div id="takvim-alani" class="hidden space-y-3 pl-4 border-l-2 border-indigo-500/50 pt-2">
-                <div class="w-full py-4 px-5 bg-zinc-900/80 border border-zinc-800 rounded-xl text-sm text-zinc-400 text-center">
-                    Sınav takvimi yakında eklenecektir.
-                </div>
-            </div>
+            <!-- Sınav Takvimi Doğrudan Bağlantı Butonu -->
+            <a href="sinavtakvimi.html" class="w-full py-4 px-6 bg-zinc-950/80 backdrop-blur-md border border-zinc-800 hover:border-indigo-500 rounded-2xl text-lg font-semibold text-white tracking-wide transition-all duration-300 transform hover:-translate-y-1 shadow-lg flex justify-between items-center group block">
+                <span>Sınav Takvimi</span>
+                <span class="text-indigo-400 group-hover:translate-x-2 transition-transform duration-300">→</span>
+            </a>
         </div>
 
         <footer class="mt-16 text-center text-xs text-zinc-600 tracking-wider">
