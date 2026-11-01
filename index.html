@@ -3,309 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sinema</title>
+    <title>Sinema - Ders Seçim Platformu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <div id="root"></div>
+<body class="bg-black text-white font-sans antialiased selection:bg-indigo-500 selection:text-white">
+    <div class="min-h-screen bg-black flex flex-col items-center justify-center p-6">
+        <div class="text-center mb-12">
+            <h1 class="text-6xl md:text-8xl font-black tracking-widest text-white uppercase mb-4 drop-shadow-lg">
+                SİNEMA
+            </h1>
+            <p class="text-gray-400 text-lg tracking-wider">Ders Seçim Paneli</p>
+        </div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+        <div class="w-full max-w-md space-y-4">
+            <!-- Temel Sanat Eğitimi (Aktif Sayfa) -->
+            <a href="temelsanategitimi.html" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-indigo-500 rounded-xl text-lg font-semibold text-white tracking-wide transition-all transform hover:scale-105 shadow-md flex justify-between items-center group block">
+                <span>Temel Sanat Eğitimi</span>
+                <span class="text-indigo-500 group-hover:translate-x-1 transition-transform">→</span>
+            </a>
 
-        const sorular = [
-            { q: "Görsel tasarım ögeleri arasında aşağıdakilerden hangisi yer almaz?", options: ["Nokta", "Çizgi", "Ritim", "Doku"], a: 2 },
-            { q: "Görsel tasarım ilkelerinden hangisi tasarımı oluşturan parçaların görsel ağırlıklarının eşit dağılmasını ifade eder?", options: ["Vurgu", "Denge", "Hareket", "Örüntü"], a: 1 },
-            { q: "Sanatın temel unsurlarından biri olan 'Nokta' için hangisi yanlıştır?", options: ["Dinamik bir elemandır.", "Somut ve ölçülebilir bir kavramdır.", "Ritim oluşturabilir.", "Yer belirleyicidir."], a: 1 },
-            { q: "Fransa'da 19. yüzyıl sonlarında doğan ve çizginin tamamen terk edildiği sanat akımı hangisidir?", options: ["Empresyonizm", "Kübizm", "Puantilizm", "Sürrealizm"], a: 2 },
-            { q: "'Doğadaki noktalar rastgele değil, bir amaca hizmet etmek için bir araya gelmiştir.' sözü kime aittir?", options: ["Claude Monet", "Wassily Kandinsky", "Leonardo da Vinci", "Fibonacci"], a: 1 },
-            { q: "Hangisi çizginin ekseni açısından sınıflandırılmasına örnektir?", options: ["Kesik", "Akıcı", "Çapraz", "Kavisli"], a: 2 },
-            { q: "Heyecan ve gerilim hissi uyandıran çizgi türü hangisidir?", options: ["Zayıf çizgi", "Düz çizgi", "Kırık çizgi", "Eğri çizgi"], a: 2 },
-            { q: "Dinamizm ve enerji hissini en iyi veren çizgi türü hangisidir?", options: ["Dikey çizgi", "Eğri çizgi", "Yatay çizgi", "Silik çizgi"], a: 1 },
-            { q: "Güç ve kararlılık hissini izleyiciye aktarmak isteyen bir sanatçı hangi çizgiyi tercih etmelidir?", options: ["Kırık çizgi", "Zayıf çizgi", "Kalın çizgi", "Sarmal çizgi"], a: 2 },
-            { q: "İki boyutlu yüzeye derinlik katarak ona üçüncü boyut hissi veren görsel tasarım ögesi nedir?", options: ["Nokta", "Doku", "Boşluk", "Çizgi"], a: 1 },
-            { q: "Tasarımcının izleyicinin bilinçaltına hitap ederek mekanda sıcaklık, soğukluk veya güven algısı yaratmasını sağlayan sessiz araç nedir?", options: ["Nokta", "Oran", "Ritim", "Doku"], a: 3 },
-            { q: "Doğada var olan dokuların dönüştürülmesiyle sanatçı tarafından yapay olarak kurgulanan iki boyutlu yüzey yapısına ne denir?", options: ["Gerçek doku", "İcat edilen doku", "Yapay doku", "Doğal doku"], a: 1 },
-            { q: "Psikolojik olarak izleyicide 'yakınlık ve keskinlik' hissi uyandıran doku tipi hangisidir?", options: ["İnce ve ayrıntılı işlenmiş dokular", "Dağınık ve belirsiz dokular", "Mat dokular", "Yumuşak dokular"], a: 0 },
-            { q: "Mat dokuların, dağınık ve ayrıntısız işlenmiş yüzeylerin ortak psikolojik etkisi nedir?", options: ["Heyecan", "Uzaklık hissi", "Kararsızlık", "Güven"], a: 1 },
-            { q: "19. yüzyılın ikinci yarısında Fransa'da ortaya çıkan, doğal ışığın ve anın sanatçıdaki izlenimlerini yansıtan akım hangisidir?", options: ["Puantilizm", "Realizm", "Empresyonizm", "Ekspresyonizm"], a: 2 },
-            { q: "Empresyonizm akımının en önemli temsilcisi ve bu akıma ismini veren eserin sahibi kimdir?", options: ["Kandinsky", "Fibonacci", "Claude Monet", "Van Gogh"], a: 2 },
-            { q: "Empresyonist ressamların eserlerindeki teknik özellikleri arasında hangisi yer alır?", options: ["Fırça darbelerinin belirgin olması", "Çizginin tamamen terk edilmesi", "Atölye ortamında uzun süreli çalışmalar yapılması", "Keskin sınırların kullanılması"], a: 0 },
-            { q: "Hangisi zanaatın sanat eserinden ayrılan en temel özelliğidir?", options: ["Özgün olması", "Fayda ve toplumsal pratik bir ihtiyacı karşılaması", "Estetik kaygı taşıması", "Duyguları ön plana çıkarması"], a: 1 },
-            { q: "Sanatın temelinde yatan iki ana unsur aşağıdakilerden hangisidir?", options: ["Kar ve ustalık", "Plan ve program", "Estetik ve özgünlük", "İhtiyaç ve işlevsellik"], a: 2 },
-            { q: "Doğanın bir estetiği olduğunu ve estetik ile simetri arasında yakın bir ilişki bulunduğunu savunan düşünür kimdir?", options: ["Monet", "Kandinsky", "Fibonacci", "Picasso"], a: 2 },
-            { q: "Temel sanatta 'estetik' kavramının en doğru tanımı aşağıdakilerden hangisidir?", options: ["Sadece güzel olanı çizmektir.", "Tasarım ögelerinin belirli ilkeler doğrultusunda uyumlu bir bütün oluşturmasıdır.", "Eserin ticari değerinin yüksek olmasıdır.", "El ustalığı ile faydalı bir ürün ortaya koymaktır."], a: 1 },
-            { q: "Görüntülerin oluştuğu temel yapı taşı olan ve 'merkezi' bir özellik gösteren öge nedir?", options: ["Çizgi", "Renk", "Ton", "Nokta"], a: 3 },
-            { q: "Noktanın özellikleri arasında 'göz yanılgısı oluşturma' ve 'ritim oluşturma' işlevleri bulunurken, hangisi noktanın işlevlerinden biri değildir?", options: ["Uzaklık-yakınlık etkisi", "Dağılma-toplama etkisi", "İki düzlemin kesişmesi", "Boşluk-doluluk etkisi"], a: 2 },
-            { q: "Aşağıdakilerden hangisi çizginin şekli açısından bir sınıflandırmadır?", options: ["Sert", "Kavisli", "Yatay", "Açık"], a: 1 },
-            { q: "Hareketsizlik hissi uyandıran çizgi türü hangisidir?", options: ["Eğri", "Düz/Yatay", "Dikey", "Kırık"], a: 1 },
-            { q: "Suni olan, doğal malzemenin bilgi ve teknikle işlenmesi sonucu ortaya çıkan doku türüne ne ad verilir?", options: ["Gerçek doku", "İcat edilen doku", "Yapay doku", "Doğal doku"], a: 2 },
-            { q: "Sert dokular ve parlak dokular izleyicide ortak olarak hangi algıyı yaratır?", options: ["Uzaklık", "Yakınlık", "Sessizlik", "Hareketsizlik"], a: 1 },
-            { q: "Açık havada çizim yapılması ve anın yakalanması hangi sanat akımının en temel kuralıdır?", options: ["Empresyonizm", "Puantilizm", "Kübizm", "Realizm"], a: 0 },
-            { q: "Zanaatkar ile sanatçı arasındaki üretim süreci farkı nedir?", options: ["Sanatçı kar amacı güder, zanaatkar gütmez.", "Sanatçı hissiyle üretir, zanaatkar planlı ve programlı ilerler.", "Zanaatkar özgünlüğü, sanatçı işlevselliği hedefler.", "İkisi de tamamen aynı süreçleri izler."], a: 1 },
-            { q: "Noktaların birleşimi veya bütünü olarak tanımlanan, sınır belirleyici olan ve gözü yönlendiren öge hangisidir?", options: ["Doku", "Ritim", "Çizgi", "Boşluk"], a: 2 }
-        ];
+            <!-- Metin Yazarlığı -->
+            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl text-lg font-semibold text-gray-400 hover:text-white tracking-wide transition-all text-left flex justify-between items-center">
+                <span>Metin Yazarlığı</span>
+                <span class="text-zinc-600 text-sm">Yakında</span>
+            </button>
 
-        function App() {
-            const [activeTab, setActiveTab] = useState('notes');
-            
-            return (
-                <div className="max-w-4xl mx-auto p-4 md:p-8">
-                    <header className="mb-8 text-center">
-                        <h1 className="text-3xl font-bold text-indigo-700">Temel Sanat Eğitimi</h1>
-                        <p className="text-gray-500 mt-2">Vize Hazırlık Platformu</p>
-                    </header>
+            <!-- Film ve Televizyona Giriş -->
+            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl text-lg font-semibold text-gray-400 hover:text-white tracking-wide transition-all text-left flex justify-between items-center">
+                <span>Film ve Televizyona Giriş</span>
+                <span class="text-zinc-600 text-sm">Yakında</span>
+            </button>
 
-                    <nav className="flex flex-wrap justify-center gap-2 mb-8 border-b pb-4">
-                        {['notes', 'people', 'quiz', 'leaderboard'].map(tab => (
-                            <button 
-                                key={tab}
-                                onClick={() => setActiveTab(tab)}
-                                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                                    activeTab === tab ? 'bg-indigo-600 text-white' : 'bg-white text-indigo-600 hover:bg-indigo-50 border border-indigo-200'
-                                }`}
-                            >
-                                {tab === 'notes' && '📖 Ders Notları'}
-                                {tab === 'people' && '🎭 Kişiler & Akımlar'}
-                                {tab === 'quiz' && '✍️ Vize Sınavı'}
-                                {tab === 'leaderboard' && '🏆 Sıralama'}
-                            </button>
-                        ))}
-                    </nav>
-
-                    <main className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        {activeTab === 'notes' && <Notes />}
-                        {activeTab === 'people' && <People />}
-                        {activeTab === 'quiz' && <Quiz onComplete={() => setActiveTab('leaderboard')} />}
-                        {activeTab === 'leaderboard' && <Leaderboard />}
-                    </main>
-                </div>
-            );
-        }
-
-        function Notes() {
-            return (
-                <div className="prose max-w-none text-gray-700 space-y-6">
-                    <h2 className="text-2xl font-bold text-gray-900 border-b pb-2">Temel Sanat Eğitimi</h2>
-                    
-                    <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-indigo-500">
-                        <p><strong>ÖGELER:</strong> Nokta, çizgi, doku, renk, ton, boşluk-doluluk, ton</p>
-                        <p><strong>İLKELER:</strong> Vurgu, ritim, hareket, denge, zıtlık, oran, örüntü</p>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-800 mt-6">Nokta</h3>
-                    <p>Görüntüler noktalardan oluşur. Sanatın temel unsurlarından biridir. Üslup geliştirebilir.</p>
-                    <ul className="list-disc pl-5">
-                        <li>Dinamik bir elemandır, ritim oluşturabilir.</li>
-                        <li>Soyut bir kavramdır. Yer belirleyicidir ve merkezidir.</li>
-                        <li><strong>Fonksiyonları:</strong> Uzaklık-yakınlık, boşluk-doluluk, dağılma-toplama etkisi, ritim ve göz yanılgısı oluşturma.</li>
-                    </ul>
-
-                    <h3 className="text-xl font-bold text-gray-800 mt-6">Çizgi</h3>
-                    <p>Noktaların birleşimidir. Sınır belirleyicidir, bir yoldur, iki düzlemin kesişmesidir. Biçim oluşturur, yüzeye ton değeri verir.</p>
-                    <ul className="list-disc pl-5">
-                        <li><strong>Eksenine göre:</strong> Yatay, dikey, çapraz</li>
-                        <li><strong>Şekline göre:</strong> Kesik, sarmal, zigzag, düz, kavisli</li>
-                        <li><strong>Etkisine göre:</strong> Sert, yumuşak, akıcı, açık, koyu</li>
-                    </ul>
-                    <div className="grid grid-cols-2 gap-4 mt-4 bg-gray-50 p-4 rounded">
-                        <div><strong>Zayıf/Silik:</strong> Kararsızlık</div>
-                        <div><strong>Düz/Yatay:</strong> Hareketsizlik</div>
-                        <div><strong>Kalın:</strong> Güç, kararlılık</div>
-                        <div><strong>Dikey:</strong> Hareketlilik</div>
-                        <div><strong>Kırık:</strong> Heyecan, gerilim</div>
-                        <div><strong>Eğri:</strong> Enerji/Dinamizm</div>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-800 mt-6">Doku</h3>
-                    <p>Dokunduğumuz yüzeydir. Yalnızca fiziksel temasla değil görsel olarak da algılanabilir. Eserde sıcaklık, soğukluk, güven, tehlike, yakınlık hislerini yönetmeyi sağlar.</p>
-                    <ul className="list-disc pl-5">
-                        <li><strong>Türleri:</strong> Gerçek (Dokunulabilen), Doğal (Doğanın oluşturduğu), Yapay (Suni işlenmiş malzeme), İcat Edilen (Doğadaki dokuların sanatçı tarafından tamamen yapay kurgulanması).</li>
-                    </ul>
-                    <p><strong>Psikolojik Etkileri:</strong> Sert, yumuşak, parlak ve ince işlenmiş dokular <em>yakınlık</em> hissi verirken; mat, dağınık ve belirsiz dokular <em>uzaklık</em> hissi verir.</p>
-
-                    <h3 className="text-xl font-bold text-gray-800 mt-6">Sanat ve Zanaat</h3>
-                    <p>Sanat; estetik kaygıyla duygu, düşünce ve hayal gücünü özgün bir şekilde ifade eder. Zanaat ise el ustalığına dayanarak pratik ihtiyacı karşılayacak işlevsel ürünler üretir.</p>
-                    <p>Zanaat kar amacı güder, planlıdır. Sanatçı hissiyle üretir, kar amacı temel değildir.</p>
-                </div>
-            );
-        }
-
-        function People() {
-            const people = [
-                {
-                    name: "Wassily Kandinsky",
-                    title: "Ressam ve Sanat Kuramcısı",
-                    desc: "Noktanın sanat içindeki yerini derinlemesine incelemiştir. 'Doğadaki noktalar rastgele değil, bir amaca hizmet etmek için bir araya gelmiştir' diyerek noktanın tesadüfi olmayan, bilinçli ve yapıcı gücüne vurgu yapmıştır."
-                },
-                {
-                    name: "Claude Monet",
-                    title: "Empresyonizmin Öncüsü",
-                    desc: "19. yüzyılda Fransa'da doğan Empresyonizm (İzlenimcilik) akımının en önemli temsilcisidir. 'Gündoğumu' tablosu akıma adını vermiştir. Açık havada çalışarak, doğal ışığın ve anın sanatçı üzerinde bıraktığı izlenimi, belirgin fırça darbeleriyle yansıtmıştır."
-                },
-                {
-                    name: "Fibonacci",
-                    title: "Matematikçi",
-                    desc: "Doğanın kendine ait bir estetiği ve matematiksel bir dizilimi olduğunu savunmuştur. Kendi adıyla anılan Fibonacci dizisi, estetik ve simetri arasındaki o mükemmel, kusursuz ilişkiyi gözler önüne serer."
-                }
-            ];
-
-            return (
-                <div className="space-y-6">
-                    <h2 className="text-2xl font-bold text-gray-900 border-b pb-2">Önemli İsimler ve Akımlar</h2>
-                    <div className="grid gap-6 md:grid-cols-3">
-                        {people.map(p => (
-                            <div key={p.name} className="bg-white border rounded-xl p-5 shadow-sm hover:shadow-md transition">
-                                <h3 className="text-lg font-bold text-indigo-700">{p.name}</h3>
-                                <p className="text-sm font-semibold text-gray-500 mb-3">{p.title}</p>
-                                <p className="text-gray-700 text-sm">{p.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="mt-8 bg-indigo-50 p-6 rounded-xl border border-indigo-100">
-                        <h3 className="text-lg font-bold text-indigo-900 mb-2">Puantilizm (Noktacılık)</h3>
-                        <p className="text-indigo-800 text-sm">
-                            19. yüzyıl sonlarında Fransa'da doğmuştur. Empresyonizme bir tepki/gelişim olarak ortaya çıkan bu akımda ressamlar <strong>çizgiyi tamamen terk etmiş</strong>, renkleri palet yerine doğrudan tuval üzerinde noktalar halinde yan yana uygulayarak gözün bu renkleri uzaktan birleştirmesini sağlamışlardır.
-                        </p>
-                    </div>
-                </div>
-            );
-        }
-
-        function Quiz({ onComplete }) {
-            const [currentQ, setCurrentQ] = useState(0);
-            const [score, setScore] = useState(0);
-            const [showResult, setShowResult] = useState(false);
-            const [selectedId, setSelectedId] = useState(null);
-            const [isAnswered, setIsAnswered] = useState(false);
-
-            const handleAnswer = (index) => {
-                if (isAnswered) return;
-                setSelectedId(index);
-                setIsAnswered(true);
-                
-                if (index === sorular[currentQ].a) {
-                    setScore(s => s + 1);
-                }
-                
-                setTimeout(() => {
-                    if (currentQ < sorular.length - 1) {
-                        setCurrentQ(q => q + 1);
-                        setSelectedId(null);
-                        setIsAnswered(false);
-                    } else {
-                        setShowResult(true);
-                        saveScore(score + (index === sorular[currentQ].a ? 1 : 0));
-                    }
-                }, 1000);
-            };
-
-            const saveScore = (finalScore) => {
-                const existing = JSON.parse(localStorage.getItem('artScores') || '[]');
-                const newScore = { id: Date.now(), score: finalScore, date: new Date().toLocaleDateString() };
-                localStorage.setItem('artScores', JSON.stringify([...existing, newScore]));
-            };
-
-            if (showResult) {
-                return (
-                    <div className="text-center py-12">
-                        <div className="text-6xl mb-4">🎨</div>
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Sınav Tamamlandı!</h2>
-                        <p className="text-xl text-gray-600 mb-6">30 soruda <span className="font-bold text-indigo-600">{score}</span> doğru yaptın.</p>
-                        
-                        <div className="w-full bg-gray-200 rounded-full h-4 mb-8">
-                            <div className="bg-indigo-600 h-4 rounded-full" style={{width: `${(score/30)*100}%`}}></div>
-                        </div>
-
-                        <button onClick={onComplete} className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700">
-                            Sıralama Tablosunu Gör
-                        </button>
-                    </div>
-                );
-            }
-
-            const q = sorular[currentQ];
-
-            return (
-                <div>
-                    <div className="flex justify-between items-center mb-6 text-sm font-semibold text-gray-500">
-                        <span>Soru {currentQ + 1} / 30</span>
-                        <span>Doğru: {score}</span>
-                    </div>
-
-                    <h2 className="text-xl font-medium text-gray-800 mb-8 min-h-[4rem]">{q.q}</h2>
-
-                    <div className="space-y-3">
-                        {q.options.map((opt, i) => {
-                            let btnClass = "w-full text-left p-4 rounded-xl border-2 transition-all ";
-                            if (!isAnswered) {
-                                btnClass += "border-gray-200 hover:border-indigo-400 hover:bg-indigo-50";
-                            } else {
-                                if (i === q.a) btnClass += "border-green-500 bg-green-50 text-green-700";
-                                else if (i === selectedId) btnClass += "border-red-500 bg-red-50 text-red-700";
-                                else btnClass += "border-gray-200 opacity-50";
-                            }
-
-                            return (
-                                <button key={i} disabled={isAnswered} onClick={() => handleAnswer(i)} className={btnClass}>
-                                    {opt}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-            );
-        }
-
-        function Leaderboard() {
-            const [myBest, setMyBest] = useState(0);
-
-            useEffect(() => {
-                const scores = JSON.parse(localStorage.getItem('artScores') || '[]');
-                if (scores.length > 0) {
-                    const max = Math.max(...scores.map(s => s.score));
-                    setMyBest(max);
-                }
-            }, []);
-
-            const mockLeaderboard = [
-                { name: "Ayşe Y.", score: 29 },
-                { name: "Burak K.", score: 28 },
-                { name: "Selin T.", score: 26 },
-                { name: "Senin En İyi Skorun", score: myBest, isMe: true },
-                { name: "Caner D.", score: 22 },
-                { name: "Zeynep A.", score: 18 }
-            ].sort((a, b) => b.score - a.score);
-
-            return (
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-900 border-b pb-2 mb-6">Küresel Sıralama</h2>
-                    
-                    <div className="bg-white border rounded-xl overflow-hidden shadow-sm">
-                        {mockLeaderboard.map((user, i) => (
-                            <div key={i} className={`flex justify-between items-center p-4 border-b last:border-0 ${user.isMe ? 'bg-indigo-50 font-bold' : ''}`}>
-                                <div className="flex items-center gap-4">
-                                    <span className={`w-8 h-8 flex items-center justify-center rounded-full text-sm ${i === 0 ? 'bg-yellow-100 text-yellow-700' : i === 1 ? 'bg-gray-200 text-gray-700' : i === 2 ? 'bg-orange-100 text-orange-700' : 'bg-gray-50 text-gray-400'}`}>
-                                        {i + 1}
-                                    </span>
-                                    <span className={user.isMe ? 'text-indigo-900' : 'text-gray-700'}>{user.name}</span>
-                                </div>
-                                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${user.isMe ? 'bg-indigo-200 text-indigo-800' : 'bg-gray-100 text-gray-600'}`}>
-                                    {user.score} / 30
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                    <p className="text-xs text-gray-400 text-center mt-4">Not: Sıralama, pratik yapman için simüle edilmiştir ve kendi skorların tarayıcına kaydedilir.</p>
-                </div>
-            );
-        }
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+            <!-- Medya ve İletişim -->
+            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl text-lg font-semibold text-gray-400 hover:text-white tracking-wide transition-all text-left flex justify-between items-center">
+                <span>Medya ve İletişim</span>
+                <span class="text-zinc-600 text-sm">Yakında</span>
+            </button>
+        </div>
+    </div>
 </body>
 </html>
