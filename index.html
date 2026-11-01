@@ -1,0 +1,858 @@
+import React, { useState, useEffect } from 'react';
+import { Trophy, ArrowRight, CheckCircle2, RotateCcw, Medal, Sparkles, AlertCircle, Palette, BookOpen, Users, Edit3, LayoutList } from 'lucide-react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from 'firebase/firestore';
+
+// --- Firebase Configuration ---
+const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'temel-sanat-egitimi-app';
+
+// --- Quiz Data (Exactly 30 Questions) ---
+const QUESTIONS = [
+  {
+    question: "Aşağıdakilerden hangisi görsel tasarım 'ögeleri' ile 'ilkeleri' arasındaki ayrımı doğru yansıtan bir ifadedir?",
+    options: [
+      "Vurgu, ritim ve doku birer ilkedir; nokta, çizgi ve oran ise ögedir.",
+      "Nokta, çizgi, doku ve renk ögedir; denge, zıtlık ve oran ise ilkedir.",
+      "Hareket ve örüntü ögedir; boşluk-doluluk ve ton ise ilkedir.",
+      "Görsel tasarımda ögeler soyut, ilkeler ise yalnızca somut kavramlardır."
+    ],
+    answer: 1
+  },
+  {
+    question: "Görüntülerin temel yapı taşı olan 'nokta' ile ilgili aşağıdaki ifadelerden hangisi metne göre söylenemez?",
+    options: [
+      "Soyut bir kavramdır ve yer belirleyicidir.",
+      "Sanatın temel unsurlarından olup üslup geliştirebilir.",
+      "Dinamik bir eleman olması imkansızdır, daima statiktir.",
+      "Uzaklık-yakınlık veya boşluk-doluluk etkisi yaratabilir."
+    ],
+    answer: 2
+  },
+  {
+    question: "Kandinsky'nin nokta kavramı üzerine düşüncesi aşağıdakilerden hangisinde doğru ifade edilmiştir?",
+    options: [
+      "Doğadaki noktalar rastgele serpilmiştir ve anlamdan yoksundur.",
+      "Nokta, sadece dijital sanatın bir gereksinimidir.",
+      "Noktalar, diğer ögeler olmaksızın hiçbir sanatsal değer taşımaz.",
+      "Doğadaki noktalar rastgele değil, bir amaca hizmet etmek için bir araya gelmiştir."
+    ],
+    answer: 3
+  },
+  {
+    question: "19. yüzyıl sonlarında Fransa'da doğan ve sanatçıların çizgiyi terk ederek görseli oluşturduğu akım hangisidir?",
+    options: [
+      "Empresyonizm",
+      "Puantilizm",
+      "Sürrealizm",
+      "Kübizm"
+    ],
+    answer: 1
+  },
+  {
+    question: "Noktanın özellikleri ve fonksiyonları arasında aşağıdakilerden hangisi yer almaz?",
+    options: [
+      "Dağılma ve toplama etkisi",
+      "Ritim oluşturma",
+      "Göz yanılgısı oluşturma",
+      "Kesin sınır ve kalıcı çerçeve çizme"
+    ],
+    answer: 3
+  },
+  {
+    question: "'İki düzlemin kesişmesi' ve 'bir yol' olarak tanımlanan, aynı zamanda yüzeye ton değeri verebilen tasarım ögesi hangisidir?",
+    options: [
+      "Doku",
+      "Renk",
+      "Çizgi",
+      "Ton"
+    ],
+    answer: 2
+  },
+  {
+    question: "İzleyicide 'kararsızlık' hissi uyandıran çizgi türü aşağıdakilerden hangisidir?",
+    options: [
+      "Kırık çizgi",
+      "Zayıf/Silik çizgi",
+      "Kalın çizgi",
+      "Düz çizgi"
+    ],
+    answer: 1
+  },
+  {
+    question: "Bir sanatçı eserinde 'heyecan ve gerilim' hissini izleyiciye aktarmak istiyorsa ağırlıklı olarak hangi çizgi türünü kullanmalıdır?",
+    options: [
+      "Zayıf/Silik Çizgi",
+      "Eğri Çizgi",
+      "Kırık Çizgi",
+      "Yatay Çizgi"
+    ],
+    answer: 2
+  },
+  {
+    question: "Aşağıdaki çizgi eksenlerinden hangisi izleyicide 'hareketsizlik' duygusunu en güçlü şekilde verir?",
+    options: [
+      "Düz / Yatay",
+      "Dikey",
+      "Çapraz",
+      "Eğri"
+    ],
+    answer: 0
+  },
+  {
+    question: "Tasarımda 'enerji ve dinamizm' katmak isteyen bir sanatçı hangi çizgi formunu tercih etmelidir?",
+    options: [
+      "Kalın",
+      "Eğri",
+      "Düz/Yatay",
+      "Zayıf/Silik"
+    ],
+    answer: 1
+  },
+  {
+    question: "Çizginin 'etkisi' açısından yapılan sınıflandırmada aşağıdakilerden hangisi bulunmaz?",
+    options: [
+      "Sert",
+      "Akıcı",
+      "Koyu",
+      "Sarmal"
+    ],
+    answer: 3
+  },
+  {
+    question: "Tasarımcının mekanda sıcaklık, güven, tehlike, yakınlık gibi psikolojik algıları yönetmesini sağlayan 'en güçlü sessiz araç' hangisidir?",
+    options: [
+      "Nokta",
+      "Çizgi",
+      "Doku",
+      "Renk"
+    ],
+    answer: 2
+  },
+  {
+    question: "Doğada var olan dokuların dönüştürülmesiyle, tamamen sanatçı tarafından yapay olarak kurgulanarak oluşturulan, genellikle iki boyutlu yüzey yapısına ne ad verilir?",
+    options: [
+      "Yapay Doku",
+      "İcat Edilen Doku",
+      "Gerçek Doku",
+      "Doğal Doku"
+    ],
+    answer: 1
+  },
+  {
+    question: "Doğal malzemenin bilgi ve teknikle işlenmesi sonucu (suni olarak) ortaya çıkan doku türü aşağıdakilerden hangisidir?",
+    options: [
+      "İcat Edilen Doku",
+      "Gerçek Doku",
+      "Yapay Doku",
+      "Doğal Doku"
+    ],
+    answer: 2
+  },
+  {
+    question: "İzleyicide belirgin bir 'uzaklık' hissi oluşturmak isteyen bir ressam eserinde hangi doku özelliklerini bir arada kullanmalıdır?",
+    options: [
+      "Sert ve parlak doku",
+      "İnce ve ayrıntılı işlenmiş doku",
+      "Yumuşak ve yakın doku",
+      "Mat, dağınık ve ayrıntısız doku"
+    ],
+    answer: 3
+  },
+  {
+    question: "Aşağıdaki doku - psikolojik etki eşleştirmelerinden hangisi yanlıştır?",
+    options: [
+      "Sert doku -> Yakınlık hissi verir.",
+      "Parlak doku -> Uzaklık etkisi oluşturur.",
+      "Yumuşak doku -> Yakınlık, sessizlik ve rahatlık hissi verir.",
+      "İnce ve ayrıntılı dokular -> Yakınlık ve keskinlik hissi verir."
+    ],
+    answer: 1
+  },
+  {
+    question: "Aşağıdakilerden hangisi dokunun sanat eserine kattığı özelliklerden/işlevlerden biri değildir?",
+    options: [
+      "İki boyutlu yüzeye derinlik katarak üçüncü boyut hissi vermek",
+      "Nesnenin tanınmasını kolaylaştırmak",
+      "Daima fiziksel temas zorunluluğu yaratarak eseri korumak",
+      "Ritim duygusunu desteklemek"
+    ],
+    answer: 2
+  },
+  {
+    question: "Claude Monet'nin 'Gündoğumu' tablosu ile özdeşleşen, doğal ışığın temel alındığı ve çizimlerin açık havada yapıldığı akım nedir?",
+    options: [
+      "Empresyonizm",
+      "Puantilizm",
+      "Kübizm",
+      "Sürrealizm"
+    ],
+    answer: 0
+  },
+  {
+    question: "Empresyonizm (İzlenimcilik) akımı eserlerinin teknik özellikleriyle ilgili aşağıdakilerden hangisi doğrudur?",
+    options: [
+      "Çizgiler tamamen terk edilmiş, sadece noktalar kullanılmıştır.",
+      "Fırça darbeleri belirgindir ve anın sanatçıdaki izlenimi yansıtılır.",
+      "Sadece kapalı atölye ortamında, yapay ışıkla çalışılır.",
+      "Mat ve ayrıntısız dokular ile uzaklık hissi yaratmak tek amaçtır."
+    ],
+    answer: 1
+  },
+  {
+    question: "Sanat ve Zanaat karşılaştırmasında, 'Zanaat' için aşağıdakilerden hangisi söylenemez?",
+    options: [
+      "Kar amacı güder.",
+      "Eğitim ve ustalık odaklıdır.",
+      "Estetik ve özgünlük temeline dayanır.",
+      "Planlı ve programlı ilerler."
+    ],
+    answer: 2
+  },
+  {
+    question: "Metne göre Sanat'ın temelini oluşturan iki ana unsur aşağıdakilerden hangisinde birlikte verilmiştir?",
+    options: [
+      "Estetik ve Özgünlük",
+      "Fayda ve Ustalık",
+      "Plan ve Program",
+      "Ritim ve Denge"
+    ],
+    answer: 0
+  },
+  {
+    question: "'El ustalığına dayanarak toplumsal ve pratik bir ihtiyacı karşılayacak işlevsel ürünler üretmeyi hedefler.' cümlesi hangi kavramı açıklar?",
+    options: [
+      "Sanat",
+      "Tasarım İlkesi",
+      "Estetik",
+      "Zanaat"
+    ],
+    answer: 3
+  },
+  {
+    question: "Aşağıdaki ünlü isimlerden hangisi 'doğanın bir estetiği olduğunu' savunmuştur?",
+    options: [
+      "Claude Monet",
+      "Kandinsky",
+      "Fibonacci",
+      "Leonardo da Vinci"
+    ],
+    answer: 2
+  },
+  {
+    question: "Temel sanatta 'estetik' kavramının tanımı aşağıdakilerden hangisinde en doğru şekilde yapılmıştır?",
+    options: [
+      "Sadece parlak renklerin ve gerçek dokuların bir arada kullanılmasıdır.",
+      "Nokta, çizgi, renk gibi ögelerin belirli ilkeler doğrultusunda uyumlu ve anlamlı bir bütün oluşturmasıdır.",
+      "Pratik bir ihtiyacı karşılayan eşyaların süslenmesidir.",
+      "Sanatçının doğadaki tüm formları birebir kopyalamasıdır."
+    ],
+    answer: 1
+  },
+  {
+    question: "Metne göre Estetik kavramı ile aşağıdakilerden hangisi arasında çok 'yakın bir ilişki' vardır?",
+    options: [
+      "Kar amacı",
+      "Simetri",
+      "Puantilizm",
+      "Hareketsizlik"
+    ],
+    answer: 1
+  },
+  {
+    question: "Aşağıdaki seçeneklerden hangisinde yer alan kavram bir görsel tasarım 'ilkesi' değildir?",
+    options: [
+      "Vurgu",
+      "Denge",
+      "Ton",
+      "Hareket"
+    ],
+    answer: 2
+  },
+  {
+    question: "'Sert', 'yumuşak', 'akıcı', 'açık' ve 'koyu' kavramları, çizginin hangi açıdan sınıflandırılmasına örnektir?",
+    options: [
+      "Ekseni Açısından",
+      "Şekli Açısından",
+      "Etkisi Açısından",
+      "Yönü Açısından"
+    ],
+    answer: 2
+  },
+  {
+    question: "Puantilist (Noktacı) ressamların görsel kompozisyonlarını oluştururken bilinçli olarak 'terk ettikleri' görsel tasarım ögesi nedir?",
+    options: [
+      "Ton",
+      "Renk",
+      "Doku",
+      "Çizgi"
+    ],
+    answer: 3
+  },
+  {
+    question: "Çizginin izleyicideki psikolojik etkileri bağlamında, 'hareketlilik' hissini yansıtmak isteyen bir tasarımcı hangi ekseni kullanmalıdır?",
+    options: [
+      "Düz / Yatay",
+      "Dikey",
+      "Kesik",
+      "Sarmal"
+    ],
+    answer: 1
+  },
+  {
+    question: "Sanat eseri üretilirken, 'his ile ortaya koyma' özelliği aşağıdaki kavramlardan hangisine aittir?",
+    options: [
+      "Zanaat",
+      "Sanatçı",
+      "Zanaatkar",
+      "İcat Edilen Doku"
+    ],
+    answer: 1
+  }
+];
+
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('notes'); // 'notes', 'people', 'quiz', 'leaderboard'
+  const [gameState, setGameState] = useState('welcome'); // 'welcome', 'playing', 'result'
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [playerName, setPlayerName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  // 1. Auth Setup
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+      } catch (err) {
+        console.error("Auth failed:", err);
+      }
+    };
+    initAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // 2. Fetch Leaderboard
+  useEffect(() => {
+    if (!user) return;
+
+    const leaderboardRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+    // Fetching without complex queries to adhere to rules, sorting in memory
+    const unsubscribe = onSnapshot(
+      leaderboardRef,
+      (snapshot) => {
+        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Sort in memory
+        data.sort((a, b) => b.score - a.score || b.timestamp - a.timestamp);
+        setLeaderboard(data.slice(0, 10)); // keep top 10
+      },
+      (err) => {
+        console.error("Error fetching leaderboard:", err);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [user]);
+
+  // --- Handlers ---
+  const handleStartGame = () => {
+    setGameState('playing');
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setSelectedOption(null);
+    setPlayerName('');
+  };
+
+  const handleOptionSelect = (index) => {
+    if (selectedOption !== null) return; // Prevent multiple clicks
+    setSelectedOption(index);
+    
+    if (index === QUESTIONS[currentQuestionIndex].answer) {
+      setScore(s => s + 1);
+    }
+
+    setTimeout(() => {
+      if (currentQuestionIndex < QUESTIONS.length - 1) {
+        setCurrentQuestionIndex(idx => idx + 1);
+        setSelectedOption(null);
+      } else {
+        setGameState('result');
+      }
+    }, 1200); // 1.2s delay to see the result
+  };
+
+  const handleSubmitScore = async (e) => {
+    e.preventDefault();
+    if (!user || !playerName.trim() || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const leaderboardRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+      await addDoc(leaderboardRef, {
+        userId: user.uid,
+        name: playerName.trim(),
+        score: score,
+        total: QUESTIONS.length,
+        timestamp: Date.now()
+      });
+      setGameState('welcome');
+      setActiveTab('leaderboard'); // Sınav bitip skor kaydedilince sıralamaya yönlendir
+    } catch (err) {
+      console.error("Error saving score:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // --- Renders ---
+
+  const renderNotes = () => (
+    <div className="max-w-4xl mx-auto p-4 md:p-8 animate-fade-in">
+      <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl shadow-slate-100/50 border border-slate-100">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-8 text-center border-b-2 border-indigo-50 pb-6">
+          Ders Notları
+        </h2>
+        
+        <div className="space-y-10 text-slate-700 leading-relaxed">
+          {/* Ögeler ve İlkeler */}
+          <section>
+            <h3 className="text-2xl font-bold text-indigo-600 mb-4 flex items-center gap-2">
+              <Sparkles className="w-6 h-6" /> Görsel Tasarım Ögeleri ve İlkeleri
+            </h3>
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+              <p className="mb-2"><strong className="text-slate-800">ÖGELER:</strong> Nokta, çizgi, doku, renk, ton, boşluk-doluluk.</p>
+              <p><strong className="text-slate-800">İLKELER:</strong> Vurgu, ritim, hareket, denge, zıtlık, oran, örüntü.</p>
+            </div>
+          </section>
+
+          {/* Nokta */}
+          <section>
+            <h3 className="text-2xl font-bold text-indigo-600 mb-4 border-b border-slate-100 pb-2">Nokta</h3>
+            <p className="mb-4">Görüntüler noktalardan oluşur. Sanatın temel unsurlarından biridir ve üslup geliştirebilir.</p>
+            <ul className="list-disc pl-6 space-y-2 mb-4">
+              <li><strong>Özellikleri:</strong> Dinamik bir elemandır, soyut bir kavramdır, yer belirleyicidir ve merkezidir.</li>
+              <li><strong>Etkileri (Fonksiyonları):</strong> Uzaklık-yakınlık, boşluk-doluluk etkisi, dağılma-toplama etkisi, ritim ve göz yanılgısı oluşturma.</li>
+            </ul>
+            <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 border-l-4 border-l-indigo-500">
+              <strong className="text-indigo-800">Puantilizm (Noktacılık):</strong> 19. yüzyıl sonu Fransa'sında doğdu. İzlenimci ressamlar sıkça kullandı ve <em>çizgiyi terk ettiler.</em>
+            </div>
+          </section>
+
+          {/* Çizgi */}
+          <section>
+            <h3 className="text-2xl font-bold text-indigo-600 mb-4 border-b border-slate-100 pb-2">Çizgi</h3>
+            <p className="mb-4">Noktaların birleşimi, noktalar bütünüdür. Sınır belirleyicidir, bir yoldur, iki düzlemin kesişmesidir. Biçim oluşturur, yüzeye ton değeri verir.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <h4 className="font-bold text-slate-800 mb-2">Çizgi Çeşitleri</h4>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li><strong>Ekseni Açısından:</strong> Yatay, dikey, çapraz</li>
+                  <li><strong>Şekli Açısından:</strong> Kesik, sarmal, zigzag, düz, kavisli</li>
+                  <li><strong>Etkisi Açısından:</strong> Sert, yumuşak, akıcı, açık, koyu</li>
+                </ul>
+              </div>
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <h4 className="font-bold text-slate-800 mb-2">Psikolojik Etkileri</h4>
+                <ul className="list-disc pl-5 space-y-1 text-sm">
+                  <li><strong>Zayıf/Silik:</strong> Kararsızlık</li>
+                  <li><strong>Kalın:</strong> Güç, kararlılık</li>
+                  <li><strong>Kırık:</strong> Heyecan, gerilim</li>
+                  <li><strong>Düz/Yatay:</strong> Hareketsizlik</li>
+                  <li><strong>Dikey:</strong> Hareketlilik</li>
+                  <li><strong>Eğri:</strong> Enerji, dinamizm</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Doku */}
+          <section>
+            <h3 className="text-2xl font-bold text-indigo-600 mb-4 border-b border-slate-100 pb-2">Doku</h3>
+            <p className="mb-4">Dokunduğumuz yüzeydir. Sadece fiziksel değil, görsel olarak da algılanır. İzleyicinin bilinçaltına hitap ederek mekanda sıcaklık, soğukluk, güven, tehlike, yakınlık/uzaklık gibi algıları yönetmeyi sağlayan <em>en güçlü sessiz araçtır.</em></p>
+            
+            <h4 className="font-bold text-slate-800 mt-4 mb-2">Doku Türleri</h4>
+            <ul className="list-disc pl-6 space-y-2 mb-4">
+              <li><strong>Gerçek Doku:</strong> Dokunabildiğimiz her şey.</li>
+              <li><strong>Doğal Doku:</strong> Doğanın oluşturduğu dokular.</li>
+              <li><strong>Yapay Doku:</strong> Sunidir. Doğal malzemenin bilgi ve teknikle işlenmesiyle elde edilir.</li>
+              <li><strong>İcat Edilen Doku:</strong> Tamamen sanatçı tarafından yapay olarak kurgulanmasıyla oluşan yüzey yapısıdır (genelde 2 boyutlu).</li>
+            </ul>
+
+            <h4 className="font-bold text-slate-800 mt-4 mb-2">Psikolojik Etkileri</h4>
+            <ul className="list-disc pl-6 space-y-1 mb-4">
+              <li><strong>Yakınlık Hissi Verenler:</strong> Sert, parlak, ince ve ayrıntılı işlenmiş dokular.</li>
+              <li><strong>Rahatlık Hissi Verenler:</strong> Yumuşak dokular (sessizlik, yakınlık).</li>
+              <li><strong>Uzaklık Hissi Verenler:</strong> Mat, dağınık, ayrıntısız ve belirsiz dokular.</li>
+            </ul>
+          </section>
+
+          {/* Akımlar & Kavramlar */}
+          <section>
+            <h3 className="text-2xl font-bold text-indigo-600 mb-4 border-b border-slate-100 pb-2">Akımlar ve Kavramsal Ayrımlar</h3>
+            <div className="space-y-4">
+              <div className="p-4 bg-amber-50 rounded-xl border border-amber-100">
+                <h4 className="font-bold text-amber-800 mb-1">Empresyonizm (İzlenimcilik)</h4>
+                <p className="text-amber-900 text-sm">19. yy 2. yarısında Fransa'da ortaya çıktı. En önemli temsilcisi <strong>Claude Monet (Gündoğumu tablosu)</strong>. Doğal ışık esastır, açık havada çizilir. Doğanın, ışığın ve anın sanatçıdaki izlenimi yansıtılır. Fırça darbeleri belirgindir.</p>
+              </div>
+              
+              <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                <h4 className="font-bold text-emerald-800 mb-1">Sanat vs Zanaat</h4>
+                <p className="text-emerald-900 text-sm">
+                  <strong>Sanat:</strong> Estetik kaygıyla, duygu ve hayal gücünü özgün bir şekilde ifade etmeyi amaçlar. Kâr amacı gütmez, "estetik ve özgünlük" temelidir.<br/>
+                  <strong>Zanaat:</strong> Eğitim ve ustalık odaklıdır. Pratik bir ihtiyacı karşılayan işlevsel ürünler üretir, kâr amacı güder. Temeli "fayda ve ustalık"tır.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderPeople = () => (
+    <div className="max-w-5xl mx-auto p-4 md:p-8 animate-fade-in">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4">Önemli Kişiler</h2>
+        <p className="text-slate-500 max-w-2xl mx-auto">Temel Sanat Eğitimi metninde geçen ve sanat/estetik dünyasına yön vermiş önemli isimlerin kısa biyografileri.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Kandinsky */}
+        <div className="bg-white rounded-3xl p-6 shadow-xl shadow-slate-100/50 border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
+          <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl font-black mb-6">WK</div>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">Wassily Kandinsky</h3>
+          <p className="text-sm font-semibold text-blue-600 mb-4">Soyut Sanatın Öncüsü</p>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Nokta ve çizginin ruhsal ve psikolojik etkileri üzerine derin çalışmalar yapmış, soyut sanatın kurucularından kabul edilen Rus ressam ve sanat kuramcısıdır.
+          </p>
+          <div className="mt-4 p-3 bg-slate-50 rounded-xl text-sm italic text-slate-500 border border-slate-100">
+            "Doğadaki noktalar rastgele değil, bir amaca hizmet etmek için bir araya gelmiştir."
+          </div>
+        </div>
+
+        {/* Monet */}
+        <div className="bg-white rounded-3xl p-6 shadow-xl shadow-slate-100/50 border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
+          <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-2xl font-black mb-6">CM</div>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">Claude Monet</h3>
+          <p className="text-sm font-semibold text-amber-600 mb-4">Empresyonizm Temsilcisi</p>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            19. yüzyılın ikinci yarısında Fransa'da ortaya çıkan İzlenimcilik (Empresyonizm) akımının babasıdır. Eserlerini açık havada, anlık doğal ışık değişimlerini yakalayarak üretmiştir.
+          </p>
+          <div className="mt-4 p-3 bg-slate-50 rounded-xl text-sm text-slate-500 border border-slate-100">
+            En bilinen eseri, akıma adını veren <strong>"Gündoğumu" (Impression, soleil levant)</strong> tablosudur.
+          </div>
+        </div>
+
+        {/* Fibonacci */}
+        <div className="bg-white rounded-3xl p-6 shadow-xl shadow-slate-100/50 border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
+          <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl font-black mb-6">LF</div>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">Leonardo Fibonacci</h3>
+          <p className="text-sm font-semibold text-emerald-600 mb-4">Matematikçi</p>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Kendi adıyla anılan Fibonacci sayı dizisini Batı dünyasına tanıtan İtalyan matematikçidir. Bu sayı dizisi, doğadaki yaprak dizilişlerinden deniz kabuklarına kadar birçok formda karşımıza çıkar.
+          </p>
+          <div className="mt-4 p-3 bg-slate-50 rounded-xl text-sm italic text-slate-500 border border-slate-100">
+            "Doğanın kendine ait bir estetiği vardır." (Estetik ve simetri arasındaki çok yakın ilişkiyi temsil eder.)
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderLeaderboardTab = () => (
+    <div className="max-w-3xl mx-auto p-4 md:p-8 animate-fade-in">
+      <div className="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100/50 border border-slate-100">
+        <div className="flex flex-col items-center mb-8 text-center">
+          <div className="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mb-4">
+            <Trophy className="w-8 h-8 text-amber-500" />
+          </div>
+          <h2 className="text-3xl font-extrabold text-slate-800">Küresel Sıralama</h2>
+          <p className="text-slate-500 mt-2">Sınavı çözen diğer katılımcıların skorları</p>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {leaderboard.length === 0 ? (
+            <p className="text-slate-400 text-center py-12 text-sm bg-slate-50 rounded-2xl border border-slate-100">Henüz kimse çözmedi. Sınavı tamamlayıp ilk sen ol!</p>
+          ) : (
+            leaderboard.map((entry, idx) => (
+              <div 
+                key={entry.id} 
+                className={`flex items-center justify-between p-5 rounded-2xl border transition-all ${
+                  idx === 0 ? 'bg-gradient-to-r from-amber-50 to-amber-100/50 border-amber-200 shadow-sm' :
+                  idx === 1 ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-200' :
+                  idx === 2 ? 'bg-gradient-to-r from-orange-50 to-orange-100/50 border-orange-200' :
+                  'bg-white border-slate-100 hover:border-indigo-100'
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-sm
+                    ${idx === 0 ? 'bg-amber-500 text-white shadow-lg shadow-amber-200' : 
+                      idx === 1 ? 'bg-slate-400 text-white shadow-lg shadow-slate-200' : 
+                      idx === 2 ? 'bg-orange-400 text-white shadow-lg shadow-orange-200' : 
+                      'bg-slate-100 text-slate-500'}`}>
+                    {idx + 1}
+                  </div>
+                  <span className="font-bold text-slate-700 md:text-lg truncate max-w-[200px] md:max-w-sm">{entry.name}</span>
+                </div>
+                <div className="font-black text-indigo-600 text-xl md:text-2xl flex items-baseline gap-1">
+                  {entry.score} <span className="text-sm text-slate-400 font-medium">/ 30</span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderWelcome = () => (
+    <div className="max-w-3xl mx-auto p-4 md:p-8 animate-fade-in">
+      <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl shadow-indigo-100/50 border border-indigo-50 flex flex-col items-center text-center">
+        <div className="bg-indigo-50 p-5 rounded-full mb-6">
+          <Edit3 className="w-12 h-12 text-indigo-600" />
+        </div>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4 tracking-tight">
+          Temel Sanat Eğitimi Vize Sınavı
+        </h1>
+        <p className="text-slate-600 mb-10 text-lg leading-relaxed max-w-xl">
+          Nokta, çizgi, doku, sanat akımları ve tasarım ilkeleri konusundaki bilgini ölç. 
+          Gerçek bir sınav deneyimi için 30 özenle hazırlanmış soru seni bekliyor.
+        </p>
+        
+        <div className="flex flex-col md:flex-row w-full gap-4 justify-center max-w-xl mb-10">
+          <div className="flex-1 flex flex-col items-center gap-3 text-sm text-slate-600 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+            <CheckCircle2 className="w-8 h-8 text-emerald-500" />
+            <span className="font-semibold text-base">30 Özgün Soru</span>
+          </div>
+          <div className="flex-1 flex flex-col items-center gap-3 text-sm text-slate-600 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+            <Sparkles className="w-8 h-8 text-amber-500" />
+            <span className="font-semibold text-base">Detaylı Kavram Testi</span>
+          </div>
+        </div>
+
+        <button 
+          onClick={handleStartGame}
+          className="w-full md:w-auto md:min-w-[300px] bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 px-10 rounded-2xl transition-all transform hover:scale-105 hover:shadow-xl shadow-indigo-200 flex items-center justify-center gap-3 text-lg"
+        >
+          Sınava Başla <ArrowRight className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderQuiz = () => {
+    const q = QUESTIONS[currentQuestionIndex];
+    const progress = ((currentQuestionIndex) / QUESTIONS.length) * 100;
+
+    return (
+      <div className="max-w-3xl mx-auto p-4 md:p-8 animate-fade-in">
+        {/* Header / Progress */}
+        <div className="mb-8">
+          <div className="flex justify-between items-end mb-3">
+            <span className="text-sm font-bold tracking-wider text-indigo-600 uppercase">
+              Soru {currentQuestionIndex + 1} / {QUESTIONS.length}
+            </span>
+            <span className="text-sm font-medium text-slate-400">
+              Puan: <span className="text-slate-700 font-bold">{score}</span>
+            </span>
+          </div>
+          <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div 
+              className="bg-indigo-600 h-full rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Question Card */}
+        <div className="bg-white p-6 md:p-10 rounded-3xl shadow-xl shadow-slate-100/50 border border-slate-100 mb-6">
+          <h2 className="text-xl md:text-2xl font-bold text-slate-800 leading-relaxed mb-8">
+            {q.question}
+          </h2>
+          
+          <div className="flex flex-col gap-3">
+            {q.options.map((opt, idx) => {
+              let btnClass = "w-full text-left p-5 rounded-2xl border-2 transition-all duration-200 font-medium ";
+              
+              if (selectedOption === null) {
+                btnClass += "border-slate-100 hover:border-indigo-300 hover:bg-indigo-50/50 bg-white text-slate-700";
+              } else {
+                if (idx === q.answer) {
+                  btnClass += "border-emerald-500 bg-emerald-50 text-emerald-800"; // Correct answer
+                } else if (idx === selectedOption) {
+                  btnClass += "border-rose-400 bg-rose-50 text-rose-800"; // Wrong selected
+                } else {
+                  btnClass += "border-slate-100 bg-slate-50 text-slate-400 opacity-50"; // Unselected others
+                }
+              }
+
+              return (
+                <button
+                  key={idx}
+                  onClick={() => handleOptionSelect(idx)}
+                  disabled={selectedOption !== null}
+                  className={btnClass}
+                >
+                  <div className="flex items-center justify-between">
+                    <span>{opt}</span>
+                    {selectedOption !== null && idx === q.answer && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                    {selectedOption !== null && idx === selectedOption && idx !== q.answer && <AlertCircle className="w-5 h-5 text-rose-500" />}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderResult = () => {
+    const percentage = Math.round((score / QUESTIONS.length) * 100);
+    let message = "";
+    if (percentage === 100) message = "Kusursuz! Sanat teorisinde ustasın.";
+    else if (percentage >= 80) message = "Harika! Sınava oldukça hazırsın.";
+    else if (percentage >= 60) message = "İyi iş! Ancak biraz daha tekrar fena olmaz.";
+    else message = "Notları tekrar gözden geçirmen faydalı olabilir.";
+
+    return (
+      <div className="max-w-md mx-auto p-4 md:p-8 animate-fade-in mt-10">
+        <div className="bg-white p-8 rounded-3xl shadow-xl shadow-slate-100/50 border border-slate-100 flex flex-col items-center text-center">
+          
+          <div className="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mb-6">
+            <Medal className="w-12 h-12 text-indigo-600" />
+          </div>
+          
+          <h2 className="text-3xl font-extrabold text-slate-800 mb-2">Sınav Bitti!</h2>
+          <p className="text-slate-500 mb-8 font-medium">{message}</p>
+          
+          <div className="flex items-end justify-center gap-2 mb-8 bg-slate-50 w-full py-6 rounded-2xl">
+            <span className="text-6xl font-black text-indigo-600 leading-none">{score}</span>
+            <span className="text-xl font-bold text-slate-400 mb-1">/ {QUESTIONS.length}</span>
+          </div>
+
+          <form onSubmit={handleSubmitScore} className="w-full flex flex-col gap-4">
+            <div className="text-left">
+              <label className="block text-sm font-bold text-slate-600 mb-2 ml-1">İsmin / Rumuzun</label>
+              <input 
+                type="text" 
+                required
+                maxLength={20}
+                placeholder="Örn: Sanatsever..."
+                className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-indigo-400 focus:outline-none bg-slate-50 text-slate-700 font-medium transition-colors"
+                value={playerName}
+                onChange={(e) => setPlayerName(e.target.value)}
+              />
+            </div>
+            
+            <button 
+              type="submit"
+              disabled={isSubmitting || !playerName.trim()}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-bold py-4 px-8 rounded-xl transition-all flex items-center justify-center gap-2 mt-2"
+            >
+              {isSubmitting ? 'Kaydediliyor...' : 'Skoru Kaydet ve Sıralamanı Gör'}
+            </button>
+            
+            <button 
+              type="button"
+              onClick={handleStartGame}
+              className="w-full bg-transparent hover:bg-slate-50 text-slate-500 font-bold py-3 px-8 rounded-xl transition-all flex items-center justify-center gap-2 mt-2"
+            >
+              <RotateCcw className="w-4 h-4" /> Yeniden Çöz
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-12 selection:bg-indigo-100">
+      {/* Header Bar */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div className="max-w-5xl mx-auto py-4 px-6 flex justify-between items-center">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => { setActiveTab('notes'); setGameState('welcome'); }}>
+            <div className="bg-indigo-600 p-1.5 rounded-lg">
+              <Palette className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-extrabold text-lg text-slate-800 tracking-tight hidden md:inline-block">Sanat<span className="text-indigo-600">Sınav</span></span>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex items-center gap-1 md:gap-2">
+            <button 
+              onClick={() => { setActiveTab('notes'); setGameState('welcome'); }}
+              className={`px-3 py-2 md:px-4 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors ${activeTab === 'notes' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
+            >
+              <BookOpen className="w-4 h-4" /> <span className="hidden md:inline">Notlar</span>
+            </button>
+            <button 
+              onClick={() => { setActiveTab('people'); setGameState('welcome'); }}
+              className={`px-3 py-2 md:px-4 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors ${activeTab === 'people' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
+            >
+              <Users className="w-4 h-4" /> <span className="hidden md:inline">Kişiler</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('quiz')}
+              className={`px-3 py-2 md:px-4 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors ${activeTab === 'quiz' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
+            >
+              <Edit3 className="w-4 h-4" /> <span className="hidden md:inline">Sınav</span>
+            </button>
+            <button 
+              onClick={() => { setActiveTab('leaderboard'); setGameState('welcome'); }}
+              className={`px-3 py-2 md:px-4 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors ${activeTab === 'leaderboard' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800'}`}
+            >
+              <LayoutList className="w-4 h-4" /> <span className="hidden md:inline">Sıralama</span>
+            </button>
+          </nav>
+
+          {user && (
+            <div className="text-xs font-medium text-slate-400 hidden md:block">
+              Online 🟢
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <main>
+        {activeTab === 'notes' && renderNotes()}
+        {activeTab === 'people' && renderPeople()}
+        {activeTab === 'leaderboard' && renderLeaderboardTab()}
+        {activeTab === 'quiz' && (
+          <>
+            {gameState === 'welcome' && renderWelcome()}
+            {gameState === 'playing' && renderQuiz()}
+            {gameState === 'result' && renderResult()}
+          </>
+        )}
+      </main>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.4s ease-out forwards;
+        }
+      `}} />
+    </div>
+  );
+}
