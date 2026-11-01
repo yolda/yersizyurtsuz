@@ -1,1 +1,165 @@
 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temel Sanat Eğitimi - Vize Sınavı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-black text-gray-200 font-sans antialiased selection:bg-indigo-500 selection:text-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const sorular = [
+            { q: "Görsel tasarım ögeleri arasında aşağıdakilerden hangisi yer almaz?", options: ["Nokta", "Çizgi", "Ritim", "Doku"], a: 2 },
+            { q: "Görsel tasarım ilkelerinden hangisi tasarımı oluşturan parçaların görsel ağırlıklarının eşit dağılmasını ifade eder?", options: ["Vurgu", "Denge", "Hareket", "Örüntü"], a: 1 },
+            { q: "Sanatın temel unsurlarından biri olan 'Nokta' için hangisi yanlıştır?", options: ["Dinamik bir elemandır.", "Somut ve ölçülebilir bir kavramdır.", "Ritim oluşturabilir.", "Yer belirleyicidir."], a: 1 },
+            { q: "Fransa'da 19. yüzyıl sonlarında doğan ve çizginin tamamen terk edildiği sanat akımı hangisidir?", options: ["Empresyonizm", "Kübizm", "Puantilizm", "Sürrealizm"], a: 2 },
+            { q: "'Doğadaki noktalar rastgele değil, bir amaca hizmet etmek için bir araya gelmiştir.' sözü kime aittir?", options: ["Claude Monet", "Wassily Kandinsky", "Leonardo da Vinci", "Fibonacci"], a: 1 },
+            { q: "Hangisi çizginin ekseni açısından sınıflandırılmasına örnektir?", options: ["Kesik", "Akıcı", "Çapraz", "Kavisli"], a: 2 },
+            { q: "Heyecan ve gerilim hissi uyandıran çizgi türü hangisidir?", options: ["Zayıf çizgi", "Düz çizgi", "Kırık çizgi", "Eğri çizgi"], a: 2 },
+            { q: "Dinamizm ve enerji hissini en iyi veren çizgi türü hangisidir?", options: ["Dikey çizgi", "Eğri çizgi", "Yatay çizgi", "Silik çizgi"], a: 1 },
+            { q: "Güç ve kararlılık hissini izleyiciye aktarmak isteyen bir sanatçı hangi çizgiyi tercih etmelidir?", options: ["Kırık çizgi", "Zayıf çizgi", "Kalın çizgi", "Sarmal çizgi"], a: 2 },
+            { q: "İki boyutlu yüzeye derinlik katarak ona üçüncü boyut hissi veren görsel tasarım ögesi nedir?", options: ["Nokta", "Doku", "Boşluk", "Çizgi"], a: 1 },
+            { q: "Tasarımcının izleyicinin bilinçaltına hitap ederek mekanda sıcaklık, soğukluk veya güven algısı yaratmasını sağlayan sessiz araç nedir?", options: ["Nokta", "Oran", "Ritim", "Doku"], a: 3 },
+            { q: "Doğada var olan dokuların dönüştürülmesiyle sanatçı tarafından yapay olarak kurgulanan iki boyutlu yüzey yapısına ne denir?", options: ["Gerçek doku", "İcat edilen doku", "Yapay doku", "Doğal doku"], a: 1 },
+            { q: "Psikolojik olarak izleyicide 'yakınlık ve keskinlik' hissi uyandıran doku tipi hangisidir?", options: ["İnce ve ayrıntılı işlenmiş dokular", "Dağınık ve belirsiz dokular", "Mat dokular", "Yumuşak dokular"], a: 0 },
+            { q: "Mat dokuların, dağınık ve ayrıntısız işlenmiş yüzeylerin ortak psikolojik etkisi nedir?", options: ["Heyecan", "Uzaklık hissi", "Kararsızlık", "Güven"], a: 1 },
+            { q: "19. yüzyılın ikinci yarısında Fransa'da ortaya çıkan, doğal ışığın ve anın sanatçıdaki izlenimlerini yansıtan akım hangisidir?", options: ["Puantilizm", "Realizm", "Empresyonizm", "Ekspresyonizm"], a: 2 },
+            { q: "Empresyonizm akımının en önemli temsilcisi ve bu akıma ismini veren eserin sahibi kimdir?", options: ["Kandinsky", "Fibonacci", "Claude Monet", "Van Gogh"], a: 2 },
+            { q: "Empresyonist ressamların eserlerindeki teknik özellikleri arasında hangisi yer alır?", options: ["Fırça darbelerinin belirgin olması", "Çizginin tamamen terk edilmesi", "Atölye ortamında uzun süreli çalışmalar yapılması", "Keskin sınırların kullanılması"], a: 0 },
+            { q: "Hangisi zanaatın sanat eserinden ayrılan en temel özelliğidir?", options: ["Özgün olması", "Fayda ve toplumsal pratik bir ihtiyacı karşılaması", "Estetik kaygı taşıması", "Duyguları ön plana çıkarması"], a: 1 },
+            { q: "Sanatın temelinde yatan iki ana unsur aşağıdakilerden hangisidir?", options: ["Kar ve ustalık", "Plan ve program", "Estetik ve özgünlük", "İhtiyaç ve işlevsellik"], a: 2 },
+            { q: "Doğanın bir estetiği olduğunu ve estetik ile simetri arasında yakın bir ilişki bulunduğunu savunan düşünür kimdir?", options: ["Monet", "Kandinsky", "Fibonacci", "Picasso"], a: 2 },
+            { q: "Temel sanatta 'estetik' kavramının en doğru tanımı aşağıdakilerden hangisidir?", options: ["Sadece güzel olanı çizmektir.", "Tasarım ögelerinin belirli ilkeler doğrultusunda uyumlu bir bütün oluşturmasıdır.", "Eserin ticari değerinin yüksek olmasıdır.", "El ustalığı ile faydalı bir ürün ortaya koymaktır."], a: 1 },
+            { q: "Görüntülerin oluştuğu temel yapı taşı olan ve 'merkezi' bir özellik gösteren öge nedir?", options: ["Çizgi", "Renk", "Ton", "Nokta"], a: 3 },
+            { q: "Noktanın özellikleri arasında 'göz yanılgısı oluşturma' ve 'ritim oluşturma' işlevleri bulunurken, hangisi noktanın işlevlerinden biri değildir?", options: ["Uzaklık-yakınlık etkisi", "Dağılma-toplama etkisi", "İki düzlemin kesişmesi", "Boşluk-doluluk etkisi"], a: 2 },
+            { q: "Aşağıdakilerden hangisi çizginin şekli açısından bir sınıflandırmadır?", options: ["Sert", "Kavisli", "Yatay", "Açık"], a: 1 },
+            { q: "Hareketsizlik hissi uyandıran çizgi türü hangisidir?", options: ["Eğri", "Düz/Yatay", "Dikey", "Kırık"], a: 1 },
+            { q: "Suni olan, doğal malzemenin bilgi ve teknikle işlenmesi sonucu ortaya çıkan doku türüne ne ad verilir?", options: ["Gerçek doku", "İcat edilen doku", "Yapay doku", "Doğal doku"], a: 2 },
+            { q: "Sert dokular ve parlak dokular izleyicide ortak olarak hangi algıyı yaratır?", options: ["Uzaklık", "Yakınlık", "Sessizlik", "Hareketsizlik"], a: 1 },
+            { q: "Açık havada çizim yapılması ve anın yakalanması hangi sanat akımının en temel kuralıdır?", options: ["Empresyonizm", "Puantilizm", "Kübizm", "Realizm"], a: 0 },
+            { q: "Zanaatkar ile sanatçı arasındaki üretim süreci farkı nedir?", options: ["Sanatçı kar amacı güder, zanaatkar gütmez.", "Sanatçı hissiyle üretir, zanaatkar planlı ve programlı ilerler.", "Zanaatkar özgünlüğü, sanatçı işlevselliği hedefler.", "İkisi de tamamen aynı süreçleri izler."], a: 1 },
+            { q: "Noktaların birleşimi veya bütünü olarak tanımlanan, sınır belirleyici olan ve gözü yönlendiren öge hangisidir?", options: ["Doku", "Ritim", "Çizgi", "Boşluk"], a: 2 }
+        ];
+
+        function QuizApp() {
+            const [currentQ, setCurrentQ] = useState(0);
+            const [score, setScore] = useState(0);
+            const [showResult, setShowResult] = useState(false);
+            const [selectedId, setSelectedId] = useState(null);
+            const [isAnswered, setIsAnswered] = useState(false);
+
+            const handleAnswer = (index) => {
+                if (isAnswered) return;
+                setSelectedId(index);
+                setIsAnswered(true);
+                
+                if (index === sorular[currentQ].a) {
+                    setScore(s => s + 1);
+                }
+                
+                setTimeout(() => {
+                    if (currentQ < sorular.length - 1) {
+                        setCurrentQ(q => q + 1);
+                        setSelectedId(null);
+                        setIsAnswered(false);
+                    } else {
+                        setShowResult(true);
+                    }
+                }, 1000);
+            };
+
+            const restartQuiz = () => {
+                setCurrentQ(0);
+                setScore(0);
+                setShowResult(false);
+                setSelectedId(null);
+                setIsAnswered(false);
+            };
+
+            return (
+                <div className="max-w-2xl mx-auto px-6 py-12">
+                    <div className="mb-8 flex justify-between items-center border-b border-zinc-800 pb-4">
+                        <a href="temelsanategitimi.html" className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-2">
+                            ← Notlara Dön
+                        </a>
+                        <span className="text-xs uppercase tracking-widest text-zinc-500">Vize Deneme Sınavı</span>
+                    </div>
+
+                    {showResult ? (
+                        <div className="text-center py-16 bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl">
+                            <div className="text-6xl mb-6">🎯</div>
+                            <h2 className="text-3xl font-black text-white mb-3">Sınav Tamamlandı</h2>
+                            <p className="text-lg text-zinc-400 mb-8">
+                                30 soruluk testte toplam <span className="font-bold text-indigo-400 text-2xl">{score}</span> doğru yaptın.
+                            </p>
+                            
+                            <div className="w-full bg-zinc-800 rounded-full h-3 mb-8 overflow-hidden">
+                                <div className="bg-indigo-500 h-full rounded-full transition-all duration-1000" style={{width: `${(score/30)*100}%`}}></div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                                <button onClick={restartQuiz} className="px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl transition-all">
+                                    Tekrar Çöz
+                                </button>
+                                <a href="temelsanategitimi.html" className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all">
+                                    Notlara Geri Dön
+                                </a>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl">
+                            <div className="flex justify-between items-center mb-6 text-xs font-bold tracking-wider text-zinc-400 uppercase">
+                                <span>Soru {currentQ + 1} / 30</span>
+                                <span className="text-indigo-400">Doğru: {score}</span>
+                            </div>
+
+                            <h2 className="text-xl md:text-2xl font-semibold text-white mb-8 min-h-[4rem] leading-relaxed">
+                                {sorular[currentQ].q}
+                            </h2>
+
+                            <div className="space-y-3">
+                                {sorular[currentQ].options.map((opt, i) => {
+                                    let btnClass = "w-full text-left p-4 rounded-xl border transition-all text-sm md:text-base ";
+                                    if (!isAnswered) {
+                                        btnClass += "border-zinc-800 bg-zinc-900/50 hover:border-indigo-500 hover:bg-zinc-800 text-zinc-300";
+                                    } else {
+                                        if (i === sorular[currentQ].a) {
+                                            btnClass += "border-green-500/50 bg-green-950/30 text-green-300 font-medium";
+                                        } else if (i === selectedId) {
+                                            btnClass += "border-red-500/50 bg-red-950/30 text-red-300 font-medium";
+                                        } else {
+                                            btnClass += "border-zinc-800 bg-zinc-900 opacity-40 text-zinc-500";
+                                        }
+                                    }
+
+                                    return (
+                                        <button 
+                                            key={i} 
+                                            disabled={isAnswered} 
+                                            onClick={() => handleAnswer(i)} 
+                                            className={btnClass}
+                                        >
+                                            {opt}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<QuizApp />);
+    </script>
+</body>
+</html>
