@@ -5,41 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sinema - Ders Seçim Platformu</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(99, 102, 241, 0.15);
+            filter: blur(100px);
+            border-radius: 50%;
+            z-index: 0;
+            animation: pulseGlow 6s infinite ease-in-out;
+        }
+    </style>
 </head>
-<body class="bg-black text-white font-sans antialiased selection:bg-indigo-500 selection:text-white">
-    <div class="min-h-screen bg-black flex flex-col items-center justify-center p-6">
-        <div class="text-center mb-12">
-            <h1 class="text-6xl md:text-8xl font-black tracking-widest text-white uppercase mb-4 drop-shadow-lg">
+<body class="bg-black text-white font-sans antialiased selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
+    
+    <!-- Sinematik Arka Plan Işık Efekti -->
+    <div class="bg-glow top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative z-10">
+        <div class="text-center mb-12 animate-fade-in">
+            <span class="text-indigo-500 text-xs font-bold tracking-[0.3em] uppercase block mb-3">Akademik Portâl</span>
+            <h1 class="text-6xl md:text-8xl font-black tracking-widest text-white uppercase mb-4 drop-shadow-[0_0_35px_rgba(99,102,241,0.3)]">
                 SİNEMA
             </h1>
-            <p class="text-gray-400 text-lg tracking-wider">Ders Seçim Paneli</p>
+            <p class="text-zinc-400 text-sm tracking-widest uppercase">Ders Seçim Paneli</p>
         </div>
 
         <div class="w-full max-w-md space-y-4">
             <!-- Temel Sanat Eğitimi (Aktif Sayfa) -->
-            <a href="temelsanategitimi.html" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-indigo-500 rounded-xl text-lg font-semibold text-white tracking-wide transition-all transform hover:scale-105 shadow-md flex justify-between items-center group block">
+            <a href="temelsanategitimi.html" class="w-full py-4 px-6 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 hover:border-indigo-500 rounded-2xl text-lg font-semibold text-white tracking-wide transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_10px_25px_-5px_rgba(99,102,241,0.3)] flex justify-between items-center group block">
                 <span>Temel Sanat Eğitimi</span>
-                <span class="text-indigo-500 group-hover:translate-x-1 transition-transform">→</span>
+                <span class="text-indigo-500 group-hover:translate-x-2 transition-transform duration-300">→</span>
             </a>
 
             <!-- Metin Yazarlığı -->
-            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl text-lg font-semibold text-gray-400 hover:text-white tracking-wide transition-all text-left flex justify-between items-center">
+            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900/50 backdrop-blur-md border border-zinc-800/80 hover:border-zinc-700 rounded-2xl text-lg font-semibold text-zinc-400 hover:text-white tracking-wide transition-all duration-300 text-left flex justify-between items-center">
                 <span>Metin Yazarlığı</span>
-                <span class="text-zinc-600 text-sm">Yakında</span>
+                <span class="text-zinc-600 text-xs uppercase tracking-wider bg-zinc-800/50 px-2.5 py-1 rounded-lg">Yakında</span>
             </button>
 
             <!-- Film ve Televizyona Giriş -->
-            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl text-lg font-semibold text-gray-400 hover:text-white tracking-wide transition-all text-left flex justify-between items-center">
+            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900/50 backdrop-blur-md border border-zinc-800/80 hover:border-zinc-700 rounded-2xl text-lg font-semibold text-zinc-400 hover:text-white tracking-wide transition-all duration-300 text-left flex justify-between items-center">
                 <span>Film ve Televizyona Giriş</span>
-                <span class="text-zinc-600 text-sm">Yakında</span>
+                <span class="text-zinc-600 text-xs uppercase tracking-wider bg-zinc-800/50 px-2.5 py-1 rounded-lg">Yakında</span>
             </button>
 
             <!-- Medya ve İletişim -->
-            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl text-lg font-semibold text-gray-400 hover:text-white tracking-wide transition-all text-left flex justify-between items-center">
+            <button onclick="alert('Bu dersin içerikleri yakında eklenecektir.')" class="w-full py-4 px-6 bg-zinc-900/50 backdrop-blur-md border border-zinc-800/80 hover:border-zinc-700 rounded-2xl text-lg font-semibold text-zinc-400 hover:text-white tracking-wide transition-all duration-300 text-left flex justify-between items-center">
                 <span>Medya ve İletişim</span>
-                <span class="text-zinc-600 text-sm">Yakında</span>
+                <span class="text-zinc-600 text-xs uppercase tracking-wider bg-zinc-800/50 px-2.5 py-1 rounded-lg">Yakında</span>
             </button>
         </div>
+
+        <footer class="mt-16 text-center text-xs text-zinc-600 tracking-wider">
+            Sinema Bölümü
+        </footer>
     </div>
 </body>
 </html>
