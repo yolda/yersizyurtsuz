@@ -3,257 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edebiyat & Şiir Arşivi</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Minimal</title>
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font: Courier Prime (Daktilo Hissiyatı İçin) -->
+    <!-- Google Fonts: Courier Prime for the authentic typewriter look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
+    
     <style>
-        /* Tipografi ve Özel Daktilo Stilleri */
+        /* Siyah arka plan ve daktilo fontu zorunluluğu */
         body {
-            font-family: 'Courier Prime', 'Courier New', Courier, monospace;
-            background-color: #0d0d0d;
-            color: #e5e5e5;
+            background-color: #000000;
+            color: #d1d5db; /* Göz yormayan açık gri/beyaz tonu (Tailwind gray-300) */
+            font-family: 'Courier Prime', monospace;
         }
-
-        /* Daktilo İle Yazılmış Şiir/Metin Formatı */
-        .content-body {
-            white-space: pre-wrap; /* Satır boşluklarını ve şiir girintilerini korur */
+        
+        /* Şiirlerdeki satır atlamalarının korunması için */
+        .poem-text {
+            white-space: pre-wrap;
             line-height: 1.8;
-            font-size: 1.05rem;
-            color: #d1d1d1;
-        }
-
-        /* Yumuşak Parlama ve Kenarlık Etkisi */
-        .archive-card {
-            background-color: #141414;
-            border: 1px solid #262626;
-            transition: all 0.3s ease;
-        }
-
-        .archive-card:hover {
-            border-color: #525252;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.03);
-        }
-
-        /* Özel Kaydırma Çubuğu */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0d0d0d;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #262626;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #404040;
-        }
-
-        /* Yanıp Sönen Daktilo İmleci Simülasyonu */
-        .cursor-blink {
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background-color: #e5e5e5;
-            margin-left: 4px;
-            animation: blink 1s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="antialiased selection:bg-gray-700 selection:text-white">
 
-    <!-- ÜST BİLGİ / HEADER -->
-    <header class="border-b border-neutral-800 py-10 px-4 mb-8">
-        <div class="max-w-3xl mx-auto text-center">
-            <!-- SİTE BAŞLIĞI -->
-            <h1 class="text-3xl md:text-4xl font-bold tracking-wider mb-3">
-                [ YAZI & ŞİİR ARŞİVİ ]<span class="cursor-blink"></span>
-            </h1>
-            <p class="text-neutral-500 text-sm italic">
-                "Kelamın daktilo tuşlarında yankı bulduğu köşe."
-            </p>
+    <!-- Ana Konteyner: Genişliği sınırlandırarak okumayı kolaylaştırıyoruz -->
+    <main class="max-w-2xl mx-auto px-6 py-20 md:py-32 flex flex-col gap-y-32 md:gap-y-48">
 
-            <!-- KATEGORİ VE ARAMA SÜZGECİ -->
-            <div class="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-neutral-900 pt-6">
-                <!-- Filtre Butonları -->
-                <div class="flex gap-4 text-xs tracking-widest uppercase">
-                    <button onclick="filterCategory('all')" class="hover:text-white transition-colors text-white font-bold border-b border-white pb-1" id="btn-all">TÜMÜ</button>
-                    <button onclick="filterCategory('siir')" class="text-neutral-500 hover:text-white transition-colors pb-1" id="btn-siir">ŞİİRLER</button>
-                    <button onclick="filterCategory('yazi')" class="text-neutral-500 hover:text-white transition-colors pb-1" id="btn-yazi">YAZILAR</button>
-                </div>
+        <!-- Şiir/Metin 1 -->
+        <article class="flex flex-col">
+            <p class="poem-text text-lg md:text-xl">sessiz bir gece düşüyor
+günün yankıları çözülüyor
+siyah bir tuvalin içinde
 
-                <!-- Arama Kutusu -->
-                <div class="w-full sm:w-auto">
-                    <input type="text" id="searchInput" onkeyup="searchPosts()" placeholder="Arşivde ara..." 
-                           class="bg-neutral-900 border border-neutral-800 text-neutral-300 text-xs px-3 py-1.5 rounded focus:outline-none focus:border-neutral-600 w-full sm:w-48">
-                </div>
-            </div>
-        </div>
-    </header>
+ve biz
+sadece izliyoruz
+kaybolan saatleri.</p>
+            
+            <!-- Yazar ve Tarih Bölümü (Arka plansız, hafif soluk renkli) -->
+            <footer class="mt-8 flex items-center gap-3 text-sm md:text-base text-gray-500">
+                <span>Ali Veli</span>
+                <span class="opacity-50">•</span>
+                <time datetime="2023-10-24">24 Ekim 2023</time>
+            </footer>
+        </article>
 
-    <!-- ANA İÇERİK / YAZILAR VE ŞİİRLER -->
-    <main class="max-w-3xl mx-auto px-4 w-full flex-grow">
-        <div id="postsContainer" class="space-y-12 mb-16">
+        <!-- Şiir/Metin 2 -->
+        <article class="flex flex-col">
+            <p class="poem-text text-lg md:text-xl">tek bir sokak lambası
+yağmura karşı titreşiyor
+şafak vaktini beklerken.
 
-            <!-- ========================================================================= -->
-            <!-- ŞABLON 1: ŞİİR ÖRNEĞİ / YENİ ŞİİR EKLERKEN BU BLOĞU KOPYALAYABİLİRSİNİZ -->
-            <!-- ========================================================================= -->
-            <article class="post-item archive-card p-6 md:p-8 rounded-lg" data-category="siir">
-                <header class="border-b border-neutral-800 pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-baseline gap-2">
-                    <!-- BAŞLIK BURAYA -->
-                    <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white">
-                        BAŞLIK BURAYA: Gece Ve Daktilo
-                    </h2>
-                    <!-- TARİH BURAYA -->
-                    <time class="text-xs text-neutral-500 tracking-wider">
-                        TARİH BURAYA: 02 Kasım 2026
-                    </time>
-                </header>
+adımlarım ağır,
+sokaklar benden daha yalnız.</p>
+            
+            <footer class="mt-8 flex items-center gap-3 text-sm md:text-base text-gray-500">
+                <span>Ayşe Yılmaz</span>
+                <span class="opacity-50">•</span>
+                <time datetime="2023-11-02">2 Kasım 2023</time>
+            </footer>
+        </article>
 
-                <!-- METİN BURAYA (Şiir veya Düz Yazı) -->
-                <!-- Satır başlarını ve boşlukları korumak için doğrudan yazabilirsiniz -->
-                <div class="content-body">
-METİN BURAYA:
-Bir tuşa basarsın gece yarısı,
-Metal harfler kağıda dokunur.
-Zamanın silindiği o anda,
-Yalnızca daktilo sesi okunur.
+        <!-- Şiir/Metin 3 -->
+        <article class="flex flex-col">
+            <p class="poem-text text-lg md:text-xl">gölgeler uzuyor
+kahve çoktan soğudu
+kelimeler
+hala yazılmamış
+kağıdın kenarında
+bekliyorlar.</p>
+            
+            <footer class="mt-8 flex items-center gap-3 text-sm md:text-base text-gray-500">
+                <span>İsimsiz Yazar</span>
+                <span class="opacity-50">•</span>
+                <time datetime="2023-11-15">15 Kasım 2023</time>
+            </footer>
+        </article>
 
-Karanlık bir odada tek bir ışık,
-Mürekkebin kokusu zihne karışık.
-Gözler uzaklara dalar gider,
-Sözler satırlara dolaşık.
-                </div>
-
-                <footer class="mt-6 pt-4 border-t border-neutral-900 flex justify-between items-center text-xs text-neutral-600">
-                    <span>#siir</span>
-                    <span>Arşiv No: 001</span>
-                </footer>
-            </article>
-            <!-- ==================== ŞABLON 1 SONU ==================== -->
-
-            <!-- ========================================================================= -->
-            <!-- ŞABLON 2: DENEME/YAZI ÖRNEĞİ -->
-            <!-- ========================================================================= -->
-            <article class="post-item archive-card p-6 md:p-8 rounded-lg" data-category="yazi">
-                <header class="border-b border-neutral-800 pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-baseline gap-2">
-                    <!-- BAŞLIK BURAYA -->
-                    <h2 class="text-xl md:text-2xl font-bold tracking-wide text-white">
-                        BAŞLIK BURAYA: Sessizliğin Geometrisi
-                    </h2>
-                    <!-- TARİH BURAYA -->
-                    <time class="text-xs text-neutral-500 tracking-wider">
-                        TARİH BURAYA: 15 Ekim 2026
-                    </time>
-                </header>
-
-                <!-- METİN BURAYA -->
-                <div class="content-body">
-METİN BURAYA:
-Şehrin gürültüsü çekildiğinde geriye kalan o derin sessizlik, aslında hiç de boş değildir. Her sessizliğin kendine has bir ritmi, bir dokusu vardır. 
-
-Eski bir masanın başında oturup kağıdın beyazlığına bakarken, kelimelerin henüz söylenmemiş olmasının hafifliğini hisseder insan. Düşünceler önce dağınıktır; bir araya gelmek, bir çizgiye oturmak isterler.
-
-Yazmak, işte bu sessizliğe bir biçim verme çabasıdır.
-                </div>
-
-                <footer class="mt-6 pt-4 border-t border-neutral-900 flex justify-between items-center text-xs text-neutral-600">
-                    <span>#deneme</span>
-                    <span>Arşiv No: 002</span>
-                </footer>
-            </article>
-            <!-- ==================== ŞABLON 2 SONU ==================== -->
-
-            <!-- YENİ BİR ŞİİR VEYA YAZI EKLEMEK İÇİN YUKARIDAKİ <article>...</article> BLOĞUNU KOPYALAYIP BURAYA YAPIŞTIRIN -->
-
-        </div>
-
-        <!-- Arama Sonucu Bulunamadı Mesajı -->
-        <div id="noResults" class="hidden text-center py-12 text-neutral-600">
-            Aranan kriterlere uygun içerik bulunamadı.
-        </div>
     </main>
 
-    <!-- ALT BİLGİ / FOOTER -->
-    <footer class="border-t border-neutral-900 py-8 px-4 text-center text-xs text-neutral-600">
-        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p>© 2026 Tüm Hakları Saklıdır.</p>
-            <p>Daktilo Estetiği İle Tasarlandı.</p>
-        </div>
-    </footer>
-
-    <!-- ARAMA VE FİLTRELEME İŞLEVLERİ -->
-    <script>
-        // Kategori Filtreleme Fonksiyonu
-        function filterCategory(category) {
-            const posts = document.querySelectorAll('.post-item');
-            const buttons = ['all', 'siir', 'yazi'];
-
-            // Buton aktiflik durumlarını güncelle
-            buttons.forEach(btn => {
-                const el = document.getElementById(`btn-${btn}`);
-                if (btn === category) {
-                    el.classList.add('text-white', 'font-bold', 'border-b', 'border-white');
-                    el.classList.remove('text-neutral-500');
-                } else {
-                    el.classList.remove('text-white', 'font-bold', 'border-b', 'border-white');
-                    el.classList.add('text-neutral-500');
-                }
-            });
-
-            // İçerikleri filtrele
-            let visibleCount = 0;
-            posts.forEach(post => {
-                if (category === 'all' || post.getAttribute('data-category') === category) {
-                    post.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    post.style.display = 'none';
-                }
-            });
-
-            checkEmpty(visibleCount);
-        }
-
-        // Arama Yapma Fonksiyonu
-        function searchPosts() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const posts = document.querySelectorAll('.post-item');
-            let visibleCount = 0;
-
-            posts.forEach(post => {
-                const text = post.innerText.toLowerCase();
-                if (text.includes(input)) {
-                    post.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    post.style.display = 'none';
-                }
-            });
-
-            checkEmpty(visibleCount);
-        }
-
-        // Sonuç Yok Mesajı Kontrolü
-        function checkEmpty(count) {
-            const noResults = document.getElementById('noResults');
-            if (count === 0) {
-                noResults.classList.remove('hidden');
-            } else {
-                noResults.classList.add('hidden');
-            }
-        }
-    </script>
 </body>
 </html>
