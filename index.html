@@ -112,7 +112,7 @@
         </div>
 
         <footer class="mt-24 pt-6 text-[11px] text-[#593a3d] select-none">
-            © 2026 yersiz & yurtsuz
+            © 2026 kendimizce yorumlamalar
         </footer>
 
     </div>
@@ -131,7 +131,7 @@
     </button>
 
     <!-- Yazıların bulunduğu harici dosya -->
-    <script src="yazilar.js"></script>
+    <script src="./yazilar.js"></script>
 
     <!-- Sistem Kodları -->
     <script>
@@ -143,6 +143,18 @@
 
         function renderDirectory() {
             const listContainer = document.getElementById('file-list');
+
+            if (typeof YAZILAR === 'undefined' || !Array.isArray(YAZILAR)) {
+                listContainer.innerHTML = `
+                    <div class="text-xs text-[#8f6166] border border-[#291316] bg-[#0a0405]/80 p-4 leading-relaxed">
+                        <p class="text-[#e5e0dc] mb-1">yazilar.js dosyası okunamadı.</p>
+                        <p>1. Dosya adının tamamen küçük harfle <strong>yazilar.js</strong> olduğundan emin ol.</p>
+                        <p>2. <strong>index.html</strong> ile aynı klasörde durduğunu kontrol et.</p>
+                        <p>3. Dosyayı kaydedip sayfayı <strong>Ctrl + Shift + R</strong> ile yenile.</p>
+                    </div>
+                `;
+                return;
+            }
             
             listContainer.innerHTML = YAZILAR.map((yazi, index) => `
                 <div 
@@ -155,7 +167,7 @@
                         <span class="text-xs sm:text-sm text-[#b3b3b3] group-hover:text-white transition-colors duration-150">
                             ${escapeHTML(yazi.dosya)}
                         </span>
-                        ${yazi.yazar ? `<span class="text-[11px] text-[#6e4b4f] group-hover:text-[#9c6b70] transition-colors duration-150">/ ${escapeHTML(yazi.yazar)}</span>` : ''}
+                        ${yazi.yazar ? `<span class="text-xs text-[#a3767b] group-hover:text-[#d4a3a8] transition-colors duration-150">/ ${escapeHTML(yazi.yazar)}</span>` : ''}
                     </div>
                     <span class="text-xs text-[#614246] group-hover:text-[#8f6166] transition-colors duration-150 shrink-0">
                         ${escapeHTML(yazi.tarih)}
