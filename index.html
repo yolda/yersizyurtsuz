@@ -6,10 +6,10 @@
     <title>yorum</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Monospace & Okuma Fontları: JetBrains Mono & Inter -->
+    <!-- Monospace & Edebi Okuma Fontları: JetBrains Mono & Lora -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -17,7 +17,7 @@
                 extend: {
                     fontFamily: {
                         mono: ['"JetBrains Mono"', 'Courier', 'monospace'],
-                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'Georgia', 'serif'],
                     }
                 }
             }
@@ -74,7 +74,7 @@
 
         /* Metin seçimi */
         ::selection {
-            background: #ffffff;
+            background: #e5e0dc;
             color: #000000;
         }
     </style>
@@ -114,23 +114,23 @@
                     <button 
                         type="button"
                         onclick="showDirectory()" 
-                        class="text-xs text-[#666666] hover:text-white transition-colors duration-150 focus:outline-none cursor-pointer">
+                        class="text-xs text-[#666666] hover:text-[#e5e0dc] transition-colors duration-150 focus:outline-none cursor-pointer">
                         ← geri
                     </button>
                 </nav>
 
                 <!-- Yazı Gövdesi -->
                 <article class="w-full max-w-[65ch]">
-                    <header class="mb-8">
-                        <div id="reader-date" class="text-xs text-[#525252] mb-2">
+                    <header class="mb-9">
+                        <div id="reader-date" class="font-mono text-xs text-[#614246] mb-2.5">
                             2026-11-18
                         </div>
-                        <h1 id="reader-title" class="font-sans text-lg sm:text-xl font-medium text-[#f5f5f5] leading-snug">
+                        <h1 id="reader-title" class="font-serif text-xl sm:text-2xl font-medium text-[#e5e0dc] leading-snug tracking-[-0.01em]">
                             Yazı Başlığı
                         </h1>
                     </header>
 
-                    <div id="reader-content" class="font-sans text-[15px] sm:text-base text-[#cccccc] leading-[1.85] space-y-6">
+                    <div id="reader-content" class="font-serif text-[16px] sm:text-[17px] text-[#a8a29e] leading-[1.9] space-y-6">
                         <!-- Paragraflar JavaScript ile otomatik doldurulur -->
                     </div>
                 </article>
@@ -139,19 +139,22 @@
 
         <!-- Alt Bilgi (Copyright) -->
         <footer class="mt-24 pt-6 text-[11px] text-[#593a3d] select-none">
-            © 2026 kendimizce yorumlamalar
+            © 2026 yersiz & yurtsuz
         </footer>
 
     </div>
 
-    <!-- Minimal Yukarı Çık Tuşu (Sadece Okuma Ekranında Kaydırınca Görünür) -->
+    <!-- Minimal Yuvarlak Yukarı Ok Tuşu (Sadece Okuma Ekranında Kaydırınca Görünür) -->
     <button
         id="scroll-top-btn"
         type="button"
         onclick="scrollToTop()"
         aria-label="Yukarı çık"
-        class="fixed bottom-6 right-6 z-20 px-2.5 py-1 text-[11px] text-[#78464b] hover:text-[#e5e5e5] bg-[#080304]/90 border border-[#241214] hover:border-[#47171d] transition-all duration-200 opacity-0 pointer-events-none cursor-pointer focus:outline-none">
-        ↑ yukarı
+        class="fixed bottom-6 right-6 z-20 w-9 h-9 rounded-full flex items-center justify-center text-[#8f6166] hover:text-[#e5e0dc] bg-[#0a0405]/90 border border-[#291316] hover:border-[#4d1c22] transition-all duration-200 opacity-0 pointer-events-none cursor-pointer focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5"/>
+            <path d="m5 12 7-7 7 7"/>
+        </svg>
     </button>
 
     <script>
