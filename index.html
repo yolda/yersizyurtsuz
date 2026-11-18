@@ -3,73 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>yersiz yurtsuz</title>
-    <!-- Tailwind CSS for styling -->
+    <title>~/</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Courier Prime for the authentic typewriter look -->
+    <!-- Monospace & Okuma Fontları: JetBrains Mono & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     
-    <style>
-        /* Siyah arka plan ve daktilo fontu zorunluluğu */
-        body {
-            background-color: #000000;
-            color: #d1d5db; /* Göz yormayan açık gri/beyaz tonu (Tailwind gray-300) */
-            font-family: 'Courier Prime', monospace;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'Courier', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
         }
-        
-        /* Şiirlerdeki satır atlamalarının korunması için */
-        .poem-text {
-            white-space: pre-wrap;
-            line-height: 1.8;
+    </script>
+
+    <style>
+        /* Tam siyah zemin ve sıfır görsel gürültü */
+        html, body {
+            background-color: #000000;
+            color: #d4d4d4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Minimalist kaydırma çubuğu */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a1a1a;
+        }
+
+        /* Metin seçimi */
+        ::selection {
+            background: #ffffff;
+            color: #000000;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-gray-700 selection:text-white">
+<body class="bg-black text-[#d4d4d4] font-mono antialiased min-h-screen">
 
-    <!-- Ana Konteyner: Genişliği sınırlandırarak okumayı kolaylaştırıyoruz -->
-    <main class="max-w-2xl mx-auto px-6 py-20 md:py-32 flex flex-col gap-y-32 md:gap-y-48">
-
-        <!-- Şiir/Metin 1 -->
-        <article class="flex flex-col">
-            <p class="poem-text text-lg md:text-xl">
-kendini sandığından az özlemişsin kendim.
-doğduğun günden daha yalnızsın şimdilerde.
-seni kanlarından arındırıp
-sevgi, endişe dolu kollara bırakan biri bile yok öyle mi?
-
-ağlıyorsun şimdi,
-o zaman yaşadığını gösteren o hal
-şimdi ölüyor olduğunu hissettiriyor.
-
-öleceğin günü düşünüyorsun;
-ah yalnız ben!
-o gün bugünden de mi yalnız,
-bu günden de mi suç dolu olacak?
-
-tanrı'nın en büyük yasağını çiğnediğinde
-fakat neden suçlu olduğunu en sonunda bildiğinde
-daha mı iyi hisseceksin?
-
-işte o gün sen gittiğinde
-yalnız toprağını bırakacaksın suçlayacak,
-bir de ken dolu tenini onların tekrar temizleyeceği.
-
-ağlamayacaksın.
-ilk günden de yalnız, temizleneceksin.
-            </p>
-            
-            <!-- Yazar ve Tarih Bölümü (Arka plansız, hafif soluk renkli) -->
-            <footer class="mt-8 flex items-center gap-3 text-sm md:text-base text-gray-500">
-                <span>- elif tuana k.</span>
-                
-            </footer>
-        </article>
-
+    <!-- Ana Taşıyıcı -->
+    <div class="w-full max-w-2xl mx-auto px-6 py-16 sm:py-24">
         
+        <!-- ================================================================= -->
+        <!-- 1. ANA EKRAN: DİZİN LİSTESİ                                       -->
+        <!-- ================================================================= -->
+        <div id="directory-view">
+            <!-- Dizin İşareti -->
+            <div class="text-xs text-[#525252] mb-10 select-none">
+                ~/
+            </div>
 
-    </main>
+            <!-- Dosya Listesi -->
+            <main id="file-list" class="space-y-3">
+                <!-- JavaScript ile doldurulur -->
+            </main>
+        </div>
 
+        <!-- ================================================================= -->
+        <!-- 2. OKUMA EKRANI: YAZI İÇERİĞİ                                     -->
+        <!-- ================================================================= -->
+        <div id="reader-view" class="hidden">
+            <!-- Geri Dönüş -->
+            <nav class="mb-12">
+                <button 
+                    type="button"
+                    onclick="showDirectory()" 
+                    class="text-xs text-[#666666] hover:text-white transition-colors duration-150 focus:outline-none cursor-pointer">
+                    ← geri
+                </button>
+            </nav>
+
+            <!-- Yazı Gövdesi -->
+            <article class="w-full max-w-[65ch]">
+                <header class="mb-8">
+                    <div id="reader-date" class="text-xs text-[#525252] mb-2">
+                        2026-11-18
+                    </div>
+                    <h1 id="reader-title" class="font-sans text-lg sm:text-xl font-medium text-[#f5f5f5] leading-snug">
+                        Yazı Başlığı
+                    </h1>
+                </header>
+
+                <div id="reader-content" class="font-sans text-[15px] sm:text-base text-[#cccccc] leading-[1.85] space-y-6">
+                    <!-- Paragraflar JavaScript ile doldurulur -->
+                </div>
+            </article>
+        </div>
+
+    </div>
+
+    <script>
+        // =========================================================================
+        // YAZI ARŞİVİ
+        // Yeni bir yazı eklemek için aşağıdaki diziye aynı yapıda yeni bir obje ekle.
+        // =========================================================================
+        const posts = [
+            {
+                id: "dogvilleandrhythmzero",
+                filename: "dogvilleandrhythmzerotxt",
+                date: "2026-11-18",
+                title: "dogville ve rhythm 0 üzerine",
+                paragraphs: [
+                    dogville & rhythm 0 üzerine
+
+dogville filmini izlerken ve izledikten sonra rhythm 0 performansıyla olan benzerliği aklımı kurcalamayı bırakmadı. bu benzerliği film ve performans hakkında bilgisi olan herkes kurabilir. ama bence “benziyorlar” deyip geçilmemesi gereken bi konu, neticede birisi kurmaca iken diğeri tamamen gerçek.
+
+dogville dağların arasında, mütevazi, dindar ve “dürüst” insanların minimal bi yaşam sürdüğü bir abd kasabasıdır. kasabaya zorbalıktan kaçıp sığınan grace’e ,kasaba halkı iki hafta tanır. bu iki hafta bir nevi deneme sürecidir. eğer 15 kasaba sakini de isterse grace, dogville’de yaşamaya hak kazancaktır. ilk günler kasaba sakinleri grace’i kendi yaşamlarına dahil etmekte zorlansalar da grace kasabaya, kasaba da grace’e adapte olmayı başarır. iyi geçen günleri seyrederiz; sonra lars von trier filmi seyrettiğimizi hatırlarız..
+
+kasaba halkı grace’in onlara muhtaç olduğunu fark ettiklerinde tavırları değişir. çünkü tek bir ihbarla (polise veya grace’in peşinde olan gangsterlere) grace’in hayatını bitirebilirler. bu gücü fark ettikten sonra kasabanın bütün ahlak anlayışı çöker ve grace adım adım suistimal edilmeye başlanır. hatta bir yerden sonra kaçamaması için tasma dahi takılır.
+
+dogville’e hafif giriştiğimize göre biraz da rhythm 0 dan bahsedelim. bağlam kopmasın: sanatçı 6 saat boyunca kendisine yapılan hiçbir -gerçekten hiçbir- şeye karşı koymayacaktır. hukuki olarak da bütün sorumluluğu aldığı bi yazıyı imzalar ve 6 saat başlar. masadaki objeler: gül, kuş tüyü, parfüm, makas, bıçak, silah gibi iyi ve kötü şeyler yapılabilecek her şeye imkan tanıyacak cinstendir. 
+
+burada film ile performans arasındaki en büyük benzerlik şu: dogville halkı, grace’in onlara muhtaç biri olduğunu kavradıklarında ona karşı her şeyi yapabileceklerini fark ediyorlar. rhytm 0 performansındaki sanatçının bütün sorumluluğu aldığını gösteren imza ile bu fark ediş tamamen aynı şey olarak karşımıza çıkıyor. sanatçı kendi iradesiyle hiçbir müdaheleye ve acıya tepki vermiyor, grace ise ihbar edilmemek için. performansta açık rıza ve beyan var, filmde ise muhtaç kalınmış merhamet. ikisi de suistimal edilmeye son derece müsait durumlar. keza kurmacada da gerçekte de ediliyor da.
+
+rhytm 0 performansı gül vermeyle, öpmeyle, sarılmayla başlıyor, karşısındakinin hiçbir tepki vermediğini gördüklerinde jiletle kıyafet kesmeye, yine jiletle kesip kan içmeye kadar gidiyor. hatta içi dolu bi silahı dahi sanatçıya doğrultuyorlar neyse ki birisi engel oluyor. performans bittikten sonra sanatçı kendisine bunları yaşatan insanlara doğru yürüdüğünde, az önce gözünü kırpmadan neler yapan insanlar binayı terk etmeye ve sanatçıdan kaçmaya başlıyor. çünkü artık hukuk kuralları yeniden devrededir, onların ahlakını yeniden canlandıracak olan şey bu suni kurallardır. yoksa ne utanması..
+
+grace tasmasından kurtulup lüks arabaya bindiğinde, kasaba halkının evlerine saklanıp endişe dolu gözlerle grace’i izlemeleri gibi. artık grace’in kasabaya muhtaç biri olmayabileceği korkusu. ona yaşattıklarının yaptırımları olabileceği korkusu.
+
+dogville de yaşananlarla performans birbirlerine benzer demek az kalıyor, aynı desek yeridir. kasabada önce iyi niyetli gözüken yardımlar, sonrasında iş gücünü arttırıp ücreti kesilmesi en sonunda da köleleştirip sistematik aşağılama. hiç ama hiç fark yok. keşke ikisi de kurmaca olsaydı.. 
+
+önceleri bana yüzeysel gelen “her insan kötüdür” önermesi filmden sonra eskiden yüzeysel geldiği kadar gerçek gelmeye başladı. zira gerçek örnek de vardı ama yine de grace gibi inandırabilmiştim kendimi insanların iyi olabileceklerine. kötü ve yoz şartların onları bu hale getirdiklerine, bilinç kazıp “iyi insan” olabileceklerine. kendim için “hümanist” sıfatını kullanabilecek miyim bilmiyorum. sanırım grace’in sonda aldığı kararın eksik veya yanlış olduğunu düşünmüyorum. bunu düşünmemek bile canice hissettirmeye yetiyor insana…
+
+belki bizler de kendimizi ahlaklı zanneden ama dogville’dekilerden pek farklı olmayan yaratıklarızdır. ben öyle değilim en azından, benim ahlakım gerçek. herkes gibi ben de buna inanıyorum.
+                ]
+            },
+            {
+                id: "kent-ve-yalnizlik-uzerine",
+                filename: "kent_ve_yalnizlik_uzerine.txt",
+                date: "2026-11-12",
+                title: "Modern Kent ve Kalabalıklar İçindeki Yalnızlık",
+                paragraphs: [
+                    "Modern metropol, insanlık tarihinde hiç olmadığı kadar fazla bireyi fiziksel olarak birbirine yaklaştırırken, duygusal ve toplumsal mesafeleri aynı oranda derinleştiren bir mekândır. Georg Simmel’in metropol bireyinde gözlemlediği 'bıkkınlık' (blasé) tavrı, günümüzde her gün milyonlarca insanın yanından geçip birbirine değmeden yaşadığı bir hayatta kalma refleksine dönüşmüştür.",
+                    "Geleneksel toplulukların sunduğu organik bağlar çözüldüğünde, birey kendi kimliğini kurma özgürlüğüne kavuşur; ancak bu özgürlüğün bedeli derin bir yalıtılmışlıktır. Cam kuleler, standartlaşmış tüketim alanları ve algoritmalarla örülü dijital kamusal alanlar, karşılaşmayı değil yalnızca yan yana durmayı organize eder.",
+                    "Sonuç olarak kentli insan, kalabalığın gürültüsü içinde kendi sessizliğine çekilir. Yalnızlık artık fiziksel bir kimsesizlik hali değil; herkesin birbirini gördüğü ama kimsenin kimseye gerçekten tanıklık etmediği modern bir varoluş biçimidir."
+                ]
+            }
+        ];
+
+        // =========================================================================
+        // ARAYÜZ FONKSİYONLARI
+        // =========================================================================
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function renderDirectory() {
+            const listContainer = document.getElementById('file-list');
+            
+            listContainer.innerHTML = posts.map(post => `
+                <div 
+                    onclick="openPost('${post.id}')"
+                    onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPost('${post.id}'); }"
+                    role="button"
+                    tabindex="0"
+                    class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 py-1 cursor-pointer focus:outline-none">
+                    <span class="text-xs sm:text-sm text-[#b3b3b3] group-hover:text-white transition-colors duration-150">
+                        ${escapeHTML(post.filename)}
+                    </span>
+                    <span class="text-xs text-[#525252] group-hover:text-[#737373] transition-colors duration-150 shrink-0">
+                        ${escapeHTML(post.date)}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function openPost(id) {
+            const post = posts.find(item => item.id === id);
+            if (!post) return;
+
+            document.getElementById('reader-date').textContent = post.date;
+            document.getElementById('reader-title').textContent = post.title;
+            
+            const contentContainer = document.getElementById('reader-content');
+            contentContainer.innerHTML = post.paragraphs
+                .map(text => `<p>${escapeHTML(text)}</p>`)
+                .join('');
+
+            document.getElementById('directory-view').classList.add('hidden');
+            document.getElementById('reader-view').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function showDirectory() {
+            document.getElementById('reader-view').classList.add('hidden');
+            document.getElementById('directory-view').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        // ESC tuşu ile dizine dönüş
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !document.getElementById('reader-view').classList.contains('hidden')) {
+                showDirectory();
+            }
+        });
+
+        // Başlangıçta dizini çiz
+        renderDirectory();
+    </script>
 </body>
 </html>
