@@ -15,7 +15,6 @@ grace tasmasından kurtulup gangsterlerin lüks aracına bindiğinde ve otoritey
 dogville de yaşananlarla performans birbirlerine benzer demek az kalıyor, aynı desek yeridir. kasabada önce iyi niyetli gözüken yardımlar, sonrasında iş gücünü arttırıp ücreti kesilmesi en sonunda da köleleştirip sistematik aşağılama. hiç ama hiç fark yok. keşke ikisi de kurmaca olsaydı..
 önceleri bana yüzeysel gelen “her insan kötüdür” önermesi filmden sonra eskiden yüzeysel geldiği kadar gerçek gelmeye başladı. zira gerçek örnek de vardı ama yine de grace gibi inandırabilmiştim kendimi insanların iyi olabileceklerine. kötü ve yoz şartların onları bu hale getirdiklerine, bilinç kazıp “iyi insan” olabileceklerine. artık kendim için “hümanist” sıfatını kullanabilecek miyim bilmiyorum. sanırım grace’in finalde aldığı kararın eksik veya yanlış olduğunu düşünmüyorum. bunu düşünmemek bile canice hissettirmeye yetiyor insana…
 belki bizler de kendimizi ahlaklı zanneden ama dogville’dekilerden pek farklı olmayan yaratıklarızdır. ben öyle değilim en azından, benim ahlakım gerçek. herkes gibi ben de buna inanıyorum.
-
         `
     },
     {
@@ -71,9 +70,8 @@ Bütün bu tarihsel, kavramsal ve iktisadi gerçekler yan yana getirildiğinde, 
 Siyaset bilimindeki "sol" kavramı ile Kur'an'daki mecazi ifadelerin kasıtlı olarak birbirine karıştırılmasından, "Mülkiyet Allah'ındır" ilkesinin sarayların ve sermaye tekellerinin meşruiyet aracına dönüştürülmesine kadar uzanan bu çarpıtma süreci, kitlelerin kendi kurtuluş reçetelerine yabancılaşmasına hizmet etmiştir. Oysa özüne dönüldüğünde görülecektir ki; mülkiyetin toplumsallaştırılmasını savunan, servetin belirli ellerde birikmesini lanetleyen, yoksulun zenginin malında doğrudan hakkı olduğunu ilan eden, emeği sömürüden kurtarmaya çalışan ve her türlü ırk ve sınıf üstünlüğünü ayaklarının altına alan bir inanç sisteminin, eşitlik ve adalet arayışındaki sosyalizmle kavgalı olması düşünülemez.
 Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, ancak hem dinin biçimsel kabuklarından sıyrılarak devrimci özüyle kavranmasına hem de sosyalizmin bu toprakların kadim adalet ve paylaşım kültürüyle yeniden barışmasına bağlıdır. Kısacası mesele, iki zıt kutbu zorla uzlaştırmak değil; yüzyıllardır birbirine düşman edilen iki büyük hakikat arayışının, aynı insani ve eşitlikçi özden beslendiğini yeniden hatırlamaktır.
         `
-    }
-
- {
+    },
+    {
         dosya: "Dijital Çağda Verilerimizin Gizliliği ve Güvenliği",
         yazar: "S. Can",
         tarih: "29/07/2026",
@@ -88,19 +86,18 @@ Veri gizliliğinin yanında siber güvenlik boyutuna değinmemek imkansız. Geç
 Peki bu durum karşısında ne yapabiliriz?
 Günümüz şartlarında kendimizi yüzde yüz gizliliğe almak veya tamamen izole bir dijital yaşam sürmek neredeyse imkansız ve yapabileceğiniz şeyleri burada yazmam yazının gerçekten uzamasına sebep olacağı için yazamıyorum isterseniz privacyguides.org sitesine göz atabilirsiniz. Ayrıyeten şirketlerin ve devlet yapılarının da böyle bir izolasyonu istemediği gayet açık. Kendi telefonumuzdaki yazılımı değiştirmememiz ve belirli uygulamaları silemememiz için cihazlara donanımsal kilitlerin konulduğu bir dönemden geçiyoruz. Yapabileceğimiz en stratejik adım, ülke olarak kendi özgür yazılım ve donanımlarımızı üretmektir. Kendi masaüstü işletim sistemimizi geliştirmek (Pardus adı verilen ve milyonlar harcanarak tema değiştirilip sunulan Debian dağıtımından bahsetmiyorum elbette), kendi mobil cihazlarımızı tasarlamak ve Android tabanlı ancak Google servislerine (GMS) bağımlı olmayan, şirketlerin kar hırsına yenik düşmeyecek merkeziyetsiz ve şeffaf mobil işletim sistemleri inşa etmekten geçiyor. 2013 yılında tek bir hamleyle Pisi tabanlı yerli Pardus projesini ve yetişmiş ekibini rafa kaldıran bir anlayışın bunu başarıp başaramayacağı büyük bir soru işareti olsa da, diğer tüm stratejik sektörlerde olduğu gibi dijital alanda da tam bağımsızlık için milli üretim şarttır. Bu üretim, doğrudan halkın verilerinin gizliliği ve güvenliği uğruna yürütülmelidir. Zamanla kendi verisini koruyamayan halklar o veriler üzerine tasarlanan algoritmalarla yönetilecektir ve yönetilmektedir.
         `
+    }
 
-  
     /*
-    {
-        dosya: "Türkiye'deki Sosyalizm Algısı ve İslamiyet",
-        yazar: "Osman",
-        tarih: "14/11/2026",
-        baslik: "Türkiye'deki Sosyalizm Algısı ve İslamiyet",
+    // --- YENİ YAZI EKLEME ŞABLONU (Yukarıdaki } işaretinin yanına virgül koyup yapıştır) ---
+    ,{
+        dosya: "Yazının Listede Görünecek Adı",
+        yazar: "Yazar Adı",
+        tarih: "20/11/2026",
+        baslik: "Yazının Ana Başlığı",
         metin: `
-Dünya tarihine bakıldığı zaman ortaya çıkmış din ve düşünce sistemlerinin pek çoğunun...
-(Buraya yazının tam metni gelecek)
+Buraya yazının düz metnini yapıştır.
         `
     }
-  */
-
+    */
 ];
