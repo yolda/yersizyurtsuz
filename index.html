@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>~/</title>
+    <title>yorum</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Monospace & Okuma Fontları: JetBrains Mono & Inter -->
@@ -51,56 +51,65 @@
         }
     </style>
 </head>
-<body class="bg-black text-[#d4d4d4] font-mono antialiased min-h-screen">
+<body class="bg-black text-[#d4d4d4] font-mono antialiased min-h-screen flex flex-col">
 
     <!-- Ana Taşıyıcı -->
-    <div class="w-full max-w-2xl mx-auto px-6 py-16 sm:py-24">
+    <div class="w-full max-w-2xl mx-auto px-6 pt-16 sm:pt-24 pb-12 flex-1 flex flex-col justify-between">
         
-        <!-- ================================================================= -->
-        <!-- 1. ANA EKRAN: DİZİN LİSTESİ                                       -->
-        <!-- ================================================================= -->
-        <div id="directory-view">
-            <!-- Dizin İşareti -->
-            <div class="text-xs text-[#525252] mb-10 select-none">
-                ~/kendimizce yorumlamalar
-            </div>
-
-            <!-- Dosya Listesi -->
-            <main id="file-list" class="space-y-3">
-                <!-- JavaScript ile otomatik doldurulur -->
-            </main>
-        </div>
-
-        <!-- ================================================================= -->
-        <!-- 2. OKUMA EKRANI: YAZI İÇERİĞİ                                     -->
-        <!-- ================================================================= -->
-        <div id="reader-view" class="hidden">
-            <!-- Geri Dönüş -->
-            <nav class="mb-12">
-                <button 
-                    type="button"
-                    onclick="showDirectory()" 
-                    class="text-xs text-[#666666] hover:text-white transition-colors duration-150 focus:outline-none cursor-pointer">
-                    ← geri
-                </button>
-            </nav>
-
-            <!-- Yazı Gövdesi -->
-            <article class="w-full max-w-[65ch]">
-                <header class="mb-8">
-                    <div id="reader-date" class="text-xs text-[#525252] mb-2">
-                        2026-11-18
-                    </div>
-                    <h1 id="reader-title" class="font-sans text-lg sm:text-xl font-medium text-[#f5f5f5] leading-snug">
-                        Yazı Başlığı
+        <div>
+            <!-- ================================================================= -->
+            <!-- 1. ANA EKRAN: DİZİN LİSTESİ                                       -->
+            <!-- ================================================================= -->
+            <div id="directory-view">
+                <!-- Estetik Dizin Başlığı -->
+                <header class="mb-12 pb-4 border-b border-[#141414] select-none">
+                    <h1 class="text-sm sm:text-[15px] tracking-wide text-[#e5e5e5] font-normal">
+                        <span class="text-[#525252]">~/</span>kendimizce yorumlamalar
                     </h1>
                 </header>
 
-                <div id="reader-content" class="font-sans text-[15px] sm:text-base text-[#cccccc] leading-[1.85] space-y-6">
-                    <!-- Paragraflar JavaScript ile otomatik doldurulur -->
-                </div>
-            </article>
+                <!-- Dosya Listesi -->
+                <main id="file-list" class="space-y-3">
+                    <!-- JavaScript ile otomatik doldurulur -->
+                </main>
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- 2. OKUMA EKRANI: YAZI İÇERİĞİ                                     -->
+            <!-- ================================================================= -->
+            <div id="reader-view" class="hidden">
+                <!-- Geri Dönüş -->
+                <nav class="mb-12">
+                    <button 
+                        type="button"
+                        onclick="showDirectory()" 
+                        class="text-xs text-[#666666] hover:text-white transition-colors duration-150 focus:outline-none cursor-pointer">
+                        ← geri
+                    </button>
+                </nav>
+
+                <!-- Yazı Gövdesi -->
+                <article class="w-full max-w-[65ch]">
+                    <header class="mb-8">
+                        <div id="reader-date" class="text-xs text-[#525252] mb-2">
+                            2026-11-18
+                        </div>
+                        <h1 id="reader-title" class="font-sans text-lg sm:text-xl font-medium text-[#f5f5f5] leading-snug">
+                            Yazı Başlığı
+                        </h1>
+                    </header>
+
+                    <div id="reader-content" class="font-sans text-[15px] sm:text-base text-[#cccccc] leading-[1.85] space-y-6">
+                        <!-- Paragraflar JavaScript ile otomatik doldurulur -->
+                    </div>
+                </article>
+            </div>
         </div>
+
+        <!-- Alt Bilgi (Copyright) -->
+        <footer class="mt-24 pt-6 text-[11px] text-[#3f3f3f] select-none">
+            © 2026 kendimizce yorumlamalar
+        </footer>
 
     </div>
 
