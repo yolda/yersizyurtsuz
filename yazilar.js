@@ -1,7 +1,7 @@
 const YAZILAR = [
     {
         dosya: "dogville ve rhythm 0 üzerine",
-        yazar: "baris b",
+        yazar: "barış b",
         tarih: "18/11/2026",
         baslik: "dogville ve rhythm 0 üzerine",
         metin: `
