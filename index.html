@@ -33,7 +33,7 @@
             padding: 0;
         }
 
-        /* İran Halısı Dokuma Motifi (Sadece Ana Ekranda Aktif) */
+        /* Koyu Kızıl / Kök Boyası İran Halısı Dokusu (Sadece Ana Ekranda Aktif) */
         #carpet-motif {
             position: fixed;
             inset: 0;
@@ -41,18 +41,23 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            background-color: #000000;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23171717' stroke-width='0.9'%3E%3C!-- Dış Çerçeve ve Köşe Bağlantıları --%3E%3Cpath d='M0 60 L60 0 L120 60 L60 120 Z'/%3E%3Cpath d='M0 0 L24 24 M120 0 L96 24 M0 120 L24 96 M120 120 L96 96'/%3E%3C!-- İç Madalyon Katmanları --%3E%3Cpath d='M60 16 L104 60 L60 104 L16 60 Z' stroke='%231d1d1d'/%3E%3Cpath d='M60 30 L90 60 L60 90 L30 60 Z'/%3E%3C!-- Orta Gül / Yıldız Motifi --%3E%3Cpath d='M60 44 L65 55 L76 60 L65 65 L60 76 L55 65 L44 60 L55 55 Z' stroke='%23212121'/%3E%3Ccircle cx='60' cy='60' r='3' stroke='%23242424'/%3E%3C!-- Köşe Arabesk Kıvrımlar ve İlmekler --%3E%3Cpath d='M12 60 Q22 50 30 60 Q22 70 12 60 Z'/%3E%3Cpath d='M108 60 Q98 50 90 60 Q98 70 108 60 Z'/%3E%3Cpath d='M60 12 Q50 22 60 30 Q70 22 60 12 Z'/%3E%3Cpath d='M60 108 Q50 98 60 90 Q70 98 60 108 Z'/%3E%3C!-- Köşe Küçük Eşkenar Motifler --%3E%3Cpath d='M0 20 L10 30 L0 40 M120 20 L110 30 L120 40 M0 80 L10 90 L0 100 M120 80 L110 90 L120 100'/%3E%3Cpath d='M20 0 L30 10 L40 0 M80 0 L90 10 L100 0 M20 120 L30 110 L40 120 M80 120 L90 110 L100 120'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: 120px 120px;
+            background-color: #050202;
+            background-image: 
+                /* İnce El Dokuması İlmek / Düğüm Dokusu */
+                repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.42) 0px, rgba(0, 0, 0, 0.42) 1px, transparent 1px, transparent 3px),
+                repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0px, rgba(0, 0, 0, 0.35) 1px, transparent 1px, transparent 3px),
+                /* İsfahan / Tebriz Madalyon & İslîmî Halı Motifi */
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3C!-- Dış Bordür ve Köşebentler --%3E%3Cpath d='M0 90 C30 60 60 30 90 0 C120 30 150 60 180 90 C150 120 120 150 90 180 C60 150 30 120 0 90 Z' stroke='%23290d10' stroke-width='1.1'/%3E%3Cpath d='M0 0 C25 5 40 20 45 45 C20 40 5 25 0 0 Z' fill='%23160608' stroke='%23331014' stroke-width='0.9'/%3E%3Cpath d='M180 0 C155 5 140 20 135 45 C160 40 175 25 180 0 Z' fill='%23160608' stroke='%23331014' stroke-width='0.9'/%3E%3Cpath d='M0 180 C25 175 40 160 45 135 C20 140 5 155 0 180 Z' fill='%23160608' stroke='%23331014' stroke-width='0.9'/%3E%3Cpath d='M180 180 C155 175 140 160 135 135 C160 140 175 155 180 180 Z' fill='%23160608' stroke='%23331014' stroke-width='0.9'/%3E%3C!-- Köşe Kıvrık Dal ve Yaprak Detayları --%3E%3Cpath d='M18 18 Q48 12 64 34 T90 18 Q116 34 132 12 T162 18' stroke='%23240b0e' stroke-width='0.8'/%3E%3Cpath d='M18 162 Q48 168 64 146 T90 162 Q116 146 132 168 T162 162' stroke='%23240b0e' stroke-width='0.8'/%3E%3Cpath d='M18 18 Q12 48 34 64 T18 90 Q34 116 12 132 T18 162' stroke='%23240b0e' stroke-width='0.8'/%3E%3Cpath d='M162 18 Q168 48 146 64 T162 90 Q146 116 168 132 T162 162' stroke='%23240b0e' stroke-width='0.8'/%3E%3C!-- Dilimli Büyük Göbek (Şemse) --%3E%3Cpath d='M90 22 C104 38 118 38 128 52 C142 62 142 76 158 90 C142 104 142 118 128 128 C118 142 104 142 90 158 C76 142 62 142 52 128 C38 118 38 104 22 90 C38 76 38 62 52 52 C62 38 76 38 90 22 Z' fill='%23120507' stroke='%233d1318' stroke-width='1.1'/%3E%3C!-- İç İslîmî ve Palmet Katmanı --%3E%3Cpath d='M90 38 C100 52 114 54 122 66 C132 76 132 82 142 90 C132 98 132 104 122 114 C114 126 100 128 90 142 C80 128 66 126 58 114 C48 104 48 98 38 90 C48 82 48 76 58 66 C66 54 80 52 90 38 Z' stroke='%232e1e15' stroke-width='0.9'/%3E%3C!-- Dört Yönlü Hataî / Palmet Çiçekleri --%3E%3Cpath d='M90 10 C96 18 96 26 90 32 C84 26 84 18 90 10 Z' fill='%23210a0d' stroke='%2347171d' stroke-width='0.8'/%3E%3Cpath d='M90 170 C96 162 96 154 90 148 C84 154 84 162 90 170 Z' fill='%23210a0d' stroke='%2347171d' stroke-width='0.8'/%3E%3Cpath d='M10 90 C18 84 26 84 32 90 C26 96 18 96 10 90 Z' fill='%23210a0d' stroke='%2347171d' stroke-width='0.8'/%3E%3Cpath d='M170 90 C162 84 154 84 148 90 C154 96 162 96 170 90 Z' fill='%23210a0d' stroke='%2347171d' stroke-width='0.8'/%3E%3C!-- Orta Yıldız ve Çiçek Merkezi --%3E%3Cpath d='M90 58 L97 75 L114 72 L103 86 L118 90 L103 94 L114 108 L97 105 L90 122 L83 105 L66 108 L77 94 L62 90 L77 86 L66 72 L83 75 Z' fill='%231a0709' stroke='%234a181e' stroke-width='0.9'/%3E%3Ccircle cx='90' cy='90' r='9' fill='%230d0304' stroke='%23382419' stroke-width='0.9'/%3E%3Ccircle cx='90' cy='90' r='3.5' fill='%234d1920'/%3E%3C!-- İnce İlmek Noktaları --%3E%3Ccircle cx='45' cy='45' r='1.5' fill='%233d1318'/%3E%3Ccircle cx='135' cy='45' r='1.5' fill='%233d1318'/%3E%3Ccircle cx='45' cy='135' r='1.5' fill='%233d1318'/%3E%3Ccircle cx='135' cy='135' r='1.5' fill='%233d1318'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 3px 3px, 3px 3px, 180px 180px;
             background-position: center top;
         }
 
-        /* Orta okuma sütununun arkasında yumuşak geçiş (yazı netliği için) */
+        /* Orta yazı alanını okunaklı kılan derin gölge geçişi */
         #carpet-motif::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 55% 75% at 50% 45%, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.15) 100%);
+            background: radial-gradient(ellipse 52% 72% at 50% 44%, rgba(3, 1, 1, 0.80) 0%, rgba(3, 1, 1, 0.25) 100%);
         }
 
         /* Minimalist kaydırma çubuğu */
@@ -63,7 +68,7 @@
             background: #000000;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1a1a1a;
+            background: #240c0f;
         }
 
         /* Metin seçimi */
@@ -87,9 +92,9 @@
             <!-- ================================================================= -->
             <div id="directory-view">
                 <!-- Estetik Dizin Başlığı -->
-                <header class="mb-12 pb-4 border-b border-[#1c1c1c] select-none">
+                <header class="mb-12 pb-4 border-b border-[#241214] select-none">
                     <h1 class="text-sm sm:text-[15px] tracking-wide text-[#e5e5e5] font-normal">
-                        <span class="text-[#525252]">~/</span>kendimizce yorumlamalar
+                        <span class="text-[#78464b]">~/</span>kendimizce yorumlamalar
                     </h1>
                 </header>
 
@@ -132,7 +137,7 @@
         </div>
 
         <!-- Alt Bilgi (Copyright) -->
-        <footer class="mt-24 pt-6 text-[11px] text-[#454545] select-none">
+        <footer class="mt-24 pt-6 text-[11px] text-[#593a3d] select-none">
             © 2026 kendimizce yorumlamalar
         </footer>
 
@@ -319,9 +324,9 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
                         <span class="text-xs sm:text-sm text-[#b3b3b3] group-hover:text-white transition-colors duration-150">
                             ${escapeHTML(yazi.dosya)}
                         </span>
-                        ${yazi.yazar ? `<span class="text-[11px] text-[#525252] group-hover:text-[#737373] transition-colors duration-150">/ ${escapeHTML(yazi.yazar)}</span>` : ''}
+                        ${yazi.yazar ? `<span class="text-[11px] text-[#6e4b4f] group-hover:text-[#9c6b70] transition-colors duration-150">/ ${escapeHTML(yazi.yazar)}</span>` : ''}
                     </div>
-                    <span class="text-xs text-[#525252] group-hover:text-[#737373] transition-colors duration-150 shrink-0">
+                    <span class="text-xs text-[#614246] group-hover:text-[#8f6166] transition-colors duration-150 shrink-0">
                         ${escapeHTML(yazi.tarih)}
                     </span>
                 </div>
