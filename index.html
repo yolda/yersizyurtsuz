@@ -133,13 +133,20 @@
                     <div id="reader-content" class="font-serif text-[16px] sm:text-[17px] text-[#a8a29e] leading-[1.9] space-y-6">
                         <!-- Paragraflar JavaScript ile otomatik doldurulur -->
                     </div>
+
+                    <!-- Yazar İmzası (Metnin Sağ Alt Köşesi) -->
+                    <footer id="reader-author-wrap" class="mt-12 pt-5 border-t border-[#1c0e10] flex justify-end">
+                        <span id="reader-author" class="font-serif italic text-[15px] sm:text-base text-[#8f6166] tracking-wide">
+                            — yazar
+                        </span>
+                    </footer>
                 </article>
             </div>
         </div>
 
         <!-- Alt Bilgi (Copyright) -->
         <footer class="mt-24 pt-6 text-[11px] text-[#593a3d] select-none">
-            © 2026 yersiz & yurtsuz
+            © 2026 kendimizce yorumlamalar
         </footer>
 
     </div>
@@ -189,10 +196,6 @@ dogville de yaşananlarla performans birbirlerine benzer demek az kalıyor, ayn�
 önceleri bana yüzeysel gelen “her insan kötüdür” önermesi filmden sonra eskiden yüzeysel geldiği kadar gerçek gelmeye başladı. zira gerçek örnek de vardı ama yine de grace gibi inandırabilmiştim kendimi insanların iyi olabileceklerine. kötü ve yoz şartların onları bu hale getirdiklerine, bilinç kazıp “iyi insan” olabileceklerine. kendim için “hümanist” sıfatını kullanabilecek miyim bilmiyorum. sanırım grace’in sonda aldığı kararın eksik veya yanlış olduğunu düşünmüyorum. bunu düşünmemek bile canice hissettirmeye yetiyor insana…
 
 belki bizler de kendimizi ahlaklı zanneden ama dogville’dekilerden pek farklı olmayan yaratıklarızdır. ben öyle değilim en azından, benim ahlakım gerçek. herkes gibi ben de buna inanıyorum.
-
-
-
--baris b
                 `
             },
 
@@ -293,9 +296,6 @@ Bütün bu tarihsel, kavramsal ve iktisadi gerçekler yan yana getirildiğinde, 
 Siyaset bilimindeki "sol" kavramı ile Kur'an'daki mecazi ifadelerin kasıtlı olarak birbirine karıştırılmasından, "Mülkiyet Allah'ındır" ilkesinin sarayların ve sermaye tekellerinin meşruiyet aracına dönüştürülmesine kadar uzanan bu çarpıtma süreci, kitlelerin kendi kurtuluş reçetelerine yabancılaşmasına hizmet etmiştir. Oysa özüne dönüldüğünde görülecektir ki; mülkiyetin toplumsallaştırılmasını savunan, servetin belirli ellerde birikmesini lanetleyen, yoksulun zenginin malında doğrudan hakkı olduğunu ilan eden, emeği sömürüden kurtarmaya çalışan ve her türlü ırk ve sınıf üstünlüğünü ayaklarının altına alan bir inanç sisteminin, eşitlik ve adalet arayışındaki sosyalizmle kavgalı olması düşünülemez.
 
 Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, ancak hem dinin biçimsel kabuklarından sıyrılarak devrimci özüyle kavranmasına hem de sosyalizmin bu toprakların kadim adalet ve paylaşım kültürüyle yeniden barışmasına bağlıdır. Kısacası mesele, iki zıt kutbu zorla uzlaştırmak değil; yüzyıllardır birbirine düşman edilen iki büyük hakikat arayışının, aynı insani ve eşitlikçi özden beslendiğini yeniden hatırlamaktır.
-
-
--Osman
   `
 },
             
@@ -371,6 +371,16 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
             document.getElementById('reader-date').textContent = yazi.tarih;
             document.getElementById('reader-title').textContent = yazi.baslik;
             
+            // Yazar imzasını metnin sağ alt köşesine yerleştir
+            const authorWrap = document.getElementById('reader-author-wrap');
+            const authorEl = document.getElementById('reader-author');
+            if (yazi.yazar && yazi.yazar.trim()) {
+                authorEl.textContent = `— ${yazi.yazar.trim()}`;
+                authorWrap.classList.remove('hidden');
+            } else {
+                authorWrap.classList.add('hidden');
+            }
+
             // Düz metni satır sonlarına göre otomatik paragraflara böl
             const paragraflar = yazi.metin
                 .trim()
