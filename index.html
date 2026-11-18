@@ -25,7 +25,7 @@
     </script>
 
     <style>
-        /* Tam siyah zemin ve sıfır görsel gürültü */
+        /* Tam siyah arka plan ve sıfır görsel kalabalık */
         html, body {
             background-color: #000000;
             color: #d4d4d4;
@@ -67,7 +67,7 @@
 
             <!-- Dosya Listesi -->
             <main id="file-list" class="space-y-3">
-                <!-- JavaScript ile doldurulur -->
+                <!-- JavaScript ile otomatik doldurulur -->
             </main>
         </div>
 
@@ -97,7 +97,7 @@
                 </header>
 
                 <div id="reader-content" class="font-sans text-[15px] sm:text-base text-[#cccccc] leading-[1.85] space-y-6">
-                    <!-- Paragraflar JavaScript ile doldurulur -->
+                    <!-- Paragraflar JavaScript ile otomatik doldurulur -->
                 </div>
             </article>
         </div>
@@ -106,18 +106,16 @@
 
     <script>
         // =========================================================================
-        // YAZI ARŞİVİ
-        // Yeni bir yazı eklemek için aşağıdaki diziye aynı yapıda yeni bir obje ekle.
+        // YAZILARINI BURAYA EKLE (KOLAY DÜZENLEME ALANI)
+        // Yeni yazı eklemek için en alttaki hazır şablonu kopyalayıp doldurman yeterli.
+        // Metin kısmında paragraf ayırmak için sadece Enter tuşuna basabilirsin.
         // =========================================================================
-        const posts = [
+        const YAZILAR = [
             {
-                id: "dogvilleandrhythmzero",
-                filename: "dogvilleandrhythmzerotxt",
-                date: "2026-11-18",
-                title: "dogville ve rhythm 0 üzerine",
-                paragraphs: [
-                    dogville & rhythm 0 üzerine
-
+                dosya: "dogvilleandrhythmzero.txt",
+                tarih: "2026-11-18",
+                baslik: "dogville ve rhythm 0 üzerine",
+                metin: `
 dogville filmini izlerken ve izledikten sonra rhythm 0 performansıyla olan benzerliği aklımı kurcalamayı bırakmadı. bu benzerliği film ve performans hakkında bilgisi olan herkes kurabilir. ama bence “benziyorlar” deyip geçilmemesi gereken bi konu, neticede birisi kurmaca iken diğeri tamamen gerçek.
 
 dogville dağların arasında, mütevazi, dindar ve “dürüst” insanların minimal bi yaşam sürdüğü bir abd kasabasıdır. kasabaya zorbalıktan kaçıp sığınan grace’e ,kasaba halkı iki hafta tanır. bu iki hafta bir nevi deneme sürecidir. eğer 15 kasaba sakini de isterse grace, dogville’de yaşamaya hak kazancaktır. ilk günler kasaba sakinleri grace’i kendi yaşamlarına dahil etmekte zorlansalar da grace kasabaya, kasaba da grace’e adapte olmayı başarır. iyi geçen günleri seyrederiz; sonra lars von trier filmi seyrettiğimizi hatırlarız..
@@ -137,23 +135,38 @@ dogville de yaşananlarla performans birbirlerine benzer demek az kalıyor, ayn�
 önceleri bana yüzeysel gelen “her insan kötüdür” önermesi filmden sonra eskiden yüzeysel geldiği kadar gerçek gelmeye başladı. zira gerçek örnek de vardı ama yine de grace gibi inandırabilmiştim kendimi insanların iyi olabileceklerine. kötü ve yoz şartların onları bu hale getirdiklerine, bilinç kazıp “iyi insan” olabileceklerine. kendim için “hümanist” sıfatını kullanabilecek miyim bilmiyorum. sanırım grace’in sonda aldığı kararın eksik veya yanlış olduğunu düşünmüyorum. bunu düşünmemek bile canice hissettirmeye yetiyor insana…
 
 belki bizler de kendimizi ahlaklı zanneden ama dogville’dekilerden pek farklı olmayan yaratıklarızdır. ben öyle değilim en azından, benim ahlakım gerçek. herkes gibi ben de buna inanıyorum.
-                ]
+                `
             },
             {
-                id: "kent-ve-yalnizlik-uzerine",
-                filename: "kent_ve_yalnizlik_uzerine.txt",
-                date: "2026-11-12",
-                title: "Modern Kent ve Kalabalıklar İçindeki Yalnızlık",
-                paragraphs: [
-                    "Modern metropol, insanlık tarihinde hiç olmadığı kadar fazla bireyi fiziksel olarak birbirine yaklaştırırken, duygusal ve toplumsal mesafeleri aynı oranda derinleştiren bir mekândır. Georg Simmel’in metropol bireyinde gözlemlediği 'bıkkınlık' (blasé) tavrı, günümüzde her gün milyonlarca insanın yanından geçip birbirine değmeden yaşadığı bir hayatta kalma refleksine dönüşmüştür.",
-                    "Geleneksel toplulukların sunduğu organik bağlar çözüldüğünde, birey kendi kimliğini kurma özgürlüğüne kavuşur; ancak bu özgürlüğün bedeli derin bir yalıtılmışlıktır. Cam kuleler, standartlaşmış tüketim alanları ve algoritmalarla örülü dijital kamusal alanlar, karşılaşmayı değil yalnızca yan yana durmayı organize eder.",
-                    "Sonuç olarak kentli insan, kalabalığın gürültüsü içinde kendi sessizliğine çekilir. Yalnızlık artık fiziksel bir kimsesizlik hali değil; herkesin birbirini gördüğü ama kimsenin kimseye gerçekten tanıklık etmediği modern bir varoluş biçimidir."
-                ]
+                dosya: "kent_ve_yalnizlik_uzerine.txt",
+                tarih: "2026-11-12",
+                baslik: "Modern Kent ve Kalabalıklar İçindeki Yalnızlık",
+                metin: `
+                Modern metropol, insanlık tarihinde hiç olmadığı kadar fazla bireyi fiziksel olarak birbirine yaklaştırırken, duygusal ve toplumsal mesafeleri aynı oranda derinleştiren bir mekândır. Georg Simmel’in metropol bireyinde gözlemlediği 'bıkkınlık' (blasé) tavrı, günümüzde her gün milyonlarca insanın yanından geçip birbirine değmeden yaşadığı bir hayatta kalma refleksine dönüşmüştür.
+
+                Geleneksel toplulukların sunduğu organik bağlar çözüldüğünde, birey kendi kimliğini kurma özgürlüğüne kavuşur; ancak bu özgürlüğün bedeli derin bir yalıtılmışlıktır. Cam kuleler, standartlaşmış tüketim alanları ve algoritmalarla örülü dijital kamusal alanlar, karşılaşmayı değil yalnızca yan yana durmayı organize eder.
+
+                Sonuç olarak kentli insan, kalabalığın gürültüsü içinde kendi sessizliğine çekilir. Yalnızlık artık fiziksel bir kimsesizlik hali değil; herkesin birbirini gördüğü ama kimsenin kimseye gerçekten tanıklık etmediği modern bir varoluş biçimidir.
+                `
             }
+
+            /*
+            // --- YENİ YAZI EKLEME ŞABLONU (Kopyalayıp yukarıdaki virgülün altına yapıştır) ---
+            ,{
+                dosya: "yeni_yazinin_dosya_adi.txt",
+                tarih: "2026-11-20",
+                baslik: "Buraya Yazının Ana Başlığını Yaz",
+                metin: `
+                Buraya istediğin kadar uzun metni düz olarak yapıştırabilirsin.
+
+                Paragraf ayırmak için sadece Enter tuşuna basman yeterli.
+                `
+            }
+            */
         ];
 
         // =========================================================================
-        // ARAYÜZ FONKSİYONLARI
+        // SİSTEM KODLARI (Buraya dokunmana gerek yok)
         // =========================================================================
         function escapeHTML(str) {
             const div = document.createElement('div');
@@ -164,32 +177,39 @@ belki bizler de kendimizi ahlaklı zanneden ama dogville’dekilerden pek farkl�
         function renderDirectory() {
             const listContainer = document.getElementById('file-list');
             
-            listContainer.innerHTML = posts.map(post => `
+            listContainer.innerHTML = YAZILAR.map((yazi, index) => `
                 <div 
-                    onclick="openPost('${post.id}')"
-                    onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPost('${post.id}'); }"
+                    onclick="openPost(${index})"
+                    onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPost(${index}); }"
                     role="button"
                     tabindex="0"
                     class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 py-1 cursor-pointer focus:outline-none">
                     <span class="text-xs sm:text-sm text-[#b3b3b3] group-hover:text-white transition-colors duration-150">
-                        ${escapeHTML(post.filename)}
+                        ${escapeHTML(yazi.dosya)}
                     </span>
                     <span class="text-xs text-[#525252] group-hover:text-[#737373] transition-colors duration-150 shrink-0">
-                        ${escapeHTML(post.date)}
+                        ${escapeHTML(yazi.tarih)}
                     </span>
                 </div>
             `).join('');
         }
 
-        function openPost(id) {
-            const post = posts.find(item => item.id === id);
-            if (!post) return;
+        function openPost(index) {
+            const yazi = YAZILAR[index];
+            if (!yazi) return;
 
-            document.getElementById('reader-date').textContent = post.date;
-            document.getElementById('reader-title').textContent = post.title;
+            document.getElementById('reader-date').textContent = yazi.tarih;
+            document.getElementById('reader-title').textContent = yazi.baslik;
             
+            // Düz metni satır sonlarına göre otomatik paragraflara böl
+            const paragraflar = yazi.metin
+                .trim()
+                .split(/\n\s*\n|\n/)
+                .map(p => p.trim())
+                .filter(p => p.length > 0);
+
             const contentContainer = document.getElementById('reader-content');
-            contentContainer.innerHTML = post.paragraphs
+            contentContainer.innerHTML = paragraflar
                 .map(text => `<p>${escapeHTML(text)}</p>`)
                 .join('');
 
