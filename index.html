@@ -31,9 +31,10 @@
             color: #d4d4d4;
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
 
-        /* Koyu Kızıl / Kök Boyası İran Halısı Dokusu (Sadece Ana Ekranda Aktif) */
+        /* Koyu Kızıl / Kök Boyası İran Halısı Dokusu (Tüm Sayfada Sabit) */
         #carpet-motif {
             position: fixed;
             inset: 0;
@@ -142,6 +143,16 @@
         </footer>
 
     </div>
+
+    <!-- Minimal Yukarı Çık Tuşu (Sadece Okuma Ekranında Kaydırınca Görünür) -->
+    <button
+        id="scroll-top-btn"
+        type="button"
+        onclick="scrollToTop()"
+        aria-label="Yukarı çık"
+        class="fixed bottom-6 right-6 z-20 px-2.5 py-1 text-[11px] text-[#78464b] hover:text-[#e5e5e5] bg-[#080304]/90 border border-[#241214] hover:border-[#47171d] transition-all duration-200 opacity-0 pointer-events-none cursor-pointer focus:outline-none">
+        ↑ yukarı
+    </button>
 
     <script>
         // =========================================================================
@@ -333,6 +344,23 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
             `).join('');
         }
 
+        function updateScrollTopButton() {
+            const btn = document.getElementById('scroll-top-btn');
+            const isReaderOpen = !document.getElementById('reader-view').classList.contains('hidden');
+
+            if (isReaderOpen && window.scrollY > 300) {
+                btn.classList.remove('opacity-0', 'pointer-events-none');
+                btn.classList.add('opacity-100');
+            } else {
+                btn.classList.add('opacity-0', 'pointer-events-none');
+                btn.classList.remove('opacity-100');
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function openPost(index) {
             const yazi = YAZILAR[index];
             if (!yazi) return;
@@ -352,18 +380,21 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
                 .map(text => `<p>${escapeHTML(text)}</p>`)
                 .join('');
 
-            document.getElementById('carpet-motif').classList.add('hidden');
             document.getElementById('directory-view').classList.add('hidden');
             document.getElementById('reader-view').classList.remove('hidden');
             window.scrollTo(0, 0);
+            updateScrollTopButton();
         }
 
         function showDirectory() {
             document.getElementById('reader-view').classList.add('hidden');
             document.getElementById('directory-view').classList.remove('hidden');
-            document.getElementById('carpet-motif').classList.remove('hidden');
             window.scrollTo(0, 0);
+            updateScrollTopButton();
         }
+
+        // Kaydırma esnasında yukarı çık tuşunu kontrol et
+        window.addEventListener('scroll', updateScrollTopButton, { passive: true });
 
         // ESC tuşu ile dizine dönüş
         document.addEventListener('keydown', (e) => {
