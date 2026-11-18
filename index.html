@@ -33,6 +33,18 @@
             padding: 0;
         }
 
+        /* 35mm Analog Film Greni (Sadece Ana Ekranda Aktif) */
+        #film-grain {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.045;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
         /* Minimalist kaydırma çubuğu */
         ::-webkit-scrollbar {
             width: 4px;
@@ -53,6 +65,9 @@
 </head>
 <body class="bg-black text-[#d4d4d4] font-mono antialiased min-h-screen flex flex-col">
 
+    <!-- Analog Film Greni Katmanı -->
+    <div id="film-grain" aria-hidden="true"></div>
+
     <!-- Ana Taşıyıcı -->
     <div class="w-full max-w-2xl mx-auto px-6 pt-16 sm:pt-24 pb-12 flex-1 flex flex-col justify-between">
         
@@ -64,7 +79,7 @@
                 <!-- Estetik Dizin Başlığı -->
                 <header class="mb-12 pb-4 border-b border-[#141414] select-none">
                     <h1 class="text-sm sm:text-[15px] tracking-wide text-[#e5e5e5] font-normal">
-                        <span class="text-[#525252]">~</span>kendimizce yorumlamalar
+                        <span class="text-[#525252]">~/</span>kendimizce yorumlamalar
                     </h1>
                 </header>
 
@@ -108,7 +123,7 @@
 
         <!-- Alt Bilgi (Copyright) -->
         <footer class="mt-24 pt-6 text-[11px] text-[#3f3f3f] select-none">
-            © 2026 yersiz & yurtsuz
+            © 2026 kendimizce yorumlamalar
         </footer>
 
     </div>
@@ -322,6 +337,7 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
                 .map(text => `<p>${escapeHTML(text)}</p>`)
                 .join('');
 
+            document.getElementById('film-grain').classList.add('hidden');
             document.getElementById('directory-view').classList.add('hidden');
             document.getElementById('reader-view').classList.remove('hidden');
             window.scrollTo(0, 0);
@@ -330,6 +346,7 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
         function showDirectory() {
             document.getElementById('reader-view').classList.add('hidden');
             document.getElementById('directory-view').classList.remove('hidden');
+            document.getElementById('film-grain').classList.remove('hidden');
             window.scrollTo(0, 0);
         }
 
