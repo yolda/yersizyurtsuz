@@ -113,6 +113,7 @@
         const YAZILAR = [
             {
                 dosya: "dogville ve rhythm 0 üzerine",
+                yazar: "baris b",
                 tarih: "18/11/2026",
                 baslik: "dogville ve rhythm 0 üzerine",
                 metin: `
@@ -144,6 +145,7 @@ belki bizler de kendimizi ahlaklı zanneden ama dogville’dekilerden pek farkl�
 
 {
   dosya: "Türkiye'deki Sosyalizm Algısı ve İslamiyet",
+  yazar: "Osman",
   tarih: "14/11/2026",
   baslik: "Türkiye'deki Sosyalizm Algısı ve İslamiyet",
   metin: `
@@ -171,7 +173,7 @@ Sol Kavramı
 
 İçinde yaşadığımız toplumun farklı dünyalardan oluşması, bazen belli bir kavramın ve onu ifade eden deyimin çok değişik anlamlarda kullanılması ve algılanması sonucunu da doğurabilmektedir. “Sol” ve “solculuk” kavramları böyledir. “Sol”un siyaset bilimi alanında taşıdığı ve belli bir siyasal bilim kültürüne sahip olan toplum kesimlerince kabul edilen anlamının kökenleri, büyük Fransız devrimi yıllarına dayanır.
 
-1789 Devrimi’nin ardından oluşan yasama organlarında, aynı siyasal eğilimi temsil edenler, bugün bizim parlamentomuzda da görüldüğü gibi toplantı salonunda belli sandalyelerde gruplaşarak oturmaktaydılar. Meclis Başkanına göre, Meclis’in solundaki sandalyelerde oturanlar, kralın devrilmesinden ve idam edilmesinden yana olanlardı. Bunlara Jacobin’ler denilmekteydi. Buna karşılık, daha tutucu bir çizgiyi temsil eden ve kral karşısında ılımlı davranma yanlısı olan Girondin’lerden meydana gelen karşıt grup ise sağda oturmaktaydı. Bunların dışında, arkada, fakat yerden daha yüksek sıralarda oturan ve bizim siyaset dilimizde “yaylacı” olarak ifade edilenlerin meydana getirdiği gruba da Montagnard denilmekteydi.
+1789 Devrimi’nin ardından oluşan yasama organlarında, aynı siyasal eğilimi temsil edenler, bugün bizim parlamentomuzda da görüldüğü gibi toplantı salonunda belli sandalyelerde gruplaşarak oturmaktaydılar. Meclis Başkanına göre, Meclis’in solundaki sandalyelerde oturanlar, kralın devrilmesinden ve idam edilmesinden yana olanlardı. Bunlara Jacobin’ler denilmekteydi. Buna karşılık, daha tutucu bir çizgiyi temsil eden ve kral karşısında ılımlı davranma yanlısı olan Girondin’lerden meydana gelen karşıt grup ise sağda oturmaktaydılar. Bunların dışında, arkada, fakat yerden daha yüksek sıralarda oturan ve bizim siyaset dilimizde “yaylacı” olarak ifade edilenlerin meydana getirdiği gruba da Montagnard denilmekteydi.
 
 Siyaset diline sol ve sağ deyimleri böylece girdikten sonra, zamanla sol daha genel bir anlam kazandı; toplum yaşamında eşitlik ve adalet yönünde değişiklikler isteyenlere solcu ve bunların oluşturdukları siyasal çizgiye de sol denilmeye başladı.
 
@@ -248,6 +250,7 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
             // --- YENİ YAZI EKLEME ŞABLONU (Kopyalayıp yukarıdaki virgülün altına yapıştır) ---
             ,{
                 dosya: "yeni_yazinin_dosya_adi.txt",
+                yazar: "Yazar Adı",
                 tarih: "2026-11-20",
                 baslik: "Buraya Yazının Ana Başlığını Yaz",
                 metin: `
@@ -277,13 +280,14 @@ Türkiye'de ve İslam coğrafyasında bu yapay düşmanlığın aşılması, anc
                     onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPost(${index}); }"
                     role="button"
                     tabindex="0"
-                    class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 py-1 cursor-pointer focus:outline-none">
+                    class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4 py-1 cursor-pointer focus:outline-none">
                     <span class="text-xs sm:text-sm text-[#b3b3b3] group-hover:text-white transition-colors duration-150">
                         ${escapeHTML(yazi.dosya)}
                     </span>
-                    <span class="text-xs text-[#525252] group-hover:text-[#737373] transition-colors duration-150 shrink-0">
-                        ${escapeHTML(yazi.tarih)}
-                    </span>
+                    <div class="flex items-baseline gap-3 text-xs text-[#525252] group-hover:text-[#737373] transition-colors duration-150 shrink-0">
+                        ${yazi.yazar ? `<span>${escapeHTML(yazi.yazar)}</span>` : ''}
+                        <span>${escapeHTML(yazi.tarih)}</span>
+                    </div>
                 </div>
             `).join('');
         }
