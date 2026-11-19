@@ -86,8 +86,26 @@ Veri gizliliğinin yanında siber güvenlik boyutuna değinmemek imkansız. Geç
 Peki bu durum karşısında ne yapabiliriz?
 Günümüz şartlarında kendimizi yüzde yüz gizliliğe almak veya tamamen izole bir dijital yaşam sürmek neredeyse imkansız ve yapabileceğiniz şeyleri burada yazmam yazının gerçekten uzamasına sebep olacağı için yazamıyorum isterseniz privacyguides.org sitesine göz atabilirsiniz. Ayrıyeten şirketlerin ve devlet yapılarının da böyle bir izolasyonu istemediği gayet açık. Kendi telefonumuzdaki yazılımı değiştirmememiz ve belirli uygulamaları silemememiz için cihazlara donanımsal kilitlerin konulduğu bir dönemden geçiyoruz. Yapabileceğimiz en stratejik adım, ülke olarak kendi özgür yazılım ve donanımlarımızı üretmektir. Kendi masaüstü işletim sistemimizi geliştirmek (Pardus adı verilen ve milyonlar harcanarak tema değiştirilip sunulan Debian dağıtımından bahsetmiyorum elbette), kendi mobil cihazlarımızı tasarlamak ve Android tabanlı ancak Google servislerine (GMS) bağımlı olmayan, şirketlerin kar hırsına yenik düşmeyecek merkeziyetsiz ve şeffaf mobil işletim sistemleri inşa etmekten geçiyor. 2013 yılında tek bir hamleyle Pisi tabanlı yerli Pardus projesini ve yetişmiş ekibini rafa kaldıran bir anlayışın bunu başarıp başaramayacağı büyük bir soru işareti olsa da, diğer tüm stratejik sektörlerde olduğu gibi dijital alanda da tam bağımsızlık için milli üretim şarttır. Bu üretim, doğrudan halkın verilerinin gizliliği ve güvenliği uğruna yürütülmelidir. Zamanla kendi verisini koruyamayan halklar o veriler üzerine tasarlanan algoritmalarla yönetilecektir ve yönetilmektedir.
         `
-    }
+    },
+    {
+        dosya: "sinema okuyup, sinemada çakallarla dans izlemek",
+        yazar: "barış b",
+        tarih: "20/11/2026",
+        baslik: "sinema okuyup, sinemada çakallarla dans izlemek",
+        metin: `
+beni bayağı rahatsız eden durumdur. bu rahatsızlığımın nedeni filmin bana hitap etmemesi, gişe filmi olması, hiçbir mahiyet taşımaması vesaire de değil.
 
+yapay zekanın geldiği noktaya bakıp derler ya “yazılım mühendisleri kendi ayağına sıktı” diye; çünkü kendi ürettikleri teknolojinin işlerini elinden aldığını, 3-5 mühendisin yapacağı işi tek ai asistanının yapabileceğinden falan. sinemada da durum birebir aynı. ben sinema alanında bunu gözlemleyebildiğimden bu perspektiften yazabiliyorum. muhtemelen birçok sektörde bu böyledir. 
+
+bu konu, işin içinde alanın öğrencilerini de barındırdığından bence çok derin ve rahatsız edicidir ve “ya bırakın isteyen istediğini seyretsin, hep modern/post-modern anlatı mı seyredeceğiz? herkes iyi film izlemek zorunda mı?” tarzı yorumlardan muaftır. neden?
+
+sinemada çakallarla dans seyredip, filmin hasılatına en ufak katkıda bulunan hiçbir sinema öğrencisi diplomasını aldıktan sonra iş bulamayınca şikayet etmemeli. buna hakları yoktur bu arkadaşların. bugün sinemada kar amacını birincil baz alınarak çekilmiş filmlere giden öğrencilerin mezuniyetlerinde, bu durum aleyhlerinde delil olarak kullanılacaktır. iş bulmak için bütün ideallerini ve sanat üretme hazzını bir kenara bırakmak zorunda kalıp yine iş bulamadığında şikayet etmeyecek bu arkadaşlar. çünkü sinemayı, sinema öğrencisi olarak getirdiğimiz nokta bu, izlenilen film bu, hasılat yapan film bu. 
+
+bir gün bir fona veya yapımcı şirkete başvurduğumuz zaman; çok güvendiğimiz, avangart, sanatsal arka planı olan bi senaryoyu film olarak ortaya koymak istediğimizde ve aynı ihtirasla reddedildiğimizde kimse “ya neden böyle oldu” demeyecek. şikayet etmeyecek. halkı ve sinemaseverleri geçelim; bizler sinema öğrencileri olarak, sinemanın bugün geldiği ve geleceği yoz konuma hizmet ettik diyeceğiz.
+
+sinemada gişe filmi izleyen arkadaşlar, bunu üzülün diye anlatmıyorum. yarın ideallerinizden vazgeçmek zorunda kaldığınızda karşınıza çıkacak tabloyu şimdiden görün diye anlatıyorum. kendi yarattığınız ve para kazandırdığınız sektörün sonuçlarından şikayet etmediğiniz sürece, ne istiyorsanız yapabilirsiniz.. 
+        `
+    }
     /*
     // --- YENİ YAZI EKLEME ŞABLONU (Yukarıdaki } işaretinin yanına virgül koyup yapıştır) ---
     ,{
