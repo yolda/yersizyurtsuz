@@ -1,9 +1,9 @@
 const YAZILAR = [
         {
-        dosya: "sinema okuyup, sinemada çakallarla dans izlemek",
+        dosya: "sinema okuyup, sinemada 'çakallarla dans' izlemek",
         yazar: "barış b",
         tarih: "19/11/2026",
-        baslik: "sinema okuyup, sinemada çakallarla dans izlemek",
+        baslik: "sinema okuyup, sinemada 'çakallarla dans' izlemek",
         metin: `
 beni bayağı rahatsız eden durumdur. bu rahatsızlığımın nedeni filmin bana hitap etmemesi, gişe filmi olması, hiçbir mahiyet taşımaması vesaire de değil.
 
