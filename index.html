@@ -76,11 +76,14 @@
         <div>
             <!-- 1. ANA EKRAN: DİZİN LİSTESİ -->
             <div id="directory-view">
-                <header class="mb-12 pb-4 border-b border-[#241214] select-none">
-                    <h1 class="text-sm sm:text-[15px] tracking-wide text-[#e5e5e5] font-normal">
-                        <span class="text-[#78464b]">~</span>kendimizce yorumlamalar
+                <header class="mb-12 pb-4 border-b border-[#241214] flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+                    <h1 class="text-sm sm:text-[15px] tracking-wide text-[#e5e5e5] font-normal select-none">
+                        <span class="text-[#78464b]">~/</span>kendimizce yorumlamalar
                     </h1>
-                </header>
+                    <a id="weekly-film" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-xs text-[#78464b] hover:text-[#d4a3a8] transition-colors duration-150">
+        <!-- JS ile otomatik dolar -->
+                    </a>
+                    </header>
 
                 <main id="file-list" class="space-y-3"></main>
             </div>
@@ -241,6 +244,12 @@
             }
         });
 
+        if (typeof HAFTANIN_FILMI !== 'undefined' && HAFTANIN_FILMI.link) {
+            const filmEl = document.getElementById('weekly-film');
+            filmEl.textContent = `haftanın filmi: ${HAFTANIN_FILMI.ad} ↗`;
+            filmEl.href = HAFTANIN_FILMI.link;
+            filmEl.classList.remove('hidden');
+        }
         renderDirectory();
     </script>
 </body>
