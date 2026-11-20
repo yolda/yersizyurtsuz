@@ -137,7 +137,7 @@ neticede noviembre festivalde sahneye çıkar. kendini sokaklara adamış dani, 
 
 bütün bu olanlardan sonra dertlerini haykırmak için kraliyet tiyatrosunu işgal etmeyi planlarlar ve örgütlenirler. plan başlamıştır; noviembre, kraliyet tiyatrosunda süren konseri keser. salonda arkadaşları sahnede ise alfredo kendini gösterir.bütün salondaki seyircilere karşı isyanları, sitemlerini ve manifestolarını haykırırlar. alfredo sanatın bir silah olduğunu söyler. gerçek bir silah. cebinden bu silahını çıkartır ve ateşler. o sırada tiyatronun güvenliği, silahını ateşleyen alfrodo'ya refleks olarak bir mermi ateşler ve onu orada öldürür. fark şudur ki, alfredo’nun silahı çiçek, kolluk kuvvet ise mermi ateşlemiştir.
 
-insan burada alfredonun sözlerinden yola çıkarak bir soru sormaktan alamıyor kendini; eğer gerçekten sanat bir silahsa, alfredo ve ekibi haftalardır neden kendilerini ezen diktayı vuramadı?
+insan burada alfredonun sözlerinden yola çıkarak bir soru sormaktan alamıyor kendini; **eğer gerçekten sanat bir silahsa, alfredo ve ekibi haftalardır neden kendilerini ezen diktayı vuramadı?**
         `
     }
     /*
