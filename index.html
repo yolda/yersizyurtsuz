@@ -220,7 +220,10 @@
 
             const contentContainer = document.getElementById('reader-content');
             contentContainer.innerHTML = paragraflar
-                .map(text => `<p>${escapeHTML(text)}</p>`)
+                .map(text => {
+                    const guvenliMetin = escapeHTML(text).replace(/\*([^*]+)\*/g, '<em class="italic text-[#c7c2be]">$1</em>');
+                    return `<p>${guvenliMetin}</p>`;
+                })
                 .join('');
 
             document.getElementById('directory-view').classList.add('hidden');
