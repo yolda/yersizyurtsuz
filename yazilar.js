@@ -120,7 +120,7 @@ Günümüz şartlarında kendimizi yüzde yüz gizliliğe almak veya tamamen izo
         metin: `
 bir sanatçı, parayı ve sahneleri reddettiği vakit, sanatını icra edebilir mi? bu soruyu daha yalın haliyle soracak olursak "sistemin dışında kalmak mümkün mü?" şeklinde sorabiliriz. 2003 yapımı noviembre filmi tam da bu sorunun peşine düşüyor. tiyatroyu salonlardan kurtarmaya, koltuklarına çivilenmiş seyirciyi sokağa taşımaya çalışan bir grup gencin hikayesini izliyoruz.
 
-*(bu yazı filmi izlemiş kişiler içindir, bolca spoiler içerir.)*
+*(bu yazı filmi izlemiş kişiler içindir, bolca sürprizbozan içerir.)*
 
 filmi ele almadan önce cevap aramamız gereken ilk soru “noviembre tiyatro grubu neden hem parayı hem sahneyi reddetti?" bir bakıma alfredo, kar amacı gütmeden, oyunlarını sahnelerde sergileyebilirdi. öncelikle şunu anlamamız gerek, alfredo sınırlardan hoşlanan bi sanatçı değildi. bir tiyatro bileti aldığınızda planlanmış bir deneyim yaşarsınız. başlangıç saati bellidir, nerede oturacağınız bellidir, ne zaman alkışlayıp salondan çıkacağınız bellidir. noviembre grubu bu sınırları tamamen ortadan kaldırmak ister. çünkü onlara göre sanat,yukarıdan aşağıya yapılan bi gösteri değil, aynı düzlemde gerçekleşen bir karşılaşma olmalıdır. alfredo, sanatı metaya, seyirciyi müşteriye dönüştüren bu kabulü tamamen reddeder veya reddetmek ister..
 
