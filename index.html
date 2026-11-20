@@ -219,11 +219,20 @@
                 .filter(p => p.length > 0);
 
             const contentContainer = document.getElementById('reader-content');
-            contentContainer.innerHTML = paragraflar
+                contentContainer.innerHTML = paragraflar
                 .map(text => {
-                    const guvenliMetin = escapeHTML(text).replace(/\*([^*]+)\*/g, '<em class="italic inline-block -skew-x-12 text-[#e5e0dc] px-0.5">$1</em>');                    return `<p>${guvenliMetin}</p>`;
-                })
-                .join('');
+                    if (text.startsWith('## ')) {
+                        const baslikMetni = escapeHTML(text.slice(3).trim());
+                        return `<h2 class="font-serif text-lg sm:text-xl font-medium text-[#e5e0dc] pt-4 pb-1 tracking-[-0.01em]">${baslikMetni}</h2>`;
+             }
+
+               const guvenliMetin = escapeHTML(text)
+                .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
+                .replace(/\*([^*]+)\*/g, '<em class="italic inline-block -skew-x-12 px-0.5">$1</em>');
+            
+        return `<p>${guvenliMetin}</p>`;
+    })
+    .join('');
 
             document.getElementById('directory-view').classList.add('hidden');
             document.getElementById('reader-view').classList.remove('hidden');
