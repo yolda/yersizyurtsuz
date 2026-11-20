@@ -113,10 +113,10 @@ Günümüz şartlarında kendimizi yüzde yüz gizliliğe almak veya tamamen izo
     }
 
     ,{
-        dosya: "noviembre (2003) filmi üzerine notlar",
+        dosya: "noviembre (2003), filmden kalanlar",
         yazar: "barış b",
         tarih: "25/02/2026",
-        baslik: "noviembre (2003) filmi üzerine notlar",
+        baslik: "noviembre (2003), filmden kalanlar",
         metin: `
 bir sanatçı, parayı ve sahneleri reddettiği vakit, sanatını icra edebilir mi? bu soruyu daha yalın haliyle soracak olursak "sistemin dışında kalmak mümkün mü?" şeklinde sorabiliriz. 2003 yapımı noviembre filmi tam da bu sorunun peşine düşüyor. tiyatroyu salonlardan kurtarmaya, koltuklarına çivilenmiş seyirciyi sokağa taşımaya çalışan bir grup gencin hikayesini izliyoruz.
 
