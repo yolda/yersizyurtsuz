@@ -71,17 +71,53 @@
 
     <div id="carpet-motif" aria-hidden="true"></div>
 
-    <div class="relative z-10 w-full max-w-2xl mx-auto px-6 pt-16 sm:pt-24 pb-12 flex-1 flex flex-col justify-between">
+    <div class="relative z-10 w-full max-w-2xl mx-auto px-6 pt-12 sm:pt-24 pb-12 flex-1 flex flex-col justify-between">
         
         <div>
             <!-- 1. ANA EKRAN: DİZİN LİSTESİ -->
             <div id="directory-view">
-                <header class="mb-12 pb-4 border-b border-[#241214] flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
-                    <h1 class="text-sm sm:text-[15px] tracking-wide text-[#e5e5e5] font-normal select-none">
-                        <span class="text-[#78464b]">~/</span>kendimizce yorumlamalar
-                    </h1>
-                    <a id="weekly-film" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-xs text-[#78464b] hover:text-[#d4a3a8] transition-colors duration-150">
-                    </a>
+                <header class="mb-10 sm:mb-12 pb-4 border-b border-[#241214]">
+                    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2.5">
+                        <h1 class="text-sm sm:text-[15px] tracking-wide text-[#e5e5e5] font-normal select-none">
+                            <span class="text-[#78464b]">~/</span>kendimizce yorumlamalar
+                        </h1>
+                        
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+                            <a id="weekly-film" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[#78464b] hover:text-[#d4a3a8] transition-colors duration-150">
+                            </a>
+                            <button 
+                                id="notify-toggle-btn"
+                                type="button" 
+                                onclick="toggleNotifyForm()" 
+                                class="text-[#a3767b] hover:text-[#e5e0dc] transition-colors duration-150 cursor-pointer focus:outline-none">
+                                + bildirim al
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Açılır-Kapanır Buttondown Abone Formu -->
+                    <form 
+                        id="notify-form"
+                        action="https://buttondown.com/api/emails/embed-subscribe/yolda" 
+                        method="post" 
+                        target="popupwindow" 
+                        onsubmit="window.open('https://buttondown.com/yolda', 'popupwindow')"
+                        class="hidden mt-4 pt-3 border-t border-[#1a0c0e] flex items-center gap-2">
+                        <input 
+                            type="email" 
+                            name="email" 
+                            id="bd-email"
+                            required
+                            placeholder="e-posta adresin..." 
+                            class="bg-[#0a0405] border border-[#291316] focus:border-[#78464b] text-[#d4d4d4] placeholder-[#593a3d] text-xs px-3 py-1.5 outline-none flex-1 sm:flex-none sm:w-60 transition-colors duration-150"
+                        />
+                        <button 
+                            type="submit" 
+                            aria-label="Abone ol"
+                            class="border border-[#291316] hover:border-[#78464b] bg-[#0a0405] text-[#8f6166] hover:text-[#e5e0dc] text-xs px-3 py-1.5 transition-colors duration-150 cursor-pointer shrink-0">
+                            kaydet →
+                        </button>
+                    </form>
                 </header>
 
                 <main id="file-list" class="space-y-3"></main>
@@ -113,43 +149,9 @@
             </div>
         </div>
 
-        <!-- ALT BİLGİ VE BİLDİRİM ALANI -->
-        <footer class="mt-24 pt-6 border-t border-[#170b0d] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-[11px] text-[#593a3d]">
-            <span class="select-none">© 2026 yersiz & yurtsuz</span>
-
-            <div class="flex flex-col sm:items-end">
-                <button 
-                    id="notify-toggle-btn"
-                    type="button" 
-                    onclick="toggleNotifyForm()" 
-                    class="text-left sm:text-right text-[#78464b] hover:text-[#d4a3a8] transition-colors duration-150 cursor-pointer focus:outline-none">
-                    bildirim al
-                </button>
-
-                <!-- Buttondown Abone Formu -->
-                <form 
-                    id="notify-form"
-                    action="https://buttondown.com/api/emails/embed-subscribe/yolda" 
-                    method="post" 
-                    target="popupwindow" 
-                    onsubmit="window.open('https://buttondown.com/yolda', 'popupwindow')"
-                    class="hidden mt-2.5 flex items-center gap-2">
-                    <input 
-                        type="email" 
-                        name="email" 
-                        id="bd-email"
-                        required
-                        placeholder="e-posta adresin..." 
-                        class="bg-[#0a0405] border border-[#291316] focus:border-[#78464b] text-[#d4d4d4] placeholder-[#593a3d] text-xs px-2.5 py-1.5 outline-none w-52 transition-colors duration-150"
-                    />
-                    <button 
-                        type="submit" 
-                        aria-label="Abone ol"
-                        class="border border-[#291316] hover:border-[#78464b] bg-[#0a0405] text-[#8f6166] hover:text-[#e5e0dc] text-xs px-2.5 py-1.5 transition-colors duration-150 cursor-pointer">
-                        →
-                    </button>
-                </form>
-            </div>
+        <!-- ALT BİLGİ -->
+        <footer class="mt-24 pt-6 text-[11px] text-[#593a3d] select-none">
+            © 2026 yersiz & yurtsuz
         </footer>
 
     </div>
