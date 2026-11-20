@@ -112,6 +112,34 @@ Günümüz şartlarında kendimizi yüzde yüz gizliliğe almak veya tamamen izo
         `
     }
 
+    ,{
+        dosya: "noviembre (2003) filminin tahlili",
+        yazar: "barış b",
+        tarih: "25/02/2026",
+        baslik: "noviembre (2003) filminin tahlili",
+        metin: `
+bir sanatçı, parayı ve sahneleri reddettiği vakit, sanatını icra edebilir mi? bu soruyu daha yalın haliyle soracak olursak "sistemin dışında kalmak mümkün mü?" şeklinde sorabiliriz. 2003 yapımı noviembre filmi tam da bu sorunun peşine düşüyor. tiyatroyu salonlardan kurtarmaya, koltuklarına çivilenmiş seyirciyi sokağa taşımaya çalışan bir grup gencin hikayesini izliyoruz.
+
+*(bu yazı filmi izlemiş kişiler içindir, bolca spoiler içerir.)*
+
+filmi ele almadan önce cevap aramamız gereken ilk soru “noviembre tiyatro grubu neden hem parayı hem sahneyi reddetti?" bir bakıma alfredo, kar amacı gütmeden, oyunlarını sahnelerde sergileyebilirdi. öncelikle şunu anlamamız gerek, alfredo sınırlardan hoşlanan bi sanatçı değildi. bir tiyatro bileti aldığınızda planlanmış bir deneyim yaşarsınız. başlangıç saati bellidir, nerede oturacağınız bellidir, ne zaman alkışlayıp salondan çıkacağınız bellidir. noviembre grubu bu sınırları tamamen ortadan kaldırmak ister. çünkü onlara göre sanat,yukarıdan aşağıya yapılan bi gösteri değil, aynı düzlemde gerçekleşen bir karşılaşma olmalıdır. alfredo, sanatı metaya, seyirciyi müşteriye dönüştüren bu kabulü tamamen reddeder veya reddetmek ister..
+
+"seyircinin hiçbir şekilde katılmadan, etkisiz bir şekilde öylece oturmasından hiç hoşlanmıyorum. bir şey yapmalılar. tek yaptıkları heykel gibi oturmak." der alfredo.
+
+benim en çok aklımda kalan sahnesi birisi, lucia’yla alfredo’nun müze sahnesi oldu. bu sahnede odaklanmak istediğim nokta; alfredo'nun sürekli yaptığı kurguyla gerçeği karıştırması değil, lucia'yla incelemiş oldukları tablo. bu tablo rastgele seçilmiş herhangi bir tablo değildir. mevzubahis tablo diego velazquez'in nedimeler adlı eserdir. ünlü ressasmın anı dondurduğu bu eserde sanatçı aynalar kullanarak bir gizem üretir. kimin izleyici, kimin figür olduğunun birbirine karıştığı anlaması güç durum, usta ressam velazquez tarafından kasten bir kafa karışıklığı yaratır. alfredo da aynı ressam velazquez gibi, seyircinin ve sanatçının konumunu sorgular. alfredo'nun hocasını, sevgilisini hatta güvenlik görevlilerini dahi inandırarak gösterilerine dahil etmesi ve tabloya bakarken ortaya çıkardığı "belgesel tiyatro" fikri bu tabloyla beraber daha da anlam kazanır.
+
+noviembre grubu daha öncelerinde sokaklarda denk gelinmesi oldukça mümkün insanları oyunlarında canlandırmış, toplumda kenara itilen evsizleri oyununun merkezine koymuştur. son oyunlarında da yine toplumun muzdarip olduğu terör konusunu oynamak isteyen grup “cinayet” adını verdikleri oyunu sergilemek için sokaklara çıkmışlardı. sağlık ekiplerinin gösteriyi gerçek sanmasıyla oyun başlayamadan bitmek zorunda kalmıştı. bu oyun yüzünden suç taklidi yapmak ve terörü tasvip etmekle suçlanmışlar ve yargılanmışlardı.burada trajikomik olan nokta, bu oyunu sistemin çarklarına uyan bir grup sahnede oynasaydı bütün romantik sanatseverler tarafından takdir edilecek, belki de övgüde bulunmak için sıraya girilecekti.
+
+grubun uğradığı baskılar sonrası dağıldığı günlerde alfredo'yu bir yapımcı arar ve festivallerde çıkmaları için teklif sunar, alfredo bu teklifi kabul etmek isteyip istemediğini kendi de bilemez. film boyunca rahatlıkla idealist diyebileceğimiz alfredo'ya artık bu sıfatı takmakta izleyiciler olarak biz de zorlanırız, ama bir yandan da çocuk sahibi olmuş ve garsonluk yapan alfredo'dan böyle bir durumda idealist bir tavır da beklemekte zorlanırız. filmin bence idealizmi en çok sorgulatan sahnelerinden birisi burasıdır, keza grup üyelerinin arasındaki anlaşmazlığın en yoğun yaşandığı sahne de buradadır. bir grup noviembre manifestosu ve ideallerinden vazgeçmezken diğer grup da sanatlarını icra edecek alanları kalmadığından ve bunun tek yol olduğundan yakınır hale gelmiştir.
+
+neticede noviembre festivalde sahneye çıkar. kendini sokaklara adamış dani, bu festivalde sokakta olduğu gibi seyirciyi oyuna dahil etmeye çalışır. üzerlerine koşar, su döker falan. bence burada biraz da sinirli ve sitemli olduğundan ötürü, işin dozunu gerçekten kaçırır. ne para kazanabilirler ne de başka bi gösterim yapma şansları kalmıştır.
+
+
+bütün bu olanlardan sonra dertlerini haykırmak için kraliyet tiyatrosunu işgal etmeyi planlarlar ve örgütlenirler. plan başlamıştır; noviembre, kraliyet tiyatrosunda süren konseri keser. salonda arkadaşları sahnede ise alfredo kendini gösterir.bütün salondaki seyircilere karşı isyanları, sitemlerini ve manifestolarını haykırırlar. alfredo sanatın bir silah olduğunu söyler. gerçek bir silah. cebinden bu silahını çıkartır ve ateşler. o sırada tiyatronun güvenliği, silahını ateşleyen alfrodo'ya refleks olarak bir mermi ateşler ve onu orada öldürür. fark şudur ki, alfredo’nun silahı çiçek, kolluk kuvvet ise mermi ateşlemiştir.
+
+insan burada alfredonun sözlerinden yola çıkarak bir soru sormaktan alamıyor kendini; eğer gerçekten sanat bir silahsa, alfredo ve ekibi haftalardır neden kendilerini ezen diktayı vuramadı?
+        `
+    }
     /*
     // --- YENİ YAZI EKLEME ŞABLONU (Yukarıdaki } işaretinin yanına virgül koyup yapıştır) ---
     ,{
