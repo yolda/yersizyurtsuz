@@ -98,10 +98,8 @@
                     <!-- Açılır-Kapanır Buttondown Abone Formu -->
                     <form 
                         id="notify-form"
-                        action="https://buttondown.com/api/emails/embed-subscribe/yolda" 
+                        action="https://buttondown.com/api/emails/embed-subscribe/yersizyurtsuz" 
                         method="post" 
-                        target="popupwindow" 
-                        onsubmit="window.open('https://buttondown.com/yolda', 'popupwindow')"
                         class="hidden mt-4 pt-3 border-t border-[#1a0c0e] flex items-center gap-2">
                         <input 
                             type="email" 
@@ -113,11 +111,13 @@
                         />
                         <button 
                             type="submit" 
+                            id="bd-submit-btn"
                             aria-label="Abone ol"
                             class="border border-[#291316] hover:border-[#78464b] bg-[#0a0405] text-[#8f6166] hover:text-[#e5e0dc] text-xs px-3 py-1.5 transition-colors duration-150 cursor-pointer shrink-0">
                             kaydet →
                         </button>
                     </form>
+                    <p id="notify-msg" class="hidden mt-3 text-xs text-[#a3767b]"></p>
                 </header>
 
                 <main id="file-list" class="space-y-3"></main>
@@ -183,6 +183,8 @@
         function toggleNotifyForm() {
             const form = document.getElementById('notify-form');
             const input = document.getElementById('bd-email');
+            const msgEl = document.getElementById('notify-msg');
+            msgEl.classList.add('hidden');
             form.classList.toggle('hidden');
             if (!form.classList.contains('hidden')) {
                 input.focus();
@@ -306,6 +308,36 @@
             filmEl.href = HAFTANIN_FILMI.link;
             filmEl.classList.remove('hidden');
         }
+
+        document.getElementById('notify-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const emailInput = document.getElementById('bd-email');
+            const submitBtn = document.getElementById('bd-submit-btn');
+            const msgEl = document.getElementById('notify-msg');
+
+            submitBtn.textContent = '...';
+            submitBtn.disabled = true;
+
+            try {
+                await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    mode: 'no-cors'
+                });
+
+                emailInput.value = '';
+                form.classList.add('hidden');
+                msgEl.textContent = 'kaydedildi. gelen kutundaki onay mailine tıklamayı unutma.';
+                msgEl.classList.remove('hidden');
+            } catch (err) {
+                msgEl.textContent = 'bir sorun oluştu, tekrar dener misin?';
+                msgEl.classList.remove('hidden');
+            } finally {
+                submitBtn.textContent = 'kaydet →';
+                submitBtn.disabled = false;
+            }
+        });
 
         renderDirectory();
     </script>
