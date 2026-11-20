@@ -300,7 +300,7 @@
 
         if (typeof HAFTANIN_FILMI !== 'undefined' && HAFTANIN_FILMI.link) {
             const filmEl = document.getElementById('weekly-film');
-            filmEl.textContent = `haftanın filmi: ${HAFTANIN_FILMI.ad} ↗`;
+            filmEl.textContent = `${HAFTANIN_FILMI.ad} ↗`;
             filmEl.href = HAFTANIN_FILMI.link;
             filmEl.classList.remove('hidden');
         }
