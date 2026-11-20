@@ -9,7 +9,7 @@
     <!-- Monospace & Edebi Okuma Fontları: JetBrains Mono & Lora -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -81,9 +81,8 @@
                         <span class="text-[#78464b]">~/</span>kendimizce yorumlamalar
                     </h1>
                     <a id="weekly-film" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-xs text-[#78464b] hover:text-[#d4a3a8] transition-colors duration-150">
-        <!-- JS ile otomatik dolar -->
                     </a>
-                    </header>
+                </header>
 
                 <main id="file-list" class="space-y-3"></main>
             </div>
@@ -114,8 +113,43 @@
             </div>
         </div>
 
-        <footer class="mt-24 pt-6 text-[11px] text-[#593a3d] select-none">
-            © 2026 yersiz & yurtsuz
+        <!-- ALT BİLGİ VE BİLDİRİM ALANI -->
+        <footer class="mt-24 pt-6 border-t border-[#170b0d] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-[11px] text-[#593a3d]">
+            <span class="select-none">© 2026 yersiz & yurtsuz</span>
+
+            <div class="flex flex-col sm:items-end">
+                <button 
+                    id="notify-toggle-btn"
+                    type="button" 
+                    onclick="toggleNotifyForm()" 
+                    class="text-left sm:text-right text-[#78464b] hover:text-[#d4a3a8] transition-colors duration-150 cursor-pointer focus:outline-none">
+                    bildirim al
+                </button>
+
+                <!-- Buttondown Abone Formu -->
+                <form 
+                    id="notify-form"
+                    action="https://buttondown.com/api/emails/embed-subscribe/yolda" 
+                    method="post" 
+                    target="popupwindow" 
+                    onsubmit="window.open('https://buttondown.com/yolda', 'popupwindow')"
+                    class="hidden mt-2.5 flex items-center gap-2">
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="bd-email"
+                        required
+                        placeholder="e-posta adresin..." 
+                        class="bg-[#0a0405] border border-[#291316] focus:border-[#78464b] text-[#d4d4d4] placeholder-[#593a3d] text-xs px-2.5 py-1.5 outline-none w-52 transition-colors duration-150"
+                    />
+                    <button 
+                        type="submit" 
+                        aria-label="Abone ol"
+                        class="border border-[#291316] hover:border-[#78464b] bg-[#0a0405] text-[#8f6166] hover:text-[#e5e0dc] text-xs px-2.5 py-1.5 transition-colors duration-150 cursor-pointer">
+                        →
+                    </button>
+                </form>
+            </div>
         </footer>
 
     </div>
@@ -142,6 +176,15 @@
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
+        }
+
+        function toggleNotifyForm() {
+            const form = document.getElementById('notify-form');
+            const input = document.getElementById('bd-email');
+            form.classList.toggle('hidden');
+            if (!form.classList.contains('hidden')) {
+                input.focus();
+            }
         }
 
         function renderDirectory() {
@@ -219,20 +262,20 @@
                 .filter(p => p.length > 0);
 
             const contentContainer = document.getElementById('reader-content');
-                contentContainer.innerHTML = paragraflar
+            contentContainer.innerHTML = paragraflar
                 .map(text => {
                     if (text.startsWith('## ')) {
                         const baslikMetni = escapeHTML(text.slice(3).trim());
                         return `<h2 class="font-serif text-lg sm:text-xl font-medium text-[#e5e0dc] pt-4 pb-1 tracking-[-0.01em]">${baslikMetni}</h2>`;
-             }
+                    }
 
-               const guvenliMetin = escapeHTML(text)
-                .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
-                .replace(/\*([^*]+)\*/g, '<em class="italic inline-block -skew-x-12 px-0.5">$1</em>');
-            
-        return `<p>${guvenliMetin}</p>`;
-    })
-    .join('');
+                    const guvenliMetin = escapeHTML(text)
+                        .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
+                        .replace(/\*([^*]+)\*/g, '<em class="italic inline-block -skew-x-12 px-0.5">$1</em>');
+                        
+                    return `<p>${guvenliMetin}</p>`;
+                })
+                .join('');
 
             document.getElementById('directory-view').classList.add('hidden');
             document.getElementById('reader-view').classList.remove('hidden');
@@ -257,10 +300,11 @@
 
         if (typeof HAFTANIN_FILMI !== 'undefined' && HAFTANIN_FILMI.link) {
             const filmEl = document.getElementById('weekly-film');
-            filmEl.textContent = `${HAFTANIN_FILMI.ad} ↗`;
+            filmEl.textContent = `haftanın filmi: ${HAFTANIN_FILMI.ad} ↗`;
             filmEl.href = HAFTANIN_FILMI.link;
             filmEl.classList.remove('hidden');
         }
+
         renderDirectory();
     </script>
 </body>
