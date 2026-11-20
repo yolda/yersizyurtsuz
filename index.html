@@ -221,8 +221,7 @@
             const contentContainer = document.getElementById('reader-content');
             contentContainer.innerHTML = paragraflar
                 .map(text => {
-                    const guvenliMetin = escapeHTML(text).replace(/\*([^*]+)\*/g, '<em class="italic text-[#c7c2be]">$1</em>');
-                    return `<p>${guvenliMetin}</p>`;
+                    const guvenliMetin = escapeHTML(text).replace(/\*([^*]+)\*/g, '<em class="italic inline-block -skew-x-12 text-[#e5e0dc] px-0.5">$1</em>');                    return `<p>${guvenliMetin}</p>`;
                 })
                 .join('');
 
