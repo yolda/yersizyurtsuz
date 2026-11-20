@@ -1,3 +1,8 @@
+const HAFTANIN_FILMI = {
+    ad: "haftanın filmi", // Ekranda görünecek film adı (veya sadece "haftanın filmi" yazabilirsin)
+    link: "https://letterboxd.com/film/dogville/" // Letterboxd linki
+};
+
 const YAZILAR = [
         {
         dosya: "sinema okuyup, sinemada 'çakallarla dans' izlemek",
