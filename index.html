@@ -179,6 +179,7 @@
         let TUM_YAZILAR = [];
 
         function escapeHTML(str) {
+            if (!str) return '';
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
@@ -269,24 +270,27 @@
                 return;
             }
             
-            listContainer.innerHTML = TUM_YAZILAR.map((yazi, index) => `
-                <div 
-                    onclick="openPost(${index})"
-                    onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPost(${index}); }"
-                    role="button"
-                    tabindex="0"
-                    class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4 py-1 cursor-pointer focus:outline-none">
-                    <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
-                        <span class="text-xs sm:text-sm text-[#b3b3b3] group-hover:text-white transition-colors duration-150">
-                            ${escapeHTML(yazi.dosya)}
+            listContainer.innerHTML = TUM_YAZILAR.map((yazi, index) => {
+                const listeAdi = yazi.baslik || yazi.dosya || 'adsız yazı';
+                return `
+                    <div 
+                        onclick="openPost(${index})"
+                        onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPost(${index}); }"
+                        role="button"
+                        tabindex="0"
+                        class="group flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4 py-1 cursor-pointer focus:outline-none">
+                        <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+                            <span class="text-xs sm:text-sm text-[#b3b3b3] group-hover:text-white transition-colors duration-150">
+                                ${escapeHTML(listeAdi)}
+                            </span>
+                            ${yazi.yazar ? `<span class="text-xs text-[#a3767b] group-hover:text-[#d4a3a8] transition-colors duration-150">/ ${escapeHTML(yazi.yazar)}</span>` : ''}
+                        </div>
+                        <span class="text-xs text-[#614246] group-hover:text-[#8f6166] transition-colors duration-150 shrink-0">
+                            ${escapeHTML(yazi.tarih || '')}
                         </span>
-                        ${yazi.yazar ? `<span class="text-xs text-[#a3767b] group-hover:text-[#d4a3a8] transition-colors duration-150">/ ${escapeHTML(yazi.yazar)}</span>` : ''}
                     </div>
-                    <span class="text-xs text-[#614246] group-hover:text-[#8f6166] transition-colors duration-150 shrink-0">
-                        ${escapeHTML(yazi.tarih)}
-                    </span>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function updateScrollTopButton() {
@@ -310,8 +314,8 @@
             const yazi = TUM_YAZILAR[index];
             if (!yazi) return;
 
-            document.getElementById('reader-date').textContent = yazi.tarih;
-            document.getElementById('reader-title').textContent = yazi.baslik;
+            document.getElementById('reader-date').textContent = yazi.tarih || '';
+            document.getElementById('reader-title').textContent = yazi.baslik || yazi.dosya || '';
             
             const authorWrap = document.getElementById('reader-author-wrap');
             const authorEl = document.getElementById('reader-author');
@@ -322,7 +326,7 @@
                 authorWrap.classList.add('hidden');
             }
 
-            const paragraflar = yazi.metin
+            const paragraflar = (yazi.metin || '')
                 .trim()
                 .split(/\n\s*\n|\n/)
                 .map(p => p.trim())
@@ -398,7 +402,7 @@
         // Davet veya şifre sıfırlama linkiyle gelindiyse şifre belirleme penceresini aç ve giriş sonrası /admin'e yönlendir
         if (window.netlifyIdentity) {
             window.netlifyIdentity.init({
-                APIUrl: "https://yorum.netlify.app/.netlify/identity"
+                APIUrl: "https://yorum.me/.netlify/identity"
             });
             window.netlifyIdentity.on("init", function(user) {
                 if (!user) {
