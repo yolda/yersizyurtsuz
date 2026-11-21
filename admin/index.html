@@ -10,9 +10,23 @@
   </script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
-    /* YAZAR ROLÜ KISITLAMALARI */
+    /* HEM ADMIN HEM YAZAR İÇİN: İş Akışı ekranında 'Taslaklar' ve 'İncelemede' sütunlarını tamamen yok et */
+    div[class*="WorkflowList"] > div:nth-child(1),
+    div[class*="WorkflowList"] > div:nth-child(2) {
+      display: none !important;
+    }
+
+    /* Onay kuyruğundaki tek sütunu tam genişliğe yay ve başlığını sadeleştir */
+    div[class*="WorkflowList"] > div:nth-child(3) {
+      width: 100% !important;
+      max-width: 760px !important;
+      margin: 0 auto !important;
+    }
+
+    /* YAZAR ROLÜ KESİN KISITLAMALARI */
     body.role-yazar a[href*="/collections/ayarlar"],
     body.role-yazar a[href*="workflow"],
+    body.role-yazar a[href*="media"],
     body.role-yazar button[class*="PublishButton"],
     body.role-yazar div[class*="PublishControl"],
     body.role-yazar button[class*="DeleteButton"],
@@ -20,10 +34,18 @@
       display: none !important;
     }
 
-    /* Yazar mevcut yazıları açıp düzenleyemesin */
+    /* Yazar mevcut yazıları açıp düzenleyemesin veya silemesin */
     body.role-yazar a[href*="/collections/yazilar/entries/"] {
       pointer-events: none !important;
-      opacity: 0.5;
+      opacity: 0.45;
+      cursor: default !important;
+    }
+
+    /* Yazar kaydederken arka planda otomatik tetiklenen durum menüsünün ekranda yanıp sönmesini engelle */
+    body.role-yazar ul[class*="DropdownList"],
+    body.role-yazar div[class*="DropdownList"] {
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
   </style>
 </head>
@@ -48,18 +70,82 @@
         });
       }
 
-      // Yazar için Medya/Images, İş Akışı, Durum ve Yayınla butonlarını gizle
-      const gizlenecekler = ["Medya", "Media", "Images", "İş Akışı", "Workflow", "Durum", "Status", "Yayınla", "Publish", "Sil", "Delete"];
-
-      new MutationObserver(function () {
+      // Yazar için üst menüdeki Medya/Images, İş Akışı ve editördeki Durum/Yayınla/Sil öğelerini kesin olarak gizle
+      function lockYazarUI() {
         if (!document.body.classList.contains("role-yazar")) return;
-        document.querySelectorAll("a, button, span").forEach(function (el) {
-          if (el.childNodes.length === 1 && gizlenecekler.includes(el.textContent.trim())) {
-            const box = el.closest("a") || el.closest("button") || el.parentElement;
-            if (box) box.setAttribute("data-yazar-gizle", "1");
+
+        // 1. Üst menüdeki (header) 'İçerikler' (Contents) dışındaki tüm sekmeleri gizle (Medya, İş Akışı vb.)
+        document.querySelectorAll("header a, header button, nav a, nav button").forEach(function (el) {
+          const text = (el.textContent || "").trim().toLowerCase();
+          if (
+            text.includes("medya") ||
+            text.includes("media") ||
+            text.includes("image") ||
+            text.includes("iş akışı") ||
+            text.includes("workflow")
+          ) {
+            el.setAttribute("data-yazar-gizle", "1");
           }
         });
-      }).observe(document.body, { childList: true, subtree: true });
+
+        // 2. Editördeki Durum, Yayınla ve Sil kontrollerini gizle
+        document.querySelectorAll("button, span, div[role='button']").forEach(function (el) {
+          const text = (el.textContent || "").trim().toLowerCase();
+          if (
+            text === "durum" ||
+            text === "status" ||
+            text === "taslak" ||
+            text === "draft" ||
+            text === "incelemede" ||
+            text === "in review" ||
+            text === "hazır" ||
+            text === "ready" ||
+            text === "yayınla" ||
+            text === "publish" ||
+            text === "sil" ||
+            text === "delete" ||
+            text === "yazıyı sil"
+          ) {
+            const target = el.closest("button") || el.closest("div[class*='Dropdown']") || el.parentElement;
+            if (target) target.setAttribute("data-yazar-gizle", "1");
+          }
+        });
+      }
+
+      new MutationObserver(lockYazarUI).observe(document.body, { childList: true, subtree: true });
+
+      // Yazar 'Kaydet' dediğinde yazıyı arka planda otomatik olarak doğrudan onay kuyruğuna ('Hazır') geçir
+      function pushToApprovalQueue() {
+        if (!document.body.classList.contains("role-yazar")) return;
+
+        const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(function (el) {
+          const t = (el.textContent || "").trim().toLowerCase();
+          return el.children.length === 0 && (t === "taslak" || t === "draft" || t === "durum" || t === "status");
+        });
+
+        if (statusBtn) {
+          const clickable = statusBtn.closest("button") || statusBtn;
+          clickable.click();
+          setTimeout(function () {
+            const readyItem = Array.from(document.querySelectorAll("li, button, span, div")).find(function (el) {
+              const t = (el.textContent || "").trim().toLowerCase();
+              return el.children.length === 0 && (t === "hazır" || t === "ready");
+            });
+            if (readyItem) readyItem.click();
+          }, 200);
+        }
+      }
+
+      document.addEventListener("click", function (e) {
+        if (!document.body.classList.contains("role-yazar")) return;
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        const label = (btn.textContent || "").trim().toLowerCase();
+        if (label === "kaydet" || label === "save") {
+          setTimeout(pushToApprovalQueue, 1200);
+          setTimeout(pushToApprovalQueue, 2500);
+        }
+      });
     })();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.3.3/dist/decap-cms.js"></script>
