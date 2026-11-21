@@ -27,7 +27,7 @@ collections:
       - label: "Metin"
         name: "metin"
         widget: "text"
-        hint: "Biçimlendirme: Kalın yazı için metnin (**) başına sonuna (**) iki yıldız koy, yamuk yapmak için tek yıldız (*), alt başlık yapmak için satır başına ## koy ."
+        hint: "Biçimlendirme: Kalın yazı için metnin başına sonuna iki yıldız koy, yamuk yapmak için tek yıldız (*), alt başlık yapmak için satır başına ## koy ."
 
   - name: "ayarlar"
     label: "Site Ayarları"
