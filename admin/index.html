@@ -12,6 +12,8 @@
   <style>
     /* YAZAR ROLÜ KISITLAMALARI (Admin hesabında bunların hiçbiri çalışmaz) */
     body.role-yazar a[href*="/collections/ayarlar"],
+    body.role-yazar a[href*="#/workflow"],
+    body.role-yazar a[href*="/workflow"],
     body.role-yazar button[class*="PublishButton"],
     body.role-yazar div[class*="PublishControl"],
     body.role-yazar button[class*="DeleteButton"],
@@ -19,16 +21,16 @@
       display: none !important;
     }
 
-    /* Yazar mevcut yazıları açıp düzenleyemesin */
+    /* Yazar yayındaki mevcut yazıları açıp düzenleyemesin */
     body.role-yazar a[href*="/collections/yazilar/entries/"] {
       pointer-events: none !important;
       opacity: 0.55;
       cursor: default !important;
     }
 
-    /* İş Akışı ekranında yazar sadece 'İncelemede' sütununu görsün */
+    /* İş Akışı (Workflow) ekranına URL ile girilirse bile sadece 'Hazır' sütunu görünsün */
     body.role-yazar div[class*="WorkflowList"] > div:nth-child(1),
-    body.role-yazar div[class*="WorkflowList"] > div:nth-child(3) {
+    body.role-yazar div[class*="WorkflowList"] > div:nth-child(2) {
       display: none !important;
     }
   </style>
@@ -55,25 +57,37 @@
         });
       }
 
-      // Yazar rolü için 'Durum', 'Yayınla' ve 'Sil' butonlarını yakalayıp gizle
+      // Yazar rolü için üst menüdeki 'İş Akışı', 'Medya' ile editördeki 'Durum', 'Yayınla' ve 'Sil' butonlarını gizle
       function enforceYazarRestrictions() {
         if (!document.body.classList.contains("role-yazar")) return;
 
-        document.querySelectorAll("button, span, div[role='button']").forEach((el) => {
+        document.querySelectorAll("a, button, span, div[role='button']").forEach((el) => {
           if (el.childNodes.length === 1) {
             const txt = el.textContent.trim();
             if (
+              txt === "İş Akışı" ||
+              txt === "Workflow" ||
+              txt === "Medya" ||
+              txt === "Media" ||
               txt === "Durum" ||
               txt === "Status" ||
               txt === "Taslak" ||
               txt === "Draft" ||
+              txt === "İncelemede" ||
+              txt === "In Review" ||
+              txt === "Hazır" ||
+              txt === "Ready" ||
               txt === "Yayınla" ||
               txt === "Publish" ||
               txt === "Sil" ||
               txt === "Delete" ||
               txt === "Yazıyı sil"
             ) {
-              const target = el.closest("button") || el.closest("div[class*='Dropdown']") || el.parentElement;
+              const target =
+                el.closest("a") ||
+                el.closest("button") ||
+                el.closest("div[class*='Dropdown']") ||
+                el.parentElement;
               if (target && !target.dataset.roleHide) {
                 target.dataset.roleHide = "true";
               }
@@ -85,24 +99,26 @@
       const observer = new MutationObserver(enforceYazarRestrictions);
       observer.observe(document.body, { childList: true, subtree: true });
 
-      // Yazar 'Kaydet' dediğinde gizli durum menüsünü arka planda tetikleyip 'İncelemede' seç
-      function autoSendToReview() {
+      // Yazar 'Kaydet' dediğinde gizli durum menüsünü arka planda tetikleyip doğrudan 'Hazır' seç
+      function autoSendToReady() {
         if (!document.body.classList.contains("role-yazar")) return;
 
         const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(
           (el) =>
             el.childNodes.length === 1 &&
-            (el.textContent.trim() === "Taslak" || el.textContent.trim() === "Durum")
+            (el.textContent.trim() === "Taslak" ||
+              el.textContent.trim() === "İncelemede" ||
+              el.textContent.trim() === "Durum")
         );
 
         if (statusBtn) {
           const clickable = statusBtn.closest("button") || statusBtn;
           clickable.click();
           setTimeout(() => {
-            const reviewOption = Array.from(document.querySelectorAll("li, button, span, div")).find(
-              (el) => el.childNodes.length === 1 && el.textContent.trim() === "İncelemede"
+            const readyOption = Array.from(document.querySelectorAll("li, button, span, div")).find(
+              (el) => el.childNodes.length === 1 && el.textContent.trim() === "Hazır"
             );
-            if (reviewOption) reviewOption.click();
+            if (readyOption) readyOption.click();
           }, 250);
         }
       }
@@ -113,8 +129,8 @@
         if (!btn) return;
         const label = btn.textContent.trim();
         if (label === "Kaydet" || label === "Save") {
-          setTimeout(autoSendToReview, 1200);
-          setTimeout(autoSendToReview, 2600);
+          setTimeout(autoSendToReady, 1200);
+          setTimeout(autoSendToReady, 2600);
         }
       });
     })();
