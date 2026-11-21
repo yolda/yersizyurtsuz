@@ -1,8 +1,11 @@
+site_url: "https://yorum.me"
+display_url: "https://yorum.me"
+
 backend:
   name: git-gateway
   branch: main
-  identity_url: "https://yorum.netlify.app/.netlify/identity"
-  gateway_url: "https://yorum.netlify.app/.netlify/git"
+  identity_url: "https://yorum.me/.netlify/identity"
+  gateway_url: "https://yorum.me/.netlify/git"
 
 locale: tr
 media_folder: "medya"
