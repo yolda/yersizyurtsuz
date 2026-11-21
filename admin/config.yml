@@ -18,17 +18,16 @@ collections:
     label_singular: "Yazı"
     folder: "yazilar"
     create: true
-    delete: false
+    delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     extension: "json"
     format: "json"
     editor:
       preview: false
     fields:
-      - { label: "Listede Görünecek Ad (Dosya)", name: "dosya", widget: "string" }
+      - { label: "Yazının Ana Başlığı", name: "baslik", widget: "string" }
       - { label: "Yazar", name: "yazar", widget: "string", required: false }
       - { label: "Tarih (GG/AA/YYYY)", name: "tarih", widget: "string", hint: "Örn: 21/11/2026" }
-      - { label: "Yazının Ana Başlığı", name: "baslik", widget: "string" }
       - label: "Metin"
         name: "metin"
         widget: "text"
