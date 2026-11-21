@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>yorum</title>
+    <!-- Netlify Identity (Davet ve şifre belirleme linkleri için) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Monospace & Edebi Okuma Fontları: JetBrains Mono & Lora -->
@@ -169,11 +171,13 @@
         </svg>
     </button>
 
-    <!-- Yazıların bulunduğu harici dosya -->
+    <!-- Yedek eski yazılar (yazilar/ klasörü dolana kadar koruma sağlar) -->
     <script src="./yazilar.js"></script>
 
     <!-- Sistem Kodları -->
     <script>
+        let TUM_YAZILAR = [];
+
         function escapeHTML(str) {
             const div = document.createElement('div');
             div.textContent = str;
@@ -191,22 +195,81 @@
             }
         }
 
+        function parseTarih(tarihStr) {
+            if (!tarihStr) return 0;
+            const parcalar = tarihStr.trim().split('/');
+            if (parcalar.length === 3) {
+                return new Date(`${parcalar[2]}-${parcalar[1]}-${parcalar[0]}`).getTime() || 0;
+            }
+            return 0;
+        }
+
+        async function verileriYukle() {
+            const listContainer = document.getElementById('file-list');
+            listContainer.innerHTML = `<div class="text-xs text-[#614246]">yükleniyor...</div>`;
+
+            let cmsYazilari = [];
+
+            // 1. GitHub API üzerinden /admin panelinden eklenen yazilar/ klasörünü oku
+            try {
+                const res = await fetch('https://api.github.com/repos/yolda/yersizyurtsuz/contents/yazilar');
+                if (res.ok) {
+                    const dosyalar = await res.json();
+                    const jsonDosyalari = dosyalar.filter(f => f.name.endsWith('.json'));
+                    const icerikler = await Promise.all(
+                        jsonDosyalari.map(f => fetch(f.download_url).then(r => r.json()))
+                    );
+                    cmsYazilari = icerikler;
+                }
+            } catch (e) {
+                // Henüz yazilar/ klasörü oluşturulmadıysa sessizce yedek yazilar.js'ye geç
+            }
+
+            // 2. CMS yazıları varsa onları kullan, yoksa yedek yazilar.js içindekileri göster
+            if (cmsYazilari.length > 0) {
+                TUM_YAZILAR = cmsYazilari.sort((a, b) => parseTarih(b.tarih) - parseTarih(a.tarih));
+            } else if (typeof YAZILAR !== 'undefined' && Array.isArray(YAZILAR)) {
+                TUM_YAZILAR = YAZILAR;
+            }
+
+            // 3. Haftanın filmini önce ayarlar/film.json'dan, yoksa yazilar.js'den oku
+            try {
+                const filmRes = await fetch('./ayarlar/film.json');
+                if (filmRes.ok) {
+                    const filmData = await filmRes.json();
+                    if (filmData && filmData.link) {
+                        const filmEl = document.getElementById('weekly-film');
+                        filmEl.textContent = `${filmData.ad || 'haftanın filmi'} ↗`;
+                        filmEl.href = filmData.link;
+                        filmEl.classList.remove('hidden');
+                    }
+                } else if (typeof HAFTANIN_FILMI !== 'undefined' && HAFTANIN_FILMI.link) {
+                    const filmEl = document.getElementById('weekly-film');
+                    filmEl.textContent = `${HAFTANIN_FILMI.ad} ↗`;
+                    filmEl.href = HAFTANIN_FILMI.link;
+                    filmEl.classList.remove('hidden');
+                }
+            } catch (e) {
+                if (typeof HAFTANIN_FILMI !== 'undefined' && HAFTANIN_FILMI.link) {
+                    const filmEl = document.getElementById('weekly-film');
+                    filmEl.textContent = `${HAFTANIN_FILMI.ad} ↗`;
+                    filmEl.href = HAFTANIN_FILMI.link;
+                    filmEl.classList.remove('hidden');
+                }
+            }
+
+            renderDirectory();
+        }
+
         function renderDirectory() {
             const listContainer = document.getElementById('file-list');
 
-            if (typeof YAZILAR === 'undefined' || !Array.isArray(YAZILAR)) {
-                listContainer.innerHTML = `
-                    <div class="text-xs text-[#8f6166] border border-[#291316] bg-[#0a0405]/80 p-4 leading-relaxed">
-                        <p class="text-[#e5e0dc] mb-1">yazilar.js dosyası okunamadı.</p>
-                        <p>1. Dosya adının tamamen küçük harfle <strong>yazilar.js</strong> olduğundan emin ol.</p>
-                        <p>2. <strong>index.html</strong> ile aynı klasörde durduğunu kontrol et.</p>
-                        <p>3. Dosyayı kaydedip sayfayı <strong>Ctrl + Shift + R</strong> ile yenile.</p>
-                    </div>
-                `;
+            if (!Array.isArray(TUM_YAZILAR) || TUM_YAZILAR.length === 0) {
+                listContainer.innerHTML = `<div class="text-xs text-[#614246]">henüz yazı bulunamadı.</div>`;
                 return;
             }
             
-            listContainer.innerHTML = YAZILAR.map((yazi, index) => `
+            listContainer.innerHTML = TUM_YAZILAR.map((yazi, index) => `
                 <div 
                     onclick="openPost(${index})"
                     onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPost(${index}); }"
@@ -244,7 +307,7 @@
         }
 
         function openPost(index) {
-            const yazi = YAZILAR[index];
+            const yazi = TUM_YAZILAR[index];
             if (!yazi) return;
 
             document.getElementById('reader-date').textContent = yazi.tarih;
@@ -302,13 +365,6 @@
             }
         });
 
-        if (typeof HAFTANIN_FILMI !== 'undefined' && HAFTANIN_FILMI.link) {
-            const filmEl = document.getElementById('weekly-film');
-            filmEl.textContent = `${HAFTANIN_FILMI.ad} ↗`;
-            filmEl.href = HAFTANIN_FILMI.link;
-            filmEl.classList.remove('hidden');
-        }
-
         document.getElementById('notify-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const form = e.target;
@@ -339,7 +395,21 @@
             }
         });
 
-        renderDirectory();
+        // Davet veya şifre sıfırlama linkiyle gelindiyse şifre belirleme penceresini aç ve giriş sonrası /admin'e yönlendir
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.init({
+                APIUrl: "https://yorum.netlify.app/.netlify/identity"
+            });
+            window.netlifyIdentity.on("init", function(user) {
+                if (!user) {
+                    window.netlifyIdentity.on("login", function() {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+
+        verileriYukle();
     </script>
 </body>
 </html>
