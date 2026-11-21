@@ -5,282 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
   <title>yorum — editör</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
   <script>
     localStorage.setItem("netlifySiteURL", "https://yorum.me");
   </script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
-    :root {
-      --bg: #0c0c0d;
-      --surface: #141416;
-      --surface-hover: #1c1c1f;
-      --ink: #ededef;
-      --muted: #8a8a93;
-      --border: #242428;
-      --accent: #ffffff;
-      --accent-ink: #0c0c0d;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body, #nc-root {
-      background-color: var(--bg) !important;
-      color: var(--ink) !important;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-      -webkit-font-smoothing: antialiased;
-      margin: 0;
-      min-height: 100vh;
-    }
-
-    /* Netlify Identity modalını her zaman en üstte tut */
-    #netlify-identity-widget {
-      z-index: 999999 !important;
-    }
-
-    /* --- ÖZEL MİNİMALİST GİRİŞ EKRANI --- */
-    #custom-login-screen {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 500;
-      padding: 24px;
-    }
-
-    body.is-authenticated #custom-login-screen {
-      display: none !important;
-    }
-
-    .login-box {
-      width: 100%;
-      max-width: 340px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 36px 28px;
-      text-align: center;
-    }
-
-    .login-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 26px;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      margin: 0 0 8px 0;
-    }
-
-    .login-sub {
-      font-size: 13px;
-      color: var(--muted);
-      margin: 0 0 28px 0;
-      line-height: 1.5;
-    }
-
-    .login-btn {
-      width: 100%;
-      background: var(--accent);
-      color: var(--accent-ink);
-      border: none;
-      border-radius: 6px;
-      padding: 11px 16px;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.15s ease;
-    }
-
-    .login-btn:hover {
-      opacity: 0.88;
-    }
-
-    /* --- ÜST MENÜ VE GEREKSİZ TUŞLARIN TEMİZLENMESİ --- */
-    header[class*="AppHeader"] {
-      background: var(--surface) !important;
-      border-bottom: 1px solid var(--border) !important;
-      box-shadow: none !important;
-    }
-
-    header[class*="AppHeader"] a,
-    header[class*="AppHeader"] button,
-    header[class*="AppHeader"] span {
-      color: var(--ink) !important;
-      font-weight: 500 !important;
-      font-size: 13px !important;
-    }
-
-    input[placeholder*="Ara"],
-    input[placeholder*="Search"],
-    div[class*="ViewControls"],
-    div[class*="SortControl"],
-    button[class*="QuickAdd"],
-    div[class*="QuickAdd"] {
-      display: none !important;
-    }
-
-    /* --- MAT SİYAH PANEL BİLEŞENLERİ --- */
-    main, section, div[class*="AppMainContainer"], div[class*="CollectionContainer"] {
-      background-color: var(--bg) !important;
-    }
-
-    aside[class*="SidebarContainer"],
-    div[class*="Card"],
-    li[class*="ListCard"],
-    div[class*="WorkflowCard"] {
-      background: var(--surface) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 8px !important;
-      box-shadow: none !important;
-      color: var(--ink) !important;
-    }
-
-    aside[class*="SidebarContainer"] a,
-    div[class*="Card"] *,
-    li[class*="ListCard"] * {
-      color: var(--ink) !important;
-    }
-
-    aside[class*="SidebarContainer"] a:hover,
-    li[class*="ListCard"]:hover {
-      background: var(--surface-hover) !important;
-    }
-
-    div[class*="EditorContainer"],
-    div[class*="ControlPaneContainer"],
-    div[class*="EditorControlBar"] {
-      background: var(--surface) !important;
-      border-color: var(--border) !important;
-      color: var(--ink) !important;
-    }
-
-    div[class*="ControlPaneContainer"] {
-      max-width: 720px !important;
-      margin: 24px auto !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 10px !important;
-      padding: 28px !important;
-    }
-
-    label[class*="FieldLabel"] {
-      background: transparent !important;
-      color: var(--muted) !important;
-      font-size: 11px !important;
-      letter-spacing: 0.04em !important;
-      border: none !important;
-    }
-
-    input[type="text"],
-    textarea {
-      background: #0e0e10 !important;
-      color: var(--ink) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 6px !important;
-      box-shadow: none !important;
-    }
-
-    input[type="text"]:focus,
-    textarea:focus {
-      border-color: #4a4a52 !important;
-      outline: none !important;
-    }
-
-    textarea {
-      font-family: 'Newsreader', Georgia, serif !important;
-      font-size: 17px !important;
-      line-height: 1.75 !important;
-    }
-
-    button[class*="ToolbarButton"],
-    a[class*="CollectionTopNewButton"] {
-      background: var(--accent) !important;
-      color: var(--accent-ink) !important;
-      border: 1px solid var(--accent) !important;
-      border-radius: 6px !important;
-      font-weight: 600 !important;
-      font-size: 12px !important;
-      box-shadow: none !important;
-    }
-
-    /* --- YAZAR ROLÜ KISITLAMALARI --- */
-    body.role-yazar a[href*="/collections/ayarlar"] {
-      display: none !important;
-    }
-
+    /* YAZAR ROLÜ KISITLAMALARI (Yalnızca rolü 'admin' olmayanlar için geçerlidir) */
+    body.role-yazar a[href*="/collections/ayarlar"],
     body.role-yazar button[class*="PublishButton"],
-    body.role-yazar div[class*="PublishControl"] {
+    body.role-yazar div[class*="PublishControl"],
+    body.role-yazar button[class*="DeleteButton"] {
       display: none !important;
     }
 
+    /* Yazar mevcut yazılara tıklayıp düzenleyemesin (sadece 'Yeni Yazı' açabilsin) */
+    body.role-yazar a[href*="/collections/yazilar/entries/"] {
+      pointer-events: none !important;
+      opacity: 0.55;
+      cursor: default !important;
+    }
+
+    /* İş Akışı (Workflow) ekranında yazar sadece 'İncelemede' sütununu görsün */
     body.role-yazar div[class*="WorkflowList"] > div:nth-child(1),
     body.role-yazar div[class*="WorkflowList"] > div:nth-child(3) {
       display: none !important;
     }
-
-    body.role-yazar #nc-root::before {
-      content: "Yazar Modu — Yazınızı tamamladıktan sonra sağ üstten Kaydet'e basın; yazınız otomatik olarak incelemeye iletilir.";
-      display: block;
-      background: #18181b;
-      color: #a1a1aa;
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-      text-align: center;
-      padding: 8px 12px;
-    }
   </style>
 </head>
 <body>
-  <div id="custom-login-screen">
-    <div class="login-box">
-      <h1 class="login-title">yorum</h1>
-      <p class="login-sub">Yazar ve editör girişi</p>
-      <button type="button" id="open-login-btn" class="login-btn">
-        Giriş Yap
-      </button>
-    </div>
-  </div>
-
   <script>
     (function () {
-      function applyUserState(user) {
-        if (user) {
-          document.body.classList.add("is-authenticated");
-          const roles = (user.app_metadata && user.app_metadata.roles) || [];
-          const isAdmin = roles.includes("admin");
-          document.body.classList.toggle("role-admin", isAdmin);
-          document.body.classList.toggle("role-yazar", !isAdmin);
-        } else {
-          document.body.classList.remove("is-authenticated", "role-admin", "role-yazar");
-        }
+      function applyUserRole(user) {
+        const roles = (user && user.app_metadata && user.app_metadata.roles) || [];
+        const isAdmin = roles.includes("admin");
+        document.body.classList.toggle("role-admin", isAdmin);
+        document.body.classList.toggle("role-yazar", !isAdmin);
       }
-
-      function openIdentityModal() {
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.open("login");
-          const modal = document.getElementById("netlify-identity-widget");
-          if (modal) modal.style.zIndex = "999999";
-        }
-      }
-
-      document.getElementById("open-login-btn").addEventListener("click", openIdentityModal);
 
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", function (user) {
-          applyUserState(user);
-        });
-        window.netlifyIdentity.on("login", function (user) {
-          applyUserState(user);
-          window.netlifyIdentity.close();
-        });
+        window.netlifyIdentity.on("init", applyUserRole);
+        window.netlifyIdentity.on("login", applyUserRole);
         window.netlifyIdentity.on("logout", function () {
-          applyUserState(null);
+          document.body.classList.remove("role-admin", "role-yazar");
         });
 
         window.netlifyIdentity.init({
@@ -288,21 +54,7 @@
         });
       }
 
-      function hideExtraButtons() {
-        document.querySelectorAll("button, span").forEach((el) => {
-          if (el.childNodes.length === 1) {
-            const txt = el.textContent.trim();
-            if (txt === "Hızlı ekle" || txt === "Quick add" || txt === "Sırala" || txt === "Sort by") {
-              const target = el.closest("button") || el.parentElement;
-              if (target) target.style.display = "none";
-            }
-          }
-        });
-      }
-
-      const observer = new MutationObserver(hideExtraButtons);
-      observer.observe(document.body, { childList: true, subtree: true });
-
+      // Yazar 'Kaydet' dediğinde durumu otomatik 'İncelemede' yap
       function autoSendToReview() {
         if (!document.body.classList.contains("role-yazar")) return;
         const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(
@@ -331,6 +83,6 @@
       });
     })();
   </script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.3.3/dist/decap-cms.js"></script>
 </body>
 </html>
