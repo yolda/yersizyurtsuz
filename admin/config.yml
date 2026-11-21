@@ -17,12 +17,17 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     extension: "json"
     format: "json"
+    editor:
+      preview: false
     fields:
       - { label: "Listede Görünecek Ad (Dosya)", name: "dosya", widget: "string" }
       - { label: "Yazar", name: "yazar", widget: "string", required: false }
       - { label: "Tarih (GG/AA/YYYY)", name: "tarih", widget: "string", hint: "Örn: 21/11/2026" }
       - { label: "Yazının Ana Başlığı", name: "baslik", widget: "string" }
-      - { label: "Metin", name: "metin", widget: "text", hint: "Alt başlık için ## kullanabilirsin. Kalın için **metin**, italik için *metin* yaz." }
+      - label: "Metin"
+        name: "metin"
+        widget: "text"
+        hint: "Biçimlendirme: Kalın yazı için **metin**, eğik (italik) yazı için *metin*, alt başlık için satır başına ## Başlık yaz."
 
   - name: "ayarlar"
     label: "Site Ayarları"
@@ -30,6 +35,7 @@ collections:
       - name: "haftanin_filmi"
         label: "Haftanın Filmi"
         file: "ayarlar/film.json"
+        editor:
+          preview: false
         fields:
-          - { label: "Ekranda Görünecek Metin", name: "ad", widget: "string", default: "haftanın filmi" }
-          - { label: "Letterboxd Linki", name: "link", widget: "string" }
+          - { label: "Letterboxd Linki", name: "link", widget: "string", hint: "Örn: https://letterboxd.com/film/dogville/" }
