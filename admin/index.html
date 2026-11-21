@@ -1,22 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
   <title>yorum — editör</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
   <script>
-    localStorage.setItem("netlifySiteURL", "https://yorum.netlify.app");
+    localStorage.setItem("netlifySiteURL", "https://yorum.me");
   </script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --ink: #141414;
+      --muted: #6e6e73;
+      --border: #e5e5e7;
+      --accent: #141414;
+    }
+
+    body, #nc-root {
+      background-color: var(--bg) !important;
+      color: var(--ink) !important;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Üst barı sadeleştir */
+    header[class*="AppHeader"] {
+      background: var(--surface) !important;
+      border-bottom: 1px solid var(--border) !important;
+      box-shadow: none !important;
+    }
+
+    header[class*="AppHeader"] a,
+    header[class*="AppHeader"] button {
+      color: var(--ink) !important;
+      font-weight: 500 !important;
+      font-size: 13px !important;
+    }
+
+    /* Gereksiz arama kutusu ve görünüm değiştirici butonları gizle */
+    input[placeholder*="Ara"],
+    input[placeholder*="Search"],
+    div[class*="ViewControls"] {
+      display: none !important;
+    }
+
+    /* Sol kenar çubuğu ve kartları minimalleştir */
+    aside[class*="SidebarContainer"],
+    div[class*="Card"],
+    li[class*="ListCard"] {
+      background: var(--surface) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 6px !important;
+      box-shadow: none !important;
+    }
+
+    /* Editör alanını odaklanmış okuma/yazma düzenine getir */
+    div[class*="EditorContainer"],
+    div[class*="ControlPaneContainer"] {
+      max-width: 740px !important;
+      margin: 0 auto !important;
+      background: var(--surface) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 8px !important;
+      padding: 24px !important;
+    }
+
+    textarea {
+      font-family: 'Newsreader', Georgia, serif !important;
+      font-size: 17px !important;
+      line-height: 1.7 !important;
+    }
+
+    /* Kaydet butonunu netleştir */
+    button[class*="ToolbarButton"] {
+      border-radius: 5px !important;
+      font-weight: 500 !important;
+      box-shadow: none !important;
+    }
+
+    /* --- YAZAR ROLÜ KISITLAMALARI --- */
+    /* Site Ayarları (Haftanın Filmi) sekmesini gizle */
+    body.role-yazar a[href*="/collections/ayarlar"] {
+      display: none !important;
+    }
+
+    /* Yayınla (Publish) ve Hazır (Ready) kontrollerini gizle */
+    body.role-yazar button[class*="PublishButton"],
+    body.role-yazar div[class*="PublishControl"] {
+      display: none !important;
+    }
+
+    /* İş Akışı ekranında sadece "İncelemede" sütununu görünür tut */
+    body.role-yazar div[class*="WorkflowList"] > div:nth-child(1),
+    body.role-yazar div[class*="WorkflowList"] > div:nth-child(3) {
+      display: none !important;
+    }
+
+    /* Yazar için üst bilgi şeridi */
+    body.role-yazar #nc-root::before {
+      content: "Yazar Modu — Yazınızı tamamladıktan sonra sağ üstten Kaydet'e basın; yazınız otomatik olarak editör incelemesine iletilir.";
+      display: block;
+      background: #141414;
+      color: #ffffff;
+      font-size: 12px;
+      text-align: center;
+      padding: 7px 12px;
+      letter-spacing: 0.01em;
+    }
+  </style>
 </head>
 <body>
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.init({
-        APIUrl: "https://yorum.netlify.app/.netlify/identity"
+    (function () {
+      function applyUserRole(user) {
+        const roles = (user && user.app_metadata && user.app_metadata.roles) || [];
+        const isAdmin = roles.includes("admin");
+        document.body.classList.toggle("role-admin", isAdmin);
+        document.body.classList.toggle("role-yazar", !isAdmin);
+      }
+
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", applyUserRole);
+        window.netlifyIdentity.on("login", function (user) {
+          applyUserRole(user);
+        });
+        window.netlifyIdentity.on("logout", function () {
+          document.body.classList.remove("role-admin", "role-yazar");
+        });
+
+        window.netlifyIdentity.init({
+          APIUrl: "https://yorum.me/.netlify/identity"
+        });
+      }
+
+      // Yazar rolündeki kullanıcı "Kaydet" dediğinde durumu otomatik "İncelemede" yap
+      function autoSendToReview() {
+        if (!document.body.classList.contains("role-yazar")) return;
+
+        const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(
+          (el) => el.childNodes.length === 1 && el.textContent.trim() === "Taslak"
+        );
+        if (statusBtn) {
+          statusBtn.click();
+          setTimeout(() => {
+            const reviewOption = Array.from(document.querySelectorAll("li, button, span, div")).find(
+              (el) => el.childNodes.length === 1 && el.textContent.trim() === "İncelemede"
+            );
+            if (reviewOption) reviewOption.click();
+          }, 250);
+        }
+      }
+
+      document.addEventListener("click", function (e) {
+        if (!document.body.classList.contains("role-yazar")) return;
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        const label = btn.textContent.trim();
+        if (label === "Kaydet" || label === "Save") {
+          setTimeout(autoSendToReview, 1200);
+          setTimeout(autoSendToReview, 2500);
+        }
       });
-    }
+    })();
   </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
