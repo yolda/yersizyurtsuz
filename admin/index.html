@@ -10,7 +10,13 @@
   </script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
-    /* YAZAR ROLÜ KISITLAMALARI (Admin hesabında bunların hiçbiri çalışmaz) */
+    /* İş Akışı ekranında gereksiz 'Taslaklar' ve 'İncelemede' sütunlarını gizle; sadece onay bekleyenler görünsün */
+    div[class*="WorkflowList"] > div:nth-child(1),
+    div[class*="WorkflowList"] > div:nth-child(2) {
+      display: none !important;
+    }
+
+    /* YAZAR ROLÜ KISITLAMALARI */
     body.role-yazar a[href*="/collections/ayarlar"],
     body.role-yazar a[href*="#/workflow"],
     body.role-yazar a[href*="/workflow"],
@@ -21,17 +27,11 @@
       display: none !important;
     }
 
-    /* Yazar yayındaki mevcut yazıları açıp düzenleyemesin */
+    /* Yazar mevcut yazıları açıp düzenleyemesin veya silemesin */
     body.role-yazar a[href*="/collections/yazilar/entries/"] {
       pointer-events: none !important;
       opacity: 0.55;
       cursor: default !important;
-    }
-
-    /* İş Akışı (Workflow) ekranına URL ile girilirse bile sadece 'Hazır' sütunu görünsün */
-    body.role-yazar div[class*="WorkflowList"] > div:nth-child(1),
-    body.role-yazar div[class*="WorkflowList"] > div:nth-child(2) {
-      display: none !important;
     }
   </style>
 </head>
@@ -57,7 +57,7 @@
         });
       }
 
-      // Yazar rolü için üst menüdeki 'İş Akışı', 'Medya' ile editördeki 'Durum', 'Yayınla' ve 'Sil' butonlarını gizle
+      // Yazar rolü için üst sekmelerdeki 'İş Akışı', 'Medya' ile editördeki 'Durum', 'Yayınla' ve 'Sil' butonlarını gizle
       function enforceYazarRestrictions() {
         if (!document.body.classList.contains("role-yazar")) return;
 
@@ -99,8 +99,8 @@
       const observer = new MutationObserver(enforceYazarRestrictions);
       observer.observe(document.body, { childList: true, subtree: true });
 
-      // Yazar 'Kaydet' dediğinde gizli durum menüsünü arka planda tetikleyip doğrudan 'Hazır' seç
-      function autoSendToReady() {
+      // Yazar 'Kaydet' dediğinde yazıyı otomatik olarak direkt onay kuyruğuna ('Hazır') gönder
+      function autoSendToApprovalQueue() {
         if (!document.body.classList.contains("role-yazar")) return;
 
         const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(
@@ -129,8 +129,8 @@
         if (!btn) return;
         const label = btn.textContent.trim();
         if (label === "Kaydet" || label === "Save") {
-          setTimeout(autoSendToReady, 1200);
-          setTimeout(autoSendToReady, 2600);
+          setTimeout(autoSendToApprovalQueue, 1200);
+          setTimeout(autoSendToApprovalQueue, 2600);
         }
       });
     })();
