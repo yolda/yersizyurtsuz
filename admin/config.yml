@@ -3,6 +3,8 @@ backend:
   branch: main
 
 locale: tr
+media_folder: "medya"
+public_folder: "/medya"
 
 collections:
   - name: "yazilar"
