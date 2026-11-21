@@ -20,6 +20,7 @@ collections:
     create: true
     delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{baslik}}"
     extension: "json"
     format: "json"
     editor:
