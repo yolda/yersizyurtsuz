@@ -10,35 +10,27 @@
   </script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
-    /* İş Akışı ekranında gereksiz 'Taslaklar' ve 'İncelemede' sütunlarını gizle; sadece onay bekleyenler görünsün */
-    div[class*="WorkflowList"] > div:nth-child(1),
-    div[class*="WorkflowList"] > div:nth-child(2) {
-      display: none !important;
-    }
-
     /* YAZAR ROLÜ KISITLAMALARI */
     body.role-yazar a[href*="/collections/ayarlar"],
-    body.role-yazar a[href*="#/workflow"],
-    body.role-yazar a[href*="/workflow"],
+    body.role-yazar a[href*="workflow"],
     body.role-yazar button[class*="PublishButton"],
     body.role-yazar div[class*="PublishControl"],
     body.role-yazar button[class*="DeleteButton"],
-    body.role-yazar [data-role-hide="true"] {
+    body.role-yazar [data-yazar-gizle="1"] {
       display: none !important;
     }
 
-    /* Yazar mevcut yazıları açıp düzenleyemesin veya silemesin */
+    /* Yazar mevcut yazıları açıp düzenleyemesin */
     body.role-yazar a[href*="/collections/yazilar/entries/"] {
       pointer-events: none !important;
-      opacity: 0.55;
-      cursor: default !important;
+      opacity: 0.5;
     }
   </style>
 </head>
 <body>
   <script>
     (function () {
-      function applyUserRole(user) {
+      function setRole(user) {
         const roles = (user && user.app_metadata && user.app_metadata.roles) || [];
         const isAdmin = roles.includes("admin");
         document.body.classList.toggle("role-admin", isAdmin);
@@ -46,93 +38,28 @@
       }
 
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", applyUserRole);
-        window.netlifyIdentity.on("login", applyUserRole);
+        window.netlifyIdentity.on("init", setRole);
+        window.netlifyIdentity.on("login", setRole);
         window.netlifyIdentity.on("logout", function () {
           document.body.classList.remove("role-admin", "role-yazar");
         });
-
         window.netlifyIdentity.init({
           APIUrl: "https://yorum.me/.netlify/identity"
         });
       }
 
-      // Yazar rolü için üst sekmelerdeki 'İş Akışı', 'Medya' ile editördeki 'Durum', 'Yayınla' ve 'Sil' butonlarını gizle
-      function enforceYazarRestrictions() {
-        if (!document.body.classList.contains("role-yazar")) return;
+      // Yazar için Medya/Images, İş Akışı, Durum ve Yayınla butonlarını gizle
+      const gizlenecekler = ["Medya", "Media", "Images", "İş Akışı", "Workflow", "Durum", "Status", "Yayınla", "Publish", "Sil", "Delete"];
 
-        document.querySelectorAll("a, button, span, div[role='button']").forEach((el) => {
-          if (el.childNodes.length === 1) {
-            const txt = el.textContent.trim();
-            if (
-              txt === "İş Akışı" ||
-              txt === "Workflow" ||
-              txt === "Medya" ||
-              txt === "Media" ||
-              txt === "Durum" ||
-              txt === "Status" ||
-              txt === "Taslak" ||
-              txt === "Draft" ||
-              txt === "İncelemede" ||
-              txt === "In Review" ||
-              txt === "Hazır" ||
-              txt === "Ready" ||
-              txt === "Yayınla" ||
-              txt === "Publish" ||
-              txt === "Sil" ||
-              txt === "Delete" ||
-              txt === "Yazıyı sil"
-            ) {
-              const target =
-                el.closest("a") ||
-                el.closest("button") ||
-                el.closest("div[class*='Dropdown']") ||
-                el.parentElement;
-              if (target && !target.dataset.roleHide) {
-                target.dataset.roleHide = "true";
-              }
-            }
+      new MutationObserver(function () {
+        if (!document.body.classList.contains("role-yazar")) return;
+        document.querySelectorAll("a, button, span").forEach(function (el) {
+          if (el.childNodes.length === 1 && gizlenecekler.includes(el.textContent.trim())) {
+            const box = el.closest("a") || el.closest("button") || el.parentElement;
+            if (box) box.setAttribute("data-yazar-gizle", "1");
           }
         });
-      }
-
-      const observer = new MutationObserver(enforceYazarRestrictions);
-      observer.observe(document.body, { childList: true, subtree: true });
-
-      // Yazar 'Kaydet' dediğinde yazıyı otomatik olarak direkt onay kuyruğuna ('Hazır') gönder
-      function autoSendToApprovalQueue() {
-        if (!document.body.classList.contains("role-yazar")) return;
-
-        const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(
-          (el) =>
-            el.childNodes.length === 1 &&
-            (el.textContent.trim() === "Taslak" ||
-              el.textContent.trim() === "İncelemede" ||
-              el.textContent.trim() === "Durum")
-        );
-
-        if (statusBtn) {
-          const clickable = statusBtn.closest("button") || statusBtn;
-          clickable.click();
-          setTimeout(() => {
-            const readyOption = Array.from(document.querySelectorAll("li, button, span, div")).find(
-              (el) => el.childNodes.length === 1 && el.textContent.trim() === "Hazır"
-            );
-            if (readyOption) readyOption.click();
-          }, 250);
-        }
-      }
-
-      document.addEventListener("click", function (e) {
-        if (!document.body.classList.contains("role-yazar")) return;
-        const btn = e.target.closest("button");
-        if (!btn) return;
-        const label = btn.textContent.trim();
-        if (label === "Kaydet" || label === "Save") {
-          setTimeout(autoSendToApprovalQueue, 1200);
-          setTimeout(autoSendToApprovalQueue, 2600);
-        }
-      });
+      }).observe(document.body, { childList: true, subtree: true });
     })();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.3.3/dist/decap-cms.js"></script>
