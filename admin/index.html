@@ -4,14 +4,27 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
-  <title>yorum — editör</title>
+  <title>yersiz & yurtsuz — yönetim</title>
+  <script>
+    // Tarayıcı hafızasında kalan eski Netlify adresini otomatik temizler
+    localStorage.removeItem("netlifySiteURL");
+  </script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <script>
-    window.netlifyIdentity.init({
-      APIUrl: "https://yorum.netlify.app/.netlify/identity"
-    });
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.init({
+        APIUrl: "https://yorum.netlify.app/.netlify/identity"
+      });
+      window.netlifyIdentity.on("init", function(user) {
+        if (!user) {
+          window.netlifyIdentity.on("login", function() {
+            document.location.href = "/yersizyurtsuz/admin/";
+          });
+        }
+      });
+    }
   </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
