@@ -10,20 +10,7 @@
   </script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
-    /* HEM ADMIN HEM YAZAR İÇİN: İş Akışı ekranında 'Taslaklar' ve 'İncelemede' sütunlarını tamamen yok et */
-    div[class*="WorkflowList"] > div:nth-child(1),
-    div[class*="WorkflowList"] > div:nth-child(2) {
-      display: none !important;
-    }
-
-    /* Onay kuyruğundaki tek sütunu tam genişliğe yay ve başlığını sadeleştir */
-    div[class*="WorkflowList"] > div:nth-child(3) {
-      width: 100% !important;
-      max-width: 760px !important;
-      margin: 0 auto !important;
-    }
-
-    /* YAZAR ROLÜ KESİN KISITLAMALARI */
+    /* YAZAR ROLÜ KESİN KISITLAMALARI (Admin hesabında bunların hiçbiri çalışmaz) */
     body.role-yazar a[href*="/collections/ayarlar"],
     body.role-yazar a[href*="workflow"],
     body.role-yazar a[href*="media"],
@@ -39,13 +26,6 @@
       pointer-events: none !important;
       opacity: 0.45;
       cursor: default !important;
-    }
-
-    /* Yazar kaydederken arka planda otomatik tetiklenen durum menüsünün ekranda yanıp sönmesini engelle */
-    body.role-yazar ul[class*="DropdownList"],
-    body.role-yazar div[class*="DropdownList"] {
-      opacity: 0 !important;
-      pointer-events: none !important;
     }
   </style>
 </head>
@@ -70,11 +50,10 @@
         });
       }
 
-      // Yazar için üst menüdeki Medya/Images, İş Akışı ve editördeki Durum/Yayınla/Sil öğelerini kesin olarak gizle
+      // Yazar için üst menüdeki Medya/Images, İş Akışı ve editördeki Durum/Yayınla/Sil öğelerini gizle
       function lockYazarUI() {
         if (!document.body.classList.contains("role-yazar")) return;
 
-        // 1. Üst menüdeki (header) 'İçerikler' (Contents) dışındaki tüm sekmeleri gizle (Medya, İş Akışı vb.)
         document.querySelectorAll("header a, header button, nav a, nav button").forEach(function (el) {
           const text = (el.textContent || "").trim().toLowerCase();
           if (
@@ -88,7 +67,6 @@
           }
         });
 
-        // 2. Editördeki Durum, Yayınla ve Sil kontrollerini gizle
         document.querySelectorAll("button, span, div[role='button']").forEach(function (el) {
           const text = (el.textContent || "").trim().toLowerCase();
           if (
@@ -114,8 +92,8 @@
 
       new MutationObserver(lockYazarUI).observe(document.body, { childList: true, subtree: true });
 
-      // Yazar 'Kaydet' dediğinde yazıyı arka planda otomatik olarak doğrudan onay kuyruğuna ('Hazır') geçir
-      function pushToApprovalQueue() {
+      // Yazar 'Kaydet' dediğinde yazıyı otomatik olarak 'Hazır' durumuna geçir
+      function pushToReady() {
         if (!document.body.classList.contains("role-yazar")) return;
 
         const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(function (el) {
@@ -132,7 +110,7 @@
               return el.children.length === 0 && (t === "hazır" || t === "ready");
             });
             if (readyItem) readyItem.click();
-          }, 200);
+          }, 250);
         }
       }
 
@@ -142,8 +120,8 @@
         if (!btn) return;
         const label = (btn.textContent || "").trim().toLowerCase();
         if (label === "kaydet" || label === "save") {
-          setTimeout(pushToApprovalQueue, 1200);
-          setTimeout(pushToApprovalQueue, 2500);
+          setTimeout(pushToReady, 1500);
+          setTimeout(pushToReady, 3000);
         }
       });
     })();
