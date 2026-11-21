@@ -37,6 +37,11 @@
       min-height: 100vh;
     }
 
+    /* Netlify Identity modalını her zaman en üstte tut */
+    #netlify-identity-widget {
+      z-index: 999999 !important;
+    }
+
     /* --- ÖZEL MİNİMALİST GİRİŞ EKRANI --- */
     #custom-login-screen {
       position: fixed;
@@ -45,7 +50,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
+      z-index: 500;
       padding: 24px;
     }
 
@@ -112,7 +117,6 @@
       font-size: 13px !important;
     }
 
-    /* Arama, Görünüm Değiştirici, Sıralama ve Hızlı Ekle (Quick Add) Tuşlarını Gizle */
     input[placeholder*="Ara"],
     input[placeholder*="Search"],
     div[class*="ViewControls"],
@@ -149,7 +153,6 @@
       background: var(--surface-hover) !important;
     }
 
-    /* Editör Formu ve Metin Alanları */
     div[class*="EditorContainer"],
     div[class*="ControlPaneContainer"],
     div[class*="EditorControlBar"] {
@@ -195,7 +198,6 @@
       line-height: 1.75 !important;
     }
 
-    /* Üst Araç Çubuğu Butonları */
     button[class*="ToolbarButton"],
     a[class*="CollectionTopNewButton"] {
       background: var(--accent) !important;
@@ -235,12 +237,11 @@
   </style>
 </head>
 <body>
-  <!-- Özel Minimalist Giriş Ekranı -->
   <div id="custom-login-screen">
     <div class="login-box">
       <h1 class="login-title">yorum</h1>
       <p class="login-sub">Yazar ve editör girişi</p>
-      <button type="button" class="login-btn" onclick="window.netlifyIdentity && window.netlifyIdentity.open('login')">
+      <button type="button" id="open-login-btn" class="login-btn">
         Giriş Yap
       </button>
     </div>
@@ -260,8 +261,20 @@
         }
       }
 
+      function openIdentityModal() {
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.open("login");
+          const modal = document.getElementById("netlify-identity-widget");
+          if (modal) modal.style.zIndex = "999999";
+        }
+      }
+
+      document.getElementById("open-login-btn").addEventListener("click", openIdentityModal);
+
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", applyUserState);
+        window.netlifyIdentity.on("init", function (user) {
+          applyUserState(user);
+        });
         window.netlifyIdentity.on("login", function (user) {
           applyUserState(user);
           window.netlifyIdentity.close();
@@ -275,7 +288,6 @@
         });
       }
 
-      // Metin etiketine göre kalan "Hızlı ekle" veya "Sırala" butonlarını gizle
       function hideExtraButtons() {
         document.querySelectorAll("button, span").forEach((el) => {
           if (el.childNodes.length === 1) {
@@ -291,7 +303,6 @@
       const observer = new MutationObserver(hideExtraButtons);
       observer.observe(document.body, { childList: true, subtree: true });
 
-      // Yazar rolü "Kaydet" dediğinde otomatik "İncelemede" konumuna geçir
       function autoSendToReview() {
         if (!document.body.classList.contains("role-yazar")) return;
         const statusBtn = Array.from(document.querySelectorAll("button, span, div")).find(
